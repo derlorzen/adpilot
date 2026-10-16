@@ -24,7 +24,30 @@ button{font-family:inherit}
 .app input::placeholder{color:var(--muted-2)}
 @media (max-width: 440px){.hide-sm{display:none}}
 input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app button,.app a,.app select,.app label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.app button{transition:box-shadow .15s ease,transform .1s ease}
+.app button:hover{box-shadow:inset 0 0 0 999px rgba(127,127,127,.10)}
+.app button:active{transform:translateY(1px)}
+.app h1,.app h2{text-wrap:balance}
+.app p{text-wrap:pretty}
+.skip{position:absolute;left:12px;top:-60px;z-index:20;padding:10px 14px;border-radius:10px;background:var(--seg-active);color:var(--seg-active-fg);font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.filters{display:contents}
+.only-sm{display:none !important}
+@media (max-width: 640px){
+.only-sm{display:flex !important}
+.filters{display:none}
+.filters.open{display:flex;flex-direction:column;gap:10px;width:100%}
+.tiles{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important}
+.tiles > button{min-height:0 !important;padding:12px !important}
+.tiles .tile-sub{display:none}
+}
+.safe-bottom{bottom:calc(12px + env(safe-area-inset-bottom, 0px)) !important}
+html{background:#F3F4F6}
+html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
+@media (prefers-color-scheme: dark){html:has(.app[data-mode="auto"]){background:#111214;color-scheme:dark}}
+@media (prefers-reduced-motion: reduce){.app *{transition:none !important;animation:none !important}}
 </style>
 </head>
 <body>
@@ -52,17 +75,41 @@ button{font-family:inherit}
 .app input::placeholder{color:var(--muted-2)}
 @media (max-width: 440px){.hide-sm{display:none}}
 input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app button,.app a,.app select,.app label{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.app button{transition:box-shadow .15s ease,transform .1s ease}
+.app button:hover{box-shadow:inset 0 0 0 999px rgba(127,127,127,.10)}
+.app button:active{transform:translateY(1px)}
+.app h1,.app h2{text-wrap:balance}
+.app p{text-wrap:pretty}
+.skip{position:absolute;left:12px;top:-60px;z-index:20;padding:10px 14px;border-radius:10px;background:var(--seg-active);color:var(--seg-active-fg);font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.filters{display:contents}
+.only-sm{display:none !important}
+@media (max-width: 640px){
+.only-sm{display:flex !important}
+.filters{display:none}
+.filters.open{display:flex;flex-direction:column;gap:10px;width:100%}
+.tiles{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important}
+.tiles > button{min-height:0 !important;padding:12px !important}
+.tiles .tile-sub{display:none}
+}
+.safe-bottom{bottom:calc(12px + env(safe-area-inset-bottom, 0px)) !important}
+html{background:#F3F4F6}
+html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
+@media (prefers-color-scheme: dark){html:has(.app[data-mode="auto"]){background:#111214;color-scheme:dark}}
+@media (prefers-reduced-motion: reduce){.app *{transition:none !important;animation:none !important}}
 </style>
 </helmet>
 <div class="app" data-mode="{{themeMode}}" style="min-height: 100vh; background: var(--page); display: flex; flex-direction: column">
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
 
 <div style="background: var(--surface); border-bottom: 1px solid var(--line)">
 <div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; min-height: 60px">
 <button type="button" onClick="{{goStart}}" aria-label="Zur Übersicht" style="display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 0; min-height: 44px; cursor: pointer">
 <svg aria-hidden="true" width="30" height="30" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0B6E69"></rect><path d="M7 19l5-6 4 3 5-7" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <span style="display: flex; flex-direction: column; align-items: flex-start">
-<span style="font-weight: 600; font-size: 16px; color: var(--ink)">AdPilot</span>
+<span translate="no" style="font-weight: 600; font-size: 16px; color: var(--ink)">AdPilot</span>
 <span class="hide-sm" style="font-size: 12px; color: var(--muted)">johtomarket.de</span>
 </span>
 </button>
@@ -107,7 +154,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </nav>
 </sc-if>
 
-<main style="width: 100%; max-width: 1100px; margin: 0 auto; padding: 20px 16px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+<main id="inhalt" tabindex="-1" style="width: 100%; max-width: 1100px; margin: 0 auto; padding: 20px 16px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
 
 <sc-if value="{{isSub}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; gap: 6px">
@@ -142,7 +189,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <label style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Artikel finden ({{artTotal}} Artikel)
 <span style="position: relative; display: block">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 13px; color: var(--muted)"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
-<input type="search" value="{{artQuery}}" onChange="{{onArtQuery}}" placeholder="Name oder SKU eingeben" style="width: 100%; min-height: 44px; padding: 0 12px 0 38px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
+<input type="search" name="artikelsuche" autocomplete="off" spellcheck="false" value="{{artQuery}}" onChange="{{onArtQuery}}" placeholder="Name oder SKU eingeben…" style="width: 100%; min-height: 44px; padding: 0 12px 0 38px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
 </span>
 </label>
 <button type="button" onClick="{{goArtSearch}}" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 10px; background: var(--seg-active); color: var(--seg-active-fg); font-size: 15px; font-weight: 600; cursor: pointer">Suchen</button>
@@ -150,7 +197,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 
 <section style="display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
-<h2 style="margin: 0; font-size: 18px; font-weight: 600">Deine Zahlen</h2>
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 style="margin: 0; font-size: 18px; font-weight: 600">Deine Zahlen</h2><span style="font-size: 12px; color: var(--muted-2)">Linien zeigen den Verlauf der letzten 12 Wochen</span></div>
 <div role="group" aria-label="Zeitraum" style="display: flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px">
 <sc-for list="{{periods}}" as="p" hint-placeholder-count="2">
 <button type="button" onClick="{{p.pick}}" aria-pressed="{{p.active}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: {{p.bg}}; color: {{p.fg}}; font-size: 14px; cursor: pointer">{{p.label}}</button>
@@ -167,7 +214,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <svg viewBox="0 0 100 28" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible"><path d="{{k.spark}}" vector-effect="non-scaling-stroke" style="fill: none; stroke: var(--spark); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round"></path></svg>
 <span style="position: absolute; left: 100%; top: {{k.endY}}%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 4px; background: var(--s1); box-shadow: 0 0 0 2px var(--surface)"></span>
 </div>
-<span style="font-size: 11px; color: var(--muted-2)">Verlauf der letzten 12 Wochen</span>
 </div>
 </sc-for>
 </div>
@@ -217,17 +263,17 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 
 <section style="display: flex; flex-direction: column; gap: 12px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Bereiche</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px">
+<div class="tiles" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px">
 <sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
 <button type="button" onClick="{{t.go}}" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-align: left; min-height: 132px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); cursor: pointer">
-<span style="display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 8px">
+<span style="display: flex; flex-wrap: wrap; width: 100%; justify-content: space-between; align-items: center; gap: 8px">
 <span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 10px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{t.icon}}"></path></svg>
 </span>
 <span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: {{t.chipBg}}; color: {{t.chipFg}}">{{t.chip}}</span>
 </span>
 <span style="font-size: 16px; font-weight: 600; color: var(--ink)">{{t.title}}</span>
-<span style="font-size: 14px; color: var(--muted); line-height: 1.4">{{t.sub}}</span>
+<span class="tile-sub" style="font-size: 14px; color: var(--muted); line-height: 1.4">{{t.sub}}</span>
 </button>
 </sc-for>
 </div>
@@ -274,7 +320,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px"><span aria-hidden="true" style="width: 12px; height: 2px; background: var(--s2)"></span><strong class="num" style="font-size: 14px; color: var(--ink)">{{chart.hSpend}}</strong><span style="font-size: 12px; color: var(--muted)">Werbekosten</span></div>
 </div>
 </sc-if>
-<div tabIndex="0" onPointerMove="{{onChartMove}}" onPointerDown="{{onChartMove}}" onPointerLeave="{{onChartLeave}}" onFocus="{{onChartFocus}}" onBlur="{{onChartLeave}}" onKeyDown="{{onChartKey}}" aria-label="Tageswerte: mit den Pfeiltasten links und rechts durch die Tage gehen" style="position: absolute; inset: 0; cursor: crosshair; border-radius: 4px"></div>
+<div role="group" tabIndex="0" onPointerMove="{{onChartMove}}" onPointerDown="{{onChartMove}}" onPointerLeave="{{onChartLeave}}" onFocus="{{onChartFocus}}" onBlur="{{onChartLeave}}" onKeyDown="{{onChartKey}}" aria-label="Tageswerte: mit den Pfeiltasten links und rechts durch die Tage gehen" style="position: absolute; inset: 0; cursor: crosshair; border-radius: 4px"></div>
 </div>
 </div>
 <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding-left: 44px; margin-right: 76px">
@@ -404,7 +450,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <sc-if value="{{campClassic}}" hint-placeholder-val="{{true}}">
 <div style="display: flex; flex-direction: column; gap: 12px">
 <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); max-width: 520px">Kampagne suchen
-<input type="search" value="{{campQuery}}" onChange="{{onCampQuery}}" placeholder="Name oder beworbenes Produkt, z. B. „holz stand“" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
+<input type="search" name="kampagnensuche" autocomplete="off" value="{{campQuery}}" onChange="{{onCampQuery}}" placeholder="Name oder Produkt, z. B. „holz stand“…" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
 </label>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
 <sc-for list="{{campStatusFilters}}" as="f" hint-placeholder-count="3">
@@ -418,7 +464,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <span style="font-size: 13px; color: var(--muted)">{{campCountText}}</span>
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 4px 6px">
 <div style="overflow-x: auto">
-<table style="min-width: 1120px">
+<table style="min-width: 1000px">
 <thead><tr><th class="stick">Kampagne</th><th>Status</th><th class="r">Budget/Tag</th><th class="r">Impressionen</th><th class="r">Klicks</th><th class="r">CTR</th><th class="r">CPC</th><th class="r">Ausgaben</th><th class="r">Umsatz</th><th class="r">Bestell.</th><th class="r">ACoS</th><th class="r">ROAS</th></tr></thead>
 <tbody>
 <sc-for list="{{campRows}}" as="c" hint-placeholder-count="6">
@@ -608,7 +654,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <button type="button" style="min-height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">+ Hinzufügen</button>
 </div>
 <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); max-width: 420px">Durchsuchen ({{camp.kwCountText}})
-<input type="search" value="{{kwQuery}}" onChange="{{onKwQuery}}" placeholder="Keyword oder Ziel suchen" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
+<input type="search" name="keywordsuche" autocomplete="off" value="{{kwQuery}}" onChange="{{onKwQuery}}" placeholder="Keyword oder Ziel, z. B. „psa“…" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
 </label>
 <div style="overflow-x: auto">
 <table style="min-width: 980px">
@@ -659,7 +705,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </div>
 <div style="display: flex; gap: 8px">
 <label style="flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Neuer Begriff
-<input type="text" value="{{negInput}}" onChange="{{onNegInput}}" placeholder="z. B. gratis" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
+<input type="text" name="negativ-keyword" autocomplete="off" value="{{negInput}}" onChange="{{onNegInput}}" placeholder="z. B. gratis…" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
 </label>
 <button type="button" onClick="{{addNeg}}" style="align-self: flex-end; min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: var(--seg-active); color: var(--seg-active-fg); font-size: 14px; font-weight: 500; cursor: pointer">Ausschließen</button>
 </div>
@@ -685,9 +731,11 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <label style="flex: 3 1 260px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Suche
 <span style="position: relative; display: block">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 13px; color: var(--muted)"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>
-<input type="search" value="{{artQuery}}" onChange="{{onArtQuery}}" placeholder="Name oder SKU, z. B. „bumper rot“" style="width: 100%; min-height: 44px; padding: 0 12px 0 38px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
+<input type="search" name="artikelsuche-liste" autocomplete="off" spellcheck="false" value="{{artQuery}}" onChange="{{onArtQuery}}" placeholder="Name oder SKU, z. B. „bumper rot“…" style="width: 100%; min-height: 44px; padding: 0 12px 0 38px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; box-sizing: border-box">
 </span>
 </label>
+<button type="button" class="only-sm" onClick="{{toggleArtFilters}}" aria-expanded="{{artFiltersExpanded}}" style="align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 500; cursor: pointer; width: 100%">{{artFiltersLabel}}</button>
+<div class="filters {{artFiltersClass}}">
 <label style="flex: 1 1 170px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Kategorie
 <select value="{{artCat}}" onChange="{{onArtCat}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface)">
 <option value="alle">Alle Kategorien</option>
@@ -728,6 +776,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </select>
 </label>
 </div>
+</div>
 
 <div role="group" aria-label="Schnellfilter" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px">
 <sc-for list="{{artFilters}}" as="f" hint-placeholder-count="7">
@@ -766,7 +815,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <sc-for list="{{artRows}}" as="r" hint-placeholder-count="8">
 <article style="background: var(--surface); border: 1px solid {{r.border}}; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center">
-<div style="flex: 999 1 300px; min-width: 0; display: flex; gap: 6px; align-items: flex-start">
+<div style="flex: 999 1 300px; min-width: 0; display: flex; gap: 6px; align-items: flex-start; width: 100%">
 <label style="width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center; margin: -4px 0 -4px -8px; cursor: pointer">
 <input type="checkbox" checked="{{r.checked}}" onChange="{{r.toggleSel}}" aria-label="{{r.selLabel}}" style="width: 20px; height: 20px; accent-color: var(--accent)">
 </label>
@@ -779,6 +828,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </sc-for>
 </div>
 </div>
+<button type="button" onClick="{{r.toggleOpen}}" aria-expanded="{{r.openStr}}" aria-label="{{r.detLabel}}" style="width: 44px; height: 44px; flex: none; margin-left: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink-2); cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.chevron}}"></path></svg>
+</button>
 </div>
 <div style="flex: 1 1 440px; display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); gap: 8px; align-items: start">
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">Preis</span><span class="num" style="font-size: 14px; font-weight: 500">{{r.price}}</span></div>
@@ -787,9 +839,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">Umsatz 30 T.</span><span class="num" style="font-size: 14px; font-weight: 500">{{r.sales}}</span></div>
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">Lager</span><span class="num" style="font-size: 14px; font-weight: 500">{{r.lager}}</span><span style="font-size: 11px; color: {{r.reachColor}}">{{r.reachTxt}}</span></div>
 </div>
-<button type="button" onClick="{{r.toggleOpen}}" aria-expanded="{{r.openStr}}" aria-label="{{r.detLabel}}" style="width: 44px; height: 44px; flex: none; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink-2); cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.chevron}}"></path></svg>
-</button>
+
 </div>
 <sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
 <div style="border-top: 1px solid var(--tint); padding-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
@@ -875,7 +925,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </sc-if>
 
 <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="Mehrfachauswahl" style="position: sticky; bottom: 12px; z-index: 6; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
+<div role="region" aria-label="Mehrfachauswahl" class="safe-bottom" style="position: sticky; bottom: 12px; z-index: 6; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
 <span style="flex: 1 1 160px; font-size: 15px; font-weight: 600; padding-left: 4px">{{selText}}</span>
 <button type="button" onClick="{{bulkPause}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Werbung pausieren</button>
 <button type="button" onClick="{{bulkAcos}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Ziel-ACoS neu berechnen</button>
@@ -1280,7 +1330,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 <h2 style="margin: 0; font-size: 17px; font-weight: 600">Gewinn nach Werbung je Monat</h2>
 <div role="img" aria-label="Säulendiagramm Gewinn nach Werbung: Mai 2.610 €, Juni 2.830 €, Juli 2.480 €, August 2.910 €, September 3.360 €, Oktober bisher 1.840 €" style="display: flex; align-items: flex-end; gap: 10px; height: 170px; border-bottom: 1px solid var(--line-2)">
 <sc-for list="{{months}}" as="m" hint-placeholder-count="6">
-<div tabIndex="0" onPointerEnter="{{m.hover}}" onFocus="{{m.hover}}" onPointerLeave="{{monthLeave}}" onBlur="{{monthLeave}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%; cursor: default; border-radius: 4px">
+<div role="img" aria-label="{{m.full}}: {{m.gewinn}} Gewinn" tabIndex="0" onPointerEnter="{{m.hover}}" onFocus="{{m.hover}}" onPointerLeave="{{monthLeave}}" onBlur="{{monthLeave}}" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%; cursor: default; border-radius: 4px">
 <span class="num" style="font-size: 11px; color: var(--ink-2)">{{m.short}}</span>
 <span style="width: 24px; height: {{m.h}}%; background: {{m.color}}; border-radius: 4px 4px 0 0; display: block; opacity: {{m.op}}"></span>
 </div>
@@ -1315,7 +1365,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 </sc-if>
 
 <sc-if value="{{hasChanges}}" hint-placeholder-val="{{false}}">
-<div role="region" aria-label="Ungespeicherte Änderungen" style="position: sticky; bottom: 12px; z-index: 5; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px 12px 12px 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
+<div role="region" aria-label="Ungespeicherte Änderungen" class="safe-bottom" style="position: sticky; bottom: 12px; z-index: 5; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px 12px 12px 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
 <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 15px; font-weight: 600">{{changeCountText}}</span>
 <span style="font-size: 13px; color: var(--off)">{{changePreview}}</span>
@@ -1506,13 +1556,29 @@ class Component extends DCLogic {
     this.cat = this.catalog();
     this.state = {
       theme: 'auto', chartHover: null, chartTable: false, monthHover: null,
-      artChannel: 'alle', artQuery: '', artCat: 'alle', artBrand: 'alle', artSort: 'umsatz', artFilter: 'alle', artPage: 1, artSize: 25, artSel: {}, artOpen: null, artNote: '',
+      artFiltersOpen: false, artChannel: 'alle', artQuery: '', artCat: 'alle', artBrand: 'alle', artSort: 'umsatz', artFilter: 'alle', artPage: 1, artSize: 25, artSel: {}, artOpen: null, artNote: '',
       campQuery: '', kwQuery: '', view: 'start', menu: false, glossar: false, period: '7', dec: {}, ap: { neg: true, bid: false, budget: false },
       campMode: 'klassisch', campStatus: 'alle', campType: 'alle', sel: null, negInput: '', savedNote: false,
       bb: { auto: true, resume: true }, planned: {},
       rp: { u1: { on: true, mp: 30, strat: 'hold' }, u2: { on: true, mp: 30, strat: 'hold' } }, notifRead: false, channel: 'push', review: false,
       prefs: { brief: true, budget: true, bb: true, stock: true, rating: true, auto: false, quiet: true },
       base: seed, work: JSON.parse(JSON.stringify(seed)) };
+  }
+
+  pushView(v) {
+    try { if (typeof window !== 'undefined' && window.location.hash !== '#' + v) window.history.pushState({ view: v }, '', '#' + v); } catch (e) {}
+  }
+
+  componentDidMount() {
+    if (typeof window === 'undefined') return;
+    const valid = ['start', 'aufgaben', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
+    const fromHash = () => { const h = (window.location.hash || '').slice(1); return valid.indexOf(h) >= 0 ? h : 'start'; };
+    try {
+      const v = fromHash();
+      if (v !== this.state.view) this.setState({ view: v });
+      window.addEventListener('popstate', () => this.setState({ view: fromHash(), menu: false }));
+      window.addEventListener('beforeunload', (e) => { if (this.pendingChanges > 0) { e.preventDefault(); e.returnValue = ''; } });
+    } catch (e) {}
   }
 
   catalog() {
@@ -1641,7 +1707,7 @@ class Component extends DCLogic {
 
   renderVals() {
     const s = this.state;
-    const go = (v) => () => this.setState({ view: v, menu: false });
+    const go = (v) => () => { this.setState({ view: v, menu: false }); this.pushView(v); };
     const good = 'var(--accent)', bad = 'var(--warn-fg)';
     const chip = { warn: ['var(--warn-tint)', 'var(--warn-ink)'], ok: ['var(--accent-tint)', 'var(--accent-strong)'], info: ['var(--tint)', 'var(--ink-2)'], blue: ['var(--accent-tint)', 'var(--accent)'] };
 
@@ -1721,9 +1787,11 @@ class Component extends DCLogic {
     const W = 720, H = 200, MAX = 300;
     const pts = (arr) => arr.map((v, i) => (i * W / (arr.length - 1)).toFixed(1) + ',' + (H - v / MAX * H).toFixed(1));
     const salesPath = 'M' + pts(salesD).join(' L');
-    const fE = (n) => n.toFixed(2).replace('.', ',') + ' €';
+    const EURF = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+    const fE = (n) => EURF.format(n);
     const wd = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-    const dayLabel = (i) => { const d = new Date(2026, 8, 16 + i); return wd[d.getDay()] + ', ' + String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.'; };
+    const DAYF = new Intl.DateTimeFormat('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+    const dayLabel = (i) => DAYF.format(new Date(2026, 8, 16 + i));
     const yPct = (v) => ((1 - v / MAX) * 100).toFixed(2);
     const hi = s.chartHover, last = salesD.length - 1;
     const hx = hi === null ? 0 : hi / last * 100;
@@ -1778,7 +1846,7 @@ class Component extends DCLogic {
     });
 
     const Wk = s.work, Bs = s.base;
-    const eur = (n) => n.toFixed(2).replace('.', ',') + ' €';
+    const eur = (n) => EURF.format(n);
     const cents = (c) => eur(c / 100);
     const intf = (n) => n.toLocaleString('de-DE');
     const pctf = (n) => n.toFixed(1).replace('.', ',') + ' %';
@@ -1807,6 +1875,7 @@ class Component extends DCLogic {
       c.negs.filter((n) => !b.negs.includes(n)).forEach((n) => changes.push({ id: c.id, text: 'Ausgeschlossen: „' + n + '“' }));
       b.negs.filter((n) => !c.negs.includes(n)).forEach((n) => changes.push({ id: c.id, text: 'Nicht mehr ausgeschlossen: „' + n + '“' }));
     });
+    this.pendingChanges = changes.length;
     const save = () => {
       const w = JSON.parse(JSON.stringify(this.state.work));
       changes.forEach((ch) => findC(w, ch.id).history.unshift({ when: 'Gerade eben', who: 'Benny (manuell)', what: ch.text }));
@@ -2037,7 +2106,7 @@ class Component extends DCLogic {
         ad: 'Werbung läuft normal', adColor: 'var(--ink-2)', rec: 'Exklusives Produkt aus eigener Herstellung, niemand sonst verkauft es.', action: '' }
     ].map((x) => ({ ...x, chipBg: bbSt[x.st][0], chipFg: bbSt[x.st][1], border: bbSt[x.st][2], barColor: x.share < 50 ? 'var(--warn)' : 'var(--accent)', otherColor: x.st === 'lost' || x.st === 'hijack' ? bad : 'var(--ink)', hasAction: !!x.action }));
 
-    const e2 = (n) => n.toFixed(2).replace('.', ',') + ' €';
+    const e2 = (n) => EURF.format(n);
     const setRp = (id, patch) => this.setState({ rp: { ...this.state.rp, [id]: { ...this.state.rp[id], ...patch } } });
     const rpItems = [
       { id: 'u1', name: 'Ultra PRO ONE-TOUCH 260pt', brand: 'Ultra PRO', price: 4.29, comp: 4.24, ek: 1.85, fix: 1.41, max: 5.49, shop: 4.29, bbMine: false },
@@ -2186,7 +2255,7 @@ class Component extends DCLogic {
     const pageSkus = pageItems.map((x) => x.sku);
     const allOnPage = pageSkus.length > 0 && pageSkus.every((k) => s.artSel[k]);
     const bulk = (txt) => () => this.setState({ artSel: {}, artNote: selCount + ' Artikel: ' + txt + ', zur Freigabe unter „Heute erledigen“ vorgemerkt.' });
-    const goArt = (f, srt) => () => this.setState({ view: 'artikel', artFilter: f, artSort: srt || this.state.artSort, artPage: 1, menu: false });
+    const goArt = (f, srt) => () => { this.setState({ view: 'artikel', artFilter: f, artSort: srt || this.state.artSort, artPage: 1, menu: false }); this.pushView('artikel'); };
     const hasArtFilter = s.artQuery || s.artCat !== 'alle' || s.artBrand !== 'alle' || s.artFilter !== 'alle' || s.artChannel !== 'alle';
 
     const C = this.cat;
@@ -2223,6 +2292,9 @@ class Component extends DCLogic {
     return {
       isEbay: s.view === 'ebay', ebayKpis, ebayMissing, ebayPricey, eFehltCount: intDe(eFehlt.length), eBeendetCount: intDe(eBeendet.length), eTeurerCount: intDe(eTeurer.length),
       ePotentialTxt: intDe(ePotential) + ' €', goArtEbayFehlt: goArt('ebayfehlt', 'umsatz'), goArtEbayTeurer: goArt('ebayteurer', 'umsatz'), chanRows,
+      artFiltersClass: s.artFiltersOpen ? 'open' : '', artFiltersExpanded: s.artFiltersOpen ? 'true' : 'false',
+      artFiltersLabel: (s.artFiltersOpen ? 'Filter ausblenden' : 'Filter und Sortierung') + ((s.artCat !== 'alle') + (s.artBrand !== 'alle') + (s.artChannel !== 'alle') ? ' (' + ((s.artCat !== 'alle') + (s.artBrand !== 'alle') + (s.artChannel !== 'alle')) + ' aktiv)' : ''),
+      toggleArtFilters: () => this.setState({ artFiltersOpen: !this.state.artFiltersOpen }),
       artChannel: s.artChannel, onArtChannel: (e) => this.setState({ artChannel: e.target.value, artPage: 1 }),
       artTotal: this.cat.length, artQuery: s.artQuery, artCat: s.artCat, artBrand: s.artBrand, artSort: s.artSort, artSizeStr: String(s.artSize),
       cc: { bumper: catCount('Bumper'), sleeves: catCount('Sleeves'), holder: catCount('Card Holder'), acryl: catCount('Acryl Cases'), alu: catCount('Aluminium Cases'), binder: catCount('Binder'), deck: catCount('Deck Boxen'), stands: catCount('Stands'), wand: catCount('Wandsysteme') },
