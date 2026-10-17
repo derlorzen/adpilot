@@ -485,7 +485,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center">
 <div style="display: flex; flex-direction: column; gap: 2px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">{{chCountTxt}}</h2>
-<span style="font-size: 13px; color: var(--muted)">Sortiert nach erwartetem Gewinn. Alle Werte sind Schätzungen, erst ein Test zeigt, was wirklich passiert.</span>
+<span style="font-size: 13px; color: var(--muted)">Sortiert nach erwartetem Gewinn nach Werbekosten. Alles Schätzungen, erst ein Test zeigt, was wirklich passiert.</span>
 </div>
 <div role="group" aria-label="Chancen filtern" style="display: flex; flex-wrap: wrap; gap: 6px">
 <sc-for list="{{chFilters}}" as="f" hint-placeholder-count="4">
@@ -498,12 +498,13 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <article style="background: var(--surface); border: 1px solid {{c.border}}; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px; opacity: {{c.op}}">
 <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
 <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: {{c.typBg}}; color: {{c.typFg}}">{{c.typ}}</span>
-<sc-if value="{{c.free}}" hint-placeholder-val="{{true}}">
-<span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-strong)">ohne Werbebudget</span>
-</sc-if>
 <span style="font-size: 12px; color: var(--muted)">Schätzung: {{c.conf}}</span>
 </div>
 <h3 style="margin: 0; font-size: 18px; font-weight: 600; line-height: 1.35">{{c.title}}</h3>
+<div style="display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--ink-2); line-height: 1.45">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg>
+<span><strong style="color: var(--ink); font-weight: 600">Wo die Anzeige erscheint:</strong> {{c.wo}}</span>
+</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
 <div style="background: var(--tint-2); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
 <span style="font-size: 12px; color: var(--muted); font-weight: 500">Warum?</span>
@@ -515,6 +516,12 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <span style="font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 6px">Einsatz</span>
 <span style="font-size: 14px; line-height: 1.5">{{c.einsatz}}</span>
 </div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 14px">
+<sc-for list="{{c.checks}}" as="k" hint-placeholder-count="4">
+<span style="display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--ink-2)">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{k.color}}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="{{k.icon}}"></path></svg>{{k.text}}</span>
+</sc-for>
 </div>
 <button type="button" onClick="{{c.toggleCalc}}" aria-expanded="{{c.calcExpanded}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 40px; padding: 0; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 500; cursor: pointer">
 <span aria-hidden="true">{{c.calcSign}}</span><span>So haben wir gerechnet</span>
@@ -550,6 +557,23 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Hier lieber keine Werbung</h2>
+<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Bei diesen Artikeln wäre Werbung rausgeworfenes Geld, und das muss zuerst passieren.</p>
+</div>
+<sc-for list="{{chNo}}" as="n" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-top: 1px solid var(--tint)">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center">
+<span style="font-size: 15px; font-weight: 600">{{n.name}}</span>
+<span style="font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--warn-tint); color: var(--warn-ink)">{{n.grund}}</span>
+</div>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.5">{{n.text}}</span>
+<span style="font-size: 14px; line-height: 1.5"><strong style="font-weight: 600">Erst:</strong> {{n.erst}}</span>
+</div>
+</sc-for>
+</section>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Tests und Ergebnisse</h2>
 <p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Was aus früheren Chancen geworden ist. Gute Tests kannst du dauerhaft weiterlaufen lassen.</p>
 </div>
@@ -581,10 +605,10 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
 <h2 style="margin: 0; font-size: 16px; font-weight: 600">Woher kommen die Chancen?</h2>
 <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.5">
-<li>Verkäufe aus Shop, Amazon und eBay über Billbee, inklusive Einkaufspreis und Gewinn pro Artikel</li>
+<li>Verkäufe aus Shop, Amazon und eBay über Billbee, inklusive Einkaufspreis, damit nur beworben wird, was nach Werbung noch Gewinn bringt</li>
 <li>Besucher und Kaufrate pro Artikel aus den Amazon-Geschäftsberichten</li>
 <li>Gebotsvorschläge und Suchbegriffe aus der Amazon-Werbeschnittstelle, auch ohne laufende Werbung</li>
-<li>Buy-Box-Prüfung, eBay-Abgleich und der Termin-Kalender</li>
+<li>Buy-Box-Prüfung, Lagerbestand, Bewertungen und der Termin-Kalender mit neuen Sets und Neuheiten</li>
 </ul>
 </section>
 
@@ -1904,7 +1928,7 @@ class Component extends DCLogic {
     const sectionsRaw = [
       { id: 'start', title: 'Übersicht', sub: 'Wie läuft es heute?', intro: '', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
       { id: 'aufgaben', title: 'Heute erledigen', sub: 'Vorschläge mit Ja oder Nein beantworten', intro: 'AdPilot hat heute Nacht dein Werbekonto geprüft. Beantworte jeden Vorschlag mit Ja oder Nein, ohne dein Okay ändert sich nichts.', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', chip: pendingCount ? pendingCount + ' offen' : 'erledigt', c: pendingCount ? chip.warn : chip.ok },
-      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo mehr Gewinn drin ist, auch ohne Werbung', intro: 'AdPilot sucht jede Nacht in deinen Verkäufen, bei Amazon und bei eBay nach Chancen. Viele kosten kein Werbegeld, für den Rest gibt es kleine Tests mit festem Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Chancen' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
+      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung für dich lohnt', intro: 'AdPilot sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt. Vorgeschlagen wird nur, was nach Werbekosten Gewinn bringt, und jeder Test hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
       { id: 'artikel', title: 'Alle Artikel', sub: 'Suchen, filtern und mehrere auf einmal bearbeiten', intro: 'Dein komplettes Sortiment mit Marge, Werbung, Bestand und Buy Box. Tippe auf einen Artikel für Details oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
       { id: 'kampagnen', title: 'Werbekampagnen', sub: 'Alle Kampagnen ansehen und bearbeiten', intro: 'Alle Amazon-Kampagnen mit ihren Zahlen der letzten 7 Tage. Ein- und ausschalten geht direkt in der Liste, alles Weitere nach einem Tipp auf den Namen.', icon: 'M3 11l15-6v14L3 13zM7 12v6a2 2 0 0 0 4 0v-4', chip: '1 Budget leer', c: chip.warn },
       { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'AdPilot prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
@@ -2448,83 +2472,100 @@ class Component extends DCLogic {
       wRev: (c2.rev / chMax * 100).toFixed(1), wProfit: (Math.max(c2.profit, 0) / chMax * 100).toFixed(1), bestTxt: 'bester Kanal für ' + c2.best + ' Artikel' }));
     const catCount = (c) => this.cat.filter((x) => x.cat === c).length;
 
-    // Chancenfinder
+    // Chancenfinder: wo sich Werbung lohnt
     const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
     const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
-    const r5 = (n) => Math.round(n / 5) * 5;
-    const opE = this.cat.filter((x) => x.ebayFehlt);
-    const opESold = opE.filter((x) => x.units + x.sUnits > 0);
-    const opEUnits = opESold.reduce((a, x) => a + x.units + x.sUnits, 0);
-    const opEP = opESold.map((x) => x.pEbay).sort((a, b) => a - b);
-    const opEProfit = opEP.length ? opEP[Math.floor(opEP.length / 2)] : 0;
-    const opELo = r5(opEUnits * 0.1 * opEProfit), opEHi = r5(opEUnits * 0.2 * opEProfit);
     const rows = (arr) => arr.map((a) => ({ k: a[0], v: a[1] }));
-    const tc = { test: chip.blue, gratis: chip.ok, saison: chip.info };
+    const tc = { produkt: chip.blue, suche: chip.blue, gezielt: chip.info, zeit: chip.info };
+    const ok = (text) => ({ text, color: 'var(--accent)', icon: 'M5 12l5 5 9-10' });
+    const hm = (text) => ({ text, color: 'var(--warn)', icon: 'M12 8v5M12 17h.01' });
     const opRaw = [
-      { id: 'xmas', grp: 'saison', typ: 'Saison', conf: 'mittel', cost: 70, lo: 85, hi: 190,
-        title: 'Weihnachtsgeschäft mit kleinem Budget mitnehmen',
-        warum: 'Im Dezember 2025 hast du 3-mal so viele Holz Stands, Acryl Cases und Alu-Koffer verkauft wie im Oktober, ganz ohne Werbung. Sammler werden in dieser Zeit beschenkt.',
+      { id: 'xmas', grp: 'zeit', typ: 'Saison', conf: 'mittel', cost: 70, lo: 85, hi: 190,
+        title: 'Weihnachten: Holz Stand, Acryl Cases und Alu-Koffer als Geschenk bewerben',
+        wo: 'in der Amazon-Suche bei Geschenk-Suchen wie „geschenk pokemon sammler“ und „tcg zubehör geschenk“, vom 15.11. bis 20.12.',
+        warum: 'Im Dezember 2025 hast du von diesen Artikeln 3-mal so viel verkauft wie im Oktober, ganz ohne Werbung. Genau dann suchen viele nach Geschenken für Sammler.',
         bringt: '+12 bis 20 Verkäufe im Weihnachtsgeschäft, nach Werbekosten etwa +85 bis 190 € Gewinn.',
         einsatz: '2 € am Tag vom 15.11. bis 20.12., insgesamt höchstens 70 €.',
+        checks: [ok('Marge reicht'), ok('Buy Box bei dir'), hm('Holz Stand: nur 9 auf Lager'), ok('4,8 Sterne')],
         action: 'Im Kalender einplanen (höchstens 70 €)', doneTxt: 'Eingeplant: startet am 15.11., AdPilot fragt vorher per Push nach',
-        rechnung: rows([['Verkäufe Dezember 2025 zu Oktober 2025', '3,1-mal so viele'], ['Budget', '2 € × 35 Tage = 70 €'], ['Erwartete zusätzliche Verkäufe', '12 bis 20'], ['Gewinn je Verkauf vor Werbung', 'ca. 13 € im Schnitt']]),
+        rechnung: rows([['Verkäufe Dezember 2025 zu Oktober 2025', '3,1-mal so viele'], ['Budget', '2 € × 35 Tage = 70 €'], ['Amazon-Vorschlag pro Klick', '0,38 bis 0,55 €'], ['Erwartete zusätzliche Verkäufe', '12 bis 20'], ['Gewinn je Verkauf vor Werbung', 'ca. 13 € im Schnitt']]),
         quelle: 'Billbee-Verkäufe 2025, Gebotsvorschläge der Amazon-Werbeschnittstelle' },
-      { id: 'ebay', grp: 'gratis', typ: 'Neuer Verkaufskanal', conf: 'hoch', cost: 0, lo: opELo, hi: opEHi,
-        title: intDe(opE.length) + ' Artikel zusätzlich auf eBay anbieten',
-        warum: 'Diese Artikel hast du auf Lager, ' + intDe(opESold.length) + ' davon verkaufen sich im Shop oder bei Amazon. Auf eBay gibt es sie noch nicht. Billbee übernimmt die Bestände, sobald die Angebote stehen.',
-        bringt: 'Etwa ' + intDe(opEUnits * 0.1) + ' bis ' + intDe(opEUnits * 0.2) + ' zusätzliche Verkäufe im Monat, ' + range(opELo, opEHi) + ' Gewinn.',
-        einsatz: 'Kein Werbebudget. AdPilot bereitet Titel, Preise und Fotos vor, du gibst sie frei.',
-        action: 'Angebote vorbereiten', doneTxt: 'Vorbereitet: Die Angebote erscheinen unter „Heute erledigen“ zum Freigeben',
-        rechnung: rows([['Artikel ohne eBay-Angebot', intDe(opE.length)], ['Davon mit Verkäufen in den letzten 30 Tagen', intDe(opESold.length)], ['Verkäufe davon im Shop und bei Amazon', intDe(opEUnits) + ' im Monat'], ['Annahme eBay zusätzlich', '10 bis 20 %'], ['Gewinn je eBay-Verkauf nach Gebühren und Versand (Mittelwert)', eur(opEProfit)]]),
-        quelle: 'Billbee-Verkäufe aller Kanäle, eBay-Abgleich' },
-      { id: 'bumper', grp: 'test', typ: 'Werbung testen', conf: 'hoch', cost: 40, lo: 85, hi: 150,
-        title: 'PSA Bumper Glossy · Schwarz, 10er-Pack bewerben',
+      { id: 'bumper', grp: 'produkt', typ: 'Produkt bewerben', conf: 'hoch', cost: 40, lo: 85, hi: 150,
+        title: 'PSA Bumper Glossy · Schwarz, 10er-Pack',
+        wo: 'in der Amazon-Suche bei passenden Suchen, Amazon wählt die Begriffe in den ersten 2 Wochen selbst aus. Danach übernimmt AdPilot die besten als feste Suchbegriffe.',
         warum: 'Verkauft sich ohne Werbung 38-mal im Monat. Von 100 Besuchern kaufen 14, bei deinen anderen Artikeln sind es 8. Mehr Besucher dürften hier gut kaufen.',
         bringt: '+6 bis 9 Verkäufe im Monat, nach Werbekosten etwa +85 bis 150 € Gewinn.',
         einsatz: 'Test über 30 Tage, höchstens 1,50 € am Tag, insgesamt höchstens 40 €.',
+        checks: [ok('Marge reicht bis 1,26 € pro Klick'), ok('Buy Box bei dir'), ok('Bestand reicht 3 Monate'), ok('4,7 Sterne')],
         action: 'Test starten (höchstens 40 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
         rechnung: rows([['Preis', '37,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 21,00 €'], ['Amazon-Vorschlag pro Klick', '0,42 €'], ['Klicks für 40 €', 'ca. 95'], ['Kaufrate bei Werbebesuchern', '6 bis 10 %'], ['Lohnt sich bis', '1,26 € pro Klick']]),
         quelle: 'Amazon-Geschäftsberichte (Besucher, Kaufrate), Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' },
-      { id: 'slab', grp: 'gratis', typ: 'Besser gefunden werden', conf: 'mittel', cost: 0, lo: 35, hi: 95,
-        title: '„Slab Display“ in den Titel des Display Rahmens aufnehmen',
-        warum: 'Kunden suchen bei Amazon häufig nach „slab display“ und „psa display“. Dein Slab Display Rahmen 3er taucht dort erst auf Seite 3 auf, weil die Begriffe vorne im Titel fehlen.',
-        bringt: '+3 bis 8 Verkäufe im Monat, etwa +35 bis 95 € Gewinn.',
-        einsatz: 'Kein Werbebudget. Neuer Titel und Suchbegriffe, der Vorschlag liegt bereit.',
-        action: 'Titelvorschlag übernehmen', doneTxt: 'Übernommen: Der neue Titel geht nach deiner Freigabe unter „Heute erledigen“ zu Amazon',
-        rechnung: rows([['Gewinn je Verkauf', 'ca. 12,10 €'], ['„slab display“ bei Amazon-Vorschlägen', 'unter den Top 3'], ['Dein Artikel bei dieser Suche', 'ab Seite 3'], ['Neuer Titelanfang', 'Slab Display Rahmen 3er für PSA, CGC, BGS']]),
-        quelle: 'Suchbegriff-Vorschläge der Amazon-Werbeschnittstelle, Prüfung der Suchergebnisse' },
-      { id: 'acryl', grp: 'test', typ: 'Werbung testen', conf: 'mittel', cost: 45, lo: 25, hi: 60,
-        title: 'Acryl Case für Booster Bundle · UV-Schutz bewerben',
-        warum: 'Gute Marge und 4,8 Sterne, aber nur rund 9 Besucher am Tag. Für „booster bundle case“ bieten bisher wenige Händler, die Klicks sind günstig.',
+      { id: 'neu', grp: 'zeit', typ: 'Neuheit', conf: 'mittel', cost: 60, lo: 30, hi: 110,
+        title: 'Startplan für deine nächste Neuheit: Slab Display Rahmen 9er',
+        wo: 'erst 14 Tage in der Amazon-Suche mit automatischer Auswahl, dann nur noch bei den Suchbegriffen, die verkauft haben',
+        warum: 'Bisher gibst du pro Neuheit 50 bis 100 € auf einmal aus. Mit einem festen Startplan landet das Geld dort, wo die ersten Käufe herkommen, und der Rest wird gestoppt.',
+        bringt: 'Schnellere erste Verkäufe und Bewertungen, nach Werbekosten etwa +30 bis 110 € Gewinn im ersten Monat.',
+        einsatz: '3 € am Tag für 14 Tage, danach 1,50 € am Tag für 12 Tage, insgesamt höchstens 60 €.',
+        checks: [ok('Marge reicht'), ok('Eigene Marke, Buy Box sicher'), ok('40 Stück bestellt'), hm('noch keine Bewertungen')],
+        action: 'Startplan übernehmen (höchstens 60 €)', doneTxt: 'Übernommen: startet am Tag, an dem der Artikel bei Amazon live geht',
+        rechnung: rows([['Preis', '79,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 31 €'], ['Phase 1, 14 Tage', '3 € am Tag, Amazon wählt Suchen'], ['Phase 2, 12 Tage', '1,50 € am Tag, nur Suchen mit Verkauf'], ['Stopp-Regel', 'ein Suchbegriff fliegt nach 8 € ohne Verkauf']]),
+        quelle: 'Billbee (Wareneingang, Einkaufspreis), Gebotsvorschläge der Amazon-Werbeschnittstelle' },
+      { id: 'magnet', grp: 'suche', typ: 'Suchbegriff', conf: 'mittel', cost: 35, lo: 30, hi: 80,
+        title: 'Auf „magnetic card holder“ bieten',
+        wo: 'ganz oben in den Amazon-Suchergebnissen bei „magnetic card holder“, „magnetische kartenhülle“ und „one touch 35pt“, mit deinem Magnetic Card Holder 35pt',
+        warum: 'Dieser Begriff wird oft gesucht und Amazon schlägt nur 0,31 € pro Klick vor, weil wenige Händler darauf bieten. Dein Card Holder ist günstiger als die meisten Treffer.',
+        bringt: '+8 bis 14 Verkäufe im Monat, nach Werbekosten etwa +30 bis 80 € Gewinn.',
+        einsatz: 'Test über 30 Tage, höchstens 1,20 € am Tag, insgesamt höchstens 35 €.',
+        checks: [ok('Marge reicht bis 0,52 € pro Klick'), ok('Eigene Marke, Buy Box sicher'), ok('Bestand reicht'), ok('4,6 Sterne')],
+        action: 'Test starten (höchstens 35 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Preis', '5,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 2,60 €'], ['Wird oft mit mehreren gekauft', 'im Schnitt 2,3 Stück'], ['Amazon-Vorschlag pro Klick', '0,31 €'], ['Klicks für 35 €', 'ca. 113'], ['Lohnt sich bis', '0,52 € pro Klick']]),
+        quelle: 'Suchbegriff- und Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' },
+      { id: 'acryl', grp: 'suche', typ: 'Suchbegriff', conf: 'mittel', cost: 45, lo: 25, hi: 60,
+        title: 'Auf „booster bundle case“ bieten',
+        wo: 'in der Amazon-Suche bei „booster bundle case“ und „booster bundle acryl“, mit deinem Acryl Case für Booster Bundle (UV-Schutz)',
+        warum: 'Gute Marge und 4,8 Sterne, aber nur rund 9 Besucher am Tag. Für diese Suchen bieten bisher wenige Händler, die Klicks sind günstig.',
         bringt: '+9 bis 13 Verkäufe im Monat, nach Werbekosten etwa +25 bis 60 € Gewinn.',
         einsatz: 'Test über 30 Tage, höchstens 1,50 € am Tag, insgesamt höchstens 45 €.',
+        checks: [ok('Marge reicht bis 0,56 € pro Klick'), ok('Eigene Marke, Buy Box sicher'), ok('Bestand reicht'), ok('4,8 Sterne')],
         action: 'Test starten (höchstens 45 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
         rechnung: rows([['Preis', '17,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 8,00 €'], ['Amazon-Vorschlag pro Klick', '0,35 €'], ['Klicks für 45 €', 'ca. 128'], ['Kaufrate bei Werbebesuchern', '7 bis 10 %'], ['Lohnt sich bis', '0,56 € pro Klick']]),
         quelle: 'Amazon-Geschäftsberichte, Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' },
-      { id: 'onetouch', grp: 'gratis', typ: 'Preis & Buy Box', conf: 'hoch', cost: 0, lo: 20, hi: 35,
-        title: 'Buy Box zurückholen: Ultra PRO ONE-TOUCH 35pt',
-        warum: 'Ein anderer Händler bekommt in 6 von 10 Fällen den Warenkorb, weil er 0,10 € günstiger ist. Deine Marge verträgt die kleine Preissenkung.',
-        bringt: '+24 bis 39 Verkäufe im Monat, etwa +20 bis 35 € Gewinn.',
-        einsatz: 'Kein Werbebudget. Preisregel: 0,01 € unter dem günstigsten Händler, nie unter 3,19 €.',
-        action: 'Preisregel aktivieren', doneTxt: 'Aktiv: Die Preisregel findest du unter „Buy Box & Preise“',
-        rechnung: rows([['Dein Preis', '3,49 €'], ['Günstigster anderer Händler', '3,39 €'], ['Dein Anteil am Warenkorb', '4 von 10'], ['Gewinn je Verkauf nach Preissenkung', 'ca. 0,95 €'], ['Mindestpreis', '3,19 €']]),
-        quelle: 'Buy-Box-Prüfung über die Amazon-Verkäuferschnittstelle' },
-      { id: 'lager', grp: 'gratis', typ: 'Lager abbauen', conf: 'mittel', cost: 0, lo: 15, hi: 40,
-        title: 'Ladenhüter abbauen: Magnetic Card Holder 130pt',
-        warum: '312 Stück in vier Farben liegen seit über 5 Monaten, im Schnitt gehen 3 im Monat weg. Darin stecken rund 560 € Einkaufswert.',
-        bringt: 'Etwa +15 bis 40 € Gewinn im Monat und rund 280 € weniger Geld im Lager gebunden.',
-        einsatz: 'Kein Werbebudget. Als 3er-Set anbieten und auf eBay 10 % günstiger.',
-        action: 'Aktion vorbereiten', doneTxt: 'Vorbereitet: Set-Angebot und Preis erscheinen unter „Heute erledigen“',
-        rechnung: rows([['Bestand', '312 Stück'], ['Verkäufe', '3 im Monat'], ['Reicht noch', 'über 8 Jahre'], ['Einkaufswert im Lager', 'ca. 560 €']]),
-        quelle: 'Billbee-Bestand und Verkäufe' },
-      { id: 'wall', grp: 'test', typ: 'Werbung testen', conf: 'niedrig', cost: 30, lo: -5, hi: 40,
-        title: 'Slab Wall Mount 10er · Schwarz bewerben',
+      { id: 'konk', grp: 'gezielt', typ: 'Konkurrenz-Seiten', conf: 'mittel', cost: 30, lo: 20, hi: 55,
+        title: 'Slab Guard auf den Seiten teurerer Slab-Hüllen zeigen',
+        wo: 'auf den Produktseiten von 4 Konkurrenz-Hüllen, die 3 bis 6 € teurer sind und schlechter bewertet werden als dein Slab Guard',
+        warum: 'Wer sich dort eine Slab-Hülle anschaut, sucht genau dein Produkt. Deines ist günstiger und besser bewertet, das ist das stärkste Argument direkt daneben.',
+        bringt: '+3 bis 6 Verkäufe im Monat, nach Werbekosten etwa +20 bis 55 € Gewinn.',
+        einsatz: 'Test über 30 Tage, höchstens 1 € am Tag, insgesamt höchstens 30 €.',
+        checks: [ok('Marge reicht'), ok('Eigene Marke, Buy Box sicher'), ok('Bestand reicht'), ok('4,7 Sterne, Konkurrenz 4,1')],
+        action: 'Test starten (höchstens 30 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Dein Preis', '9,99 €'], ['Preis der Konkurrenz-Hüllen', '12,99 bis 15,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 4,40 €'], ['Amazon-Vorschlag pro Klick', '0,28 €'], ['Lohnt sich bis', '0,44 € pro Klick']]),
+        quelle: 'Produkt-Targeting-Vorschläge der Amazon-Werbeschnittstelle, Preisvergleich über die Verkäuferschnittstelle' },
+      { id: 'erinnern', grp: 'gezielt', typ: 'Erinnerung', conf: 'mittel', cost: 25, lo: 15, hi: 45,
+        title: 'Interessenten an den Alu-Koffer erinnern',
+        wo: 'bei Amazon und auf anderen Webseiten, nur bei Leuten, die sich deinen Alu-Koffer in den letzten 30 Tagen angesehen, aber nicht gekauft haben',
+        warum: 'Der Alu-Koffer wird oft angesehen (rund 40 Besucher pro Woche), aber teure Artikel kauft kaum jemand beim ersten Besuch.',
+        bringt: '+2 bis 4 Verkäufe im Monat, nach Werbekosten etwa +15 bis 45 € Gewinn.',
+        einsatz: 'Test über 30 Tage, höchstens 0,80 € am Tag, insgesamt höchstens 25 €.',
+        checks: [ok('Marge reicht'), ok('Buy Box bei dir'), ok('Bestand reicht'), ok('4,9 Sterne')],
+        action: 'Test starten (höchstens 25 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Preis', '29,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 12,50 €'], ['Besucher ohne Kauf, 30 Tage', 'ca. 150'], ['Werbeform', 'Sponsored Display, Erinnerung']]),
+        quelle: 'Amazon-Geschäftsberichte, Zielgruppen der Amazon-Werbeschnittstelle' },
+      { id: 'wall', grp: 'produkt', typ: 'Produkt bewerben', conf: 'niedrig', cost: 30, lo: -5, hi: 40,
+        title: 'Slab Wall Mount 10er · Schwarz',
+        wo: 'in der Amazon-Suche bei „slab wand halterung“, „psa display wand“ und ähnlichen Suchen',
         warum: 'Pro Verkauf bleiben rund 24 € übrig, aber es gibt erst 4 Verkäufe im Monat. Ob Werbung hier trägt, zeigt nur ein Test.',
         bringt: '+1 bis 3 Verkäufe im Monat, zwischen −5 € und +40 € Gewinn. Unsicher, dafür ein günstiger Test.',
         einsatz: 'Test über 30 Tage, höchstens 1 € am Tag, insgesamt höchstens 30 €.',
+        checks: [ok('Marge reicht bis 0,96 € pro Klick'), ok('Eigene Marke, Buy Box sicher'), ok('Bestand reicht'), hm('erst 6 Bewertungen')],
         action: 'Test starten (höchstens 30 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
         rechnung: rows([['Preis', '49,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 24,00 €'], ['Amazon-Vorschlag pro Klick', '0,55 €'], ['Klicks für 30 €', 'ca. 55'], ['Kaufrate bei Werbebesuchern', '2 bis 6 %']]),
         quelle: 'Amazon-Geschäftsberichte, Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' }
+    ];
+    const chNo = [
+      { name: 'CGC Bumper Classic, einzeln (3,99 €)', grund: 'Marge zu klein', text: 'Nach Einkauf und Amazon-Gebühren bleiben 0,94 € pro Verkauf. Schon ein Klick kostet ungefähr so viel.', erst: 'stattdessen das 10er-Pack bewerben, dort bleiben rund 9 € übrig.' },
+      { name: 'Ultra PRO ONE-TOUCH 35pt', grund: 'Buy Box meist weg', text: 'In 6 von 10 Fällen landet der Kauf bei einem anderen Händler. Deine Werbung würde zum Teil für ihn werben.', erst: 'Preisregel unter „Buy Box & Preise“ aktivieren, dann neu prüfen.' },
+      { name: 'TCG Holz Stand · Eiche', grund: 'Bestand zu knapp', text: 'Nur noch 9 Stück, Nachschub dauert 3 Wochen. Werbung würde den Artikel nur schneller ausverkaufen.', erst: 'nachbestellen, AdPilot schlägt die Werbung wieder vor, sobald die Ware da ist.' },
+      { name: 'Magnetic Card Holder 130pt · Türkis', grund: 'schwache Bewertungen', text: '3,6 Sterne. Werbung bringt Klicks, aber auffällig wenige Käufe, Kunden springen nach den Bewertungen ab.', erst: 'Bewertungen ansehen und das Problem beheben, dann neu testen.' }
     ];
     const setCh = (id, v) => {
       const n = { ...this.state.ch };
@@ -2538,7 +2579,7 @@ class Component extends DCLogic {
     const chItems = opSorted.filter((c) => s.chFilter === 'alle' || c.grp === s.chFilter).map((c) => {
       const d = s.ch[c.id], open = s.chOpen === c.id;
       return {
-        ...c, free: c.cost === 0, typBg: tc[c.grp][0], typFg: tc[c.grp][1],
+        ...c, typBg: tc[c.grp][0], typFg: tc[c.grp][1],
         isOpen: !d, isDone: !!d, op: d === 'no' ? 0.75 : 1, border: d ? 'var(--line)' : 'var(--line-2)',
         doneLabel: d === 'go' ? c.doneTxt : 'Zurückgestellt, AdPilot schlägt es in 30 Tagen noch einmal vor',
         doneBg: d === 'go' ? 'var(--accent-tint)' : 'var(--page)', doneColor: d === 'go' ? 'var(--accent-strong)' : 'var(--ink-2)',
@@ -2550,9 +2591,8 @@ class Component extends DCLogic {
     const opGo = opRaw.filter((c) => s.ch[c.id] === 'go');
     const opPlanned = opGo.reduce((a, c) => a + c.cost, 0);
     const opLo = opGo.reduce((a, c) => a + c.lo, 0), opHi = opGo.reduce((a, c) => a + c.hi, 0);
-    const opFree = opRaw.filter((c) => c.cost === 0).length;
     const opTop = opSorted.find((c) => !s.ch[c.id]);
-    const chFilters = [['alle', 'Alle'], ['gratis', 'Ohne Werbebudget'], ['test', 'Werbung testen'], ['saison', 'Saison']].map(([id, label]) => {
+    const chFilters = [['alle', 'Alle'], ['produkt', 'Produkte'], ['suche', 'Suchbegriffe'], ['gezielt', 'Konkurrenz & Erinnerung'], ['zeit', 'Saison & Neuheiten']].map(([id, label]) => {
       const a = s.chFilter === id;
       return { id, label, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink)', border: a ? 'var(--seg-active)' : 'var(--line-2)', pick: () => this.setState({ chFilter: id }) };
     });
@@ -2578,14 +2618,14 @@ class Component extends DCLogic {
 
     return {
       isChancen: s.view === 'chancen', goChancen: go('chancen'), chIcon: opIcon,
-      chItems, chFilters, chBudgets, chTests, chEmpty: chItems.length === 0,
+      chItems, chFilters, chBudgets, chTests, chNo, chEmpty: chItems.length === 0,
       chRules: ['Jeder Test stoppt automatisch, wenn nach 15 € Werbekosten kein Verkauf kam.', 'Getestet wird nur, solange genug Bestand da ist.', 'Nach 30 Tagen bekommst du ein Ergebnis und entscheidest, ob es weiterläuft.'],
       chPlannedTxt: eur0(opPlanned), chBudgetTxt: eur0(s.chBudget), chOver: opPlanned > s.chBudget,
       chBarPct: Math.min(100, Math.round(opPlanned / s.chBudget * 100)), chBarColor: opPlanned > s.chBudget ? 'var(--warn)' : 'var(--accent)',
       chGainTxt: opGo.length ? range(opLo, opHi) : '0 €',
-      chCountTxt: opRaw.length + ' Chancen gefunden, ' + opFree + ' davon ohne Werbebudget',
-      chStartTxt: opOpenCount ? opOpenCount + ' Chancen gefunden' : 'alles gesichtet',
-      chStartSub: opTop ? 'Die größte: ' + opTop.title + ' (' + range(opTop.lo, opTop.hi) + ' im Monat). ' + opFree + ' Chancen kosten kein Werbegeld.' : 'Neue Chancen kommen jede Nacht dazu.',
+      chCountTxt: opRaw.length + ' Stellen, an denen sich Werbung lohnen dürfte',
+      chStartTxt: opOpenCount ? opOpenCount + ' Stellen, an denen sich Werbung lohnen dürfte' : 'alles gesichtet',
+      chStartSub: opTop ? 'Ganz oben: ' + opTop.title + ' (' + range(opTop.lo, opTop.hi) + ' Gewinn nach Werbekosten). Jeder Test hat einen festen Höchstbetrag.' : 'Neue Vorschläge kommen jede Nacht dazu.',
       isEbay: s.view === 'ebay', ebayKpis, ebayMissing, ebayPricey, eFehltCount: intDe(eFehlt.length), eBeendetCount: intDe(eBeendet.length), eTeurerCount: intDe(eTeurer.length),
       ePotentialTxt: intDe(ePotential) + ' €', goArtEbayFehlt: goArt('ebayfehlt', 'umsatz'), goArtEbayTeurer: goArt('ebayteurer', 'umsatz'), chanRows,
       artFiltersClass: s.artFiltersOpen ? 'open' : '', artFiltersExpanded: s.artFiltersOpen ? 'true' : 'false',
