@@ -138,6 +138,17 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-if>
 </section>
 
+<button type="button" onClick="{{goChancen}}" style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; text-align: left; padding: 16px 18px; border: 1px solid var(--accent); border-radius: 14px; background: var(--accent-tint); cursor: pointer">
+<span aria-hidden="true" style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: var(--accent-bg); color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{chIcon}}"></path></svg>
+</span>
+<span style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; font-weight: 600; color: var(--ink)">Chancenfinder: {{chStartTxt}}</span>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.45">{{chStartSub}}</span>
+</span>
+<span style="font-size: 15px; font-weight: 600; color: var(--accent-strong)">Ansehen</span>
+</button>
+
 <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
 <label style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Artikel finden ({{artTotal}} Artikel)
 <span style="position: relative; display: block">
@@ -384,6 +395,150 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </button>
 </div>
 </sc-for>
+</section>
+
+</div>
+</sc-if>
+
+<sc-if value="{{isChancen}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+
+<section aria-label="Testbudget" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 280px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Dein Testbudget pro Monat</h2>
+<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">So viel darf AdPilot höchstens für Werbetests ausgeben. Mehr wird nie ausgegeben, auch nicht, wenn ein Test gut läuft.</p>
+</div>
+<div role="group" aria-label="Testbudget wählen" style="display: flex; background: var(--page); border: 1px solid var(--line); border-radius: 10px; padding: 3px">
+<sc-for list="{{chBudgets}}" as="b" hint-placeholder-count="4">
+<button type="button" onClick="{{b.pick}}" aria-pressed="{{b.active}}" class="num" style="min-height: 40px; padding: 0 12px; border: 0; border-radius: 8px; background: {{b.bg}}; color: {{b.fg}}; font-size: 14px; cursor: pointer">{{b.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 14px">
+<span>Verplant: <strong class="num">{{chPlannedTxt}}</strong> von <span class="num">{{chBudgetTxt}}</span></span>
+<span style="color: var(--muted)">Erwartet, wenn die Tests klappen: <strong class="num" style="color: var(--accent-strong)">{{chGainTxt}}</strong> Gewinn im Monat</span>
+</div>
+<div aria-hidden="true" style="height: 10px; border-radius: 5px; background: var(--accent-track); overflow: hidden"><div style="height: 10px; border-radius: 5px; background: {{chBarColor}}; width: {{chBarPct}}%"></div></div>
+<sc-if value="{{chOver}}" hint-placeholder-val="{{false}}">
+<span role="status" style="font-size: 13px; color: var(--warn-ink)">Mehr eingeplant als das Budget hergibt. AdPilot startet die Tests nacheinander, die besten zuerst.</span>
+</sc-if>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px">
+<sc-for list="{{chRules}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; gap: 10px; align-items: flex-start; background: var(--tint-2); border-radius: 10px; padding: 10px 12px">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg>
+<span style="font-size: 13px; line-height: 1.45; color: var(--ink-2)">{{r}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">{{chCountTxt}}</h2>
+<span style="font-size: 13px; color: var(--muted)">Sortiert nach erwartetem Gewinn. Alle Werte sind Schätzungen, erst ein Test zeigt, was wirklich passiert.</span>
+</div>
+<div role="group" aria-label="Chancen filtern" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{chFilters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.active}}" style="min-height: 40px; padding: 0 14px; border: 1px solid {{f.border}}; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 14px; cursor: pointer">{{f.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<sc-for list="{{chItems}}" as="c" hint-placeholder-count="4">
+<article style="background: var(--surface); border: 1px solid {{c.border}}; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px; opacity: {{c.op}}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: {{c.typBg}}; color: {{c.typFg}}">{{c.typ}}</span>
+<sc-if value="{{c.free}}" hint-placeholder-val="{{true}}">
+<span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-strong)">ohne Werbebudget</span>
+</sc-if>
+<span style="font-size: 12px; color: var(--muted)">Schätzung: {{c.conf}}</span>
+</div>
+<h3 style="margin: 0; font-size: 18px; font-weight: 600; line-height: 1.35">{{c.title}}</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
+<div style="background: var(--tint-2); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; color: var(--muted); font-weight: 500">Warum?</span>
+<span style="font-size: 14px; line-height: 1.5">{{c.warum}}</span>
+</div>
+<div style="background: var(--tint-2); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 12px; color: var(--muted); font-weight: 500">Was könnte es bringen?</span>
+<span style="font-size: 14px; line-height: 1.5">{{c.bringt}}</span>
+<span style="font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 6px">Einsatz</span>
+<span style="font-size: 14px; line-height: 1.5">{{c.einsatz}}</span>
+</div>
+</div>
+<button type="button" onClick="{{c.toggleCalc}}" aria-expanded="{{c.calcExpanded}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 40px; padding: 0; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 500; cursor: pointer">
+<span aria-hidden="true">{{c.calcSign}}</span><span>So haben wir gerechnet</span>
+</button>
+<sc-if value="{{c.calcOpen}}" hint-placeholder-val="{{false}}">
+<div style="border: 1px solid var(--line); border-radius: 10px; padding: 4px 14px">
+<sc-for list="{{c.rechnung}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--tint); font-size: 14px">
+<span style="color: var(--ink-2)">{{r.k}}</span><span class="num" style="font-weight: 500; text-align: right">{{r.v}}</span>
+</div>
+</sc-for>
+<p style="margin: 8px 0; font-size: 12px; color: var(--muted)">Quelle: {{c.quelle}}</p>
+</div>
+</sc-if>
+<sc-if value="{{c.isOpen}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; gap: 10px">
+<button type="button" onClick="{{c.go}}" style="flex: 2; min-height: 50px; border: 0; border-radius: 12px; background: var(--accent-bg); color: #FFFFFF; font-size: 16px; font-weight: 600; cursor: pointer">{{c.action}}</button>
+<button type="button" onClick="{{c.skip}}" style="flex: 1; min-height: 50px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--surface); color: var(--ink); font-size: 15px; cursor: pointer">Nicht jetzt</button>
+</div>
+</sc-if>
+<sc-if value="{{c.isDone}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: {{c.doneBg}}; border-radius: 10px; padding: 8px 8px 8px 14px">
+<span style="font-size: 14px; font-weight: 500; color: {{c.doneColor}}">{{c.doneLabel}}</span>
+<button type="button" onClick="{{c.undo}}" style="min-height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Rückgängig</button>
+</div>
+</sc-if>
+</article>
+</sc-for>
+
+<sc-if value="{{chEmpty}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; padding: 18px; background: var(--surface); border: 1px dashed var(--line-2); border-radius: 14px; font-size: 15px; color: var(--ink-2)">In dieser Gruppe gibt es gerade keine Chancen. AdPilot sucht jede Nacht neu.</p>
+</sc-if>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Tests und Ergebnisse</h2>
+<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Was aus früheren Chancen geworden ist. Gute Tests kannst du dauerhaft weiterlaufen lassen.</p>
+</div>
+<sc-for list="{{chTests}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 12px 0; border-top: 1px solid var(--tint)">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center">
+<span style="font-size: 15px; font-weight: 600">{{t.name}}</span>
+<span style="font-size: 12px; padding: 3px 9px; border-radius: 999px; background: {{t.bg}}; color: {{t.fg}}">{{t.status}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px">
+<sc-for list="{{t.stats}}" as="x" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="num" style="font-size: 17px; font-weight: 500; color: {{x.color}}">{{x.v}}</span>
+<span style="font-size: 12px; color: var(--muted)">{{x.k}}</span>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{t.hasProgress}}" hint-placeholder-val="{{false}}">
+<div aria-hidden="true" style="height: 6px; border-radius: 3px; background: var(--accent-track)"><div style="height: 6px; border-radius: 3px; background: var(--accent); width: {{t.pct}}%"></div></div>
+</sc-if>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.5">{{t.fazit}}</span>
+<sc-if value="{{t.canKeep}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{t.keep}}" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border: 1px solid var(--accent); border-radius: 10px; background: {{t.keepBg}}; color: {{t.keepFg}}; font-size: 14px; font-weight: 600; cursor: pointer">{{t.keepLabel}}</button>
+</sc-if>
+</div>
+</sc-for>
+</section>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Woher kommen die Chancen?</h2>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.5">
+<li>Verkäufe aus Shop, Amazon und eBay über Billbee, inklusive Einkaufspreis und Gewinn pro Artikel</li>
+<li>Besucher und Kaufrate pro Artikel aus den Amazon-Geschäftsberichten</li>
+<li>Gebotsvorschläge und Suchbegriffe aus der Amazon-Werbeschnittstelle, auch ohne laufende Werbung</li>
+<li>Buy-Box-Prüfung, eBay-Abgleich und der Termin-Kalender</li>
+</ul>
 </section>
 
 </div>
@@ -1343,6 +1498,7 @@ class Component extends DCLogic {
       campQuery: '', kwQuery: '', view: 'start', menu: false, glossar: false, period: '7', dec: {}, ap: { neg: true, bid: false, budget: false },
       campMode: 'klassisch', campStatus: 'alle', campType: 'alle', sel: null, negInput: '', savedNote: false,
       bb: { auto: true, resume: true }, planned: {},
+      ch: {}, chBudget: 100, chFilter: 'alle', chOpen: null, chKeep: false,
       rp: { u1: { on: true, mp: 30, strat: 'hold' }, u2: { on: true, mp: 30, strat: 'hold' } }, notifRead: false, channel: 'push', review: false,
       prefs: { brief: true, budget: true, bb: true, stock: true, rating: true, auto: false, quiet: true },
       base: seed, work: JSON.parse(JSON.stringify(seed)) };
@@ -1354,7 +1510,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     if (typeof window === 'undefined') return;
-    const valid = ['start', 'aufgaben', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
+    const valid = ['start', 'aufgaben', 'chancen', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
     const fromHash = () => { const h = (window.location.hash || '').slice(1); return valid.indexOf(h) >= 0 ? h : 'start'; };
     try {
       const v = fromHash();
@@ -1526,9 +1682,12 @@ class Component extends DCLogic {
     };
 
     const unreadCount = s.notifRead ? 0 : 3;
+    const opIcon = 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z';
+    const opOpenCount = 8 - Object.keys(s.ch).length;
     const sectionsRaw = [
       { id: 'start', title: 'Übersicht', sub: 'Wie läuft es heute?', intro: '', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
       { id: 'aufgaben', title: 'Heute erledigen', sub: 'Vorschläge mit Ja oder Nein beantworten', intro: 'AdPilot hat heute Nacht dein Werbekonto geprüft. Beantworte jeden Vorschlag mit Ja oder Nein, ohne dein Okay ändert sich nichts.', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', chip: pendingCount ? pendingCount + ' offen' : 'erledigt', c: pendingCount ? chip.warn : chip.ok },
+      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo mehr Gewinn drin ist, auch ohne Werbung', intro: 'AdPilot sucht jede Nacht in deinen Verkäufen, bei Amazon und bei eBay nach Chancen. Viele kosten kein Werbegeld, für den Rest gibt es kleine Tests mit festem Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Chancen' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
       { id: 'artikel', title: 'Alle Artikel', sub: 'Suchen, filtern und mehrere auf einmal bearbeiten', intro: 'Dein komplettes Sortiment mit Marge, Werbung, Bestand und Buy Box. Tippe auf einen Artikel für Details oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
       { id: 'kampagnen', title: 'Werbekampagnen', sub: 'Alle Kampagnen ansehen und bearbeiten', intro: 'Alle Amazon-Kampagnen mit ihren Zahlen der letzten 7 Tage. Ein- und ausschalten geht direkt in der Liste, alles Weitere nach einem Tipp auf den Namen.', icon: 'M3 11l15-6v14L3 13zM7 12v6a2 2 0 0 0 4 0v-4', chip: '1 Budget leer', c: chip.warn },
       { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'AdPilot prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
@@ -2072,7 +2231,144 @@ class Component extends DCLogic {
       wRev: (c2.rev / chMax * 100).toFixed(1), wProfit: (Math.max(c2.profit, 0) / chMax * 100).toFixed(1), bestTxt: 'bester Kanal für ' + c2.best + ' Artikel' }));
     const catCount = (c) => this.cat.filter((x) => x.cat === c).length;
 
+    // Chancenfinder
+    const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
+    const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
+    const r5 = (n) => Math.round(n / 5) * 5;
+    const opE = this.cat.filter((x) => x.ebayFehlt);
+    const opESold = opE.filter((x) => x.units + x.sUnits > 0);
+    const opEUnits = opESold.reduce((a, x) => a + x.units + x.sUnits, 0);
+    const opEP = opESold.map((x) => x.pEbay).sort((a, b) => a - b);
+    const opEProfit = opEP.length ? opEP[Math.floor(opEP.length / 2)] : 0;
+    const opELo = r5(opEUnits * 0.1 * opEProfit), opEHi = r5(opEUnits * 0.2 * opEProfit);
+    const rows = (arr) => arr.map((a) => ({ k: a[0], v: a[1] }));
+    const tc = { test: chip.blue, gratis: chip.ok, saison: chip.info };
+    const opRaw = [
+      { id: 'xmas', grp: 'saison', typ: 'Saison', conf: 'mittel', cost: 70, lo: 85, hi: 190,
+        title: 'Weihnachtsgeschäft mit kleinem Budget mitnehmen',
+        warum: 'Im Dezember 2025 hast du 3-mal so viele Holz Stands, Acryl Cases und Alu-Koffer verkauft wie im Oktober, ganz ohne Werbung. Sammler werden in dieser Zeit beschenkt.',
+        bringt: '+12 bis 20 Verkäufe im Weihnachtsgeschäft, nach Werbekosten etwa +85 bis 190 € Gewinn.',
+        einsatz: '2 € am Tag vom 15.11. bis 20.12., insgesamt höchstens 70 €.',
+        action: 'Im Kalender einplanen (höchstens 70 €)', doneTxt: 'Eingeplant: startet am 15.11., AdPilot fragt vorher per Push nach',
+        rechnung: rows([['Verkäufe Dezember 2025 zu Oktober 2025', '3,1-mal so viele'], ['Budget', '2 € × 35 Tage = 70 €'], ['Erwartete zusätzliche Verkäufe', '12 bis 20'], ['Gewinn je Verkauf vor Werbung', 'ca. 13 € im Schnitt']]),
+        quelle: 'Billbee-Verkäufe 2025, Gebotsvorschläge der Amazon-Werbeschnittstelle' },
+      { id: 'ebay', grp: 'gratis', typ: 'Neuer Verkaufskanal', conf: 'hoch', cost: 0, lo: opELo, hi: opEHi,
+        title: intDe(opE.length) + ' Artikel zusätzlich auf eBay anbieten',
+        warum: 'Diese Artikel hast du auf Lager, ' + intDe(opESold.length) + ' davon verkaufen sich im Shop oder bei Amazon. Auf eBay gibt es sie noch nicht. Billbee übernimmt die Bestände, sobald die Angebote stehen.',
+        bringt: 'Etwa ' + intDe(opEUnits * 0.1) + ' bis ' + intDe(opEUnits * 0.2) + ' zusätzliche Verkäufe im Monat, ' + range(opELo, opEHi) + ' Gewinn.',
+        einsatz: 'Kein Werbebudget. AdPilot bereitet Titel, Preise und Fotos vor, du gibst sie frei.',
+        action: 'Angebote vorbereiten', doneTxt: 'Vorbereitet: Die Angebote erscheinen unter „Heute erledigen“ zum Freigeben',
+        rechnung: rows([['Artikel ohne eBay-Angebot', intDe(opE.length)], ['Davon mit Verkäufen in den letzten 30 Tagen', intDe(opESold.length)], ['Verkäufe davon im Shop und bei Amazon', intDe(opEUnits) + ' im Monat'], ['Annahme eBay zusätzlich', '10 bis 20 %'], ['Gewinn je eBay-Verkauf nach Gebühren und Versand (Mittelwert)', eur(opEProfit)]]),
+        quelle: 'Billbee-Verkäufe aller Kanäle, eBay-Abgleich' },
+      { id: 'bumper', grp: 'test', typ: 'Werbung testen', conf: 'hoch', cost: 40, lo: 85, hi: 150,
+        title: 'PSA Bumper Glossy · Schwarz, 10er-Pack bewerben',
+        warum: 'Verkauft sich ohne Werbung 38-mal im Monat. Von 100 Besuchern kaufen 14, bei deinen anderen Artikeln sind es 8. Mehr Besucher dürften hier gut kaufen.',
+        bringt: '+6 bis 9 Verkäufe im Monat, nach Werbekosten etwa +85 bis 150 € Gewinn.',
+        einsatz: 'Test über 30 Tage, höchstens 1,50 € am Tag, insgesamt höchstens 40 €.',
+        action: 'Test starten (höchstens 40 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Preis', '37,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 21,00 €'], ['Amazon-Vorschlag pro Klick', '0,42 €'], ['Klicks für 40 €', 'ca. 95'], ['Kaufrate bei Werbebesuchern', '6 bis 10 %'], ['Lohnt sich bis', '1,26 € pro Klick']]),
+        quelle: 'Amazon-Geschäftsberichte (Besucher, Kaufrate), Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' },
+      { id: 'slab', grp: 'gratis', typ: 'Besser gefunden werden', conf: 'mittel', cost: 0, lo: 35, hi: 95,
+        title: '„Slab Display“ in den Titel des Display Rahmens aufnehmen',
+        warum: 'Kunden suchen bei Amazon häufig nach „slab display“ und „psa display“. Dein Slab Display Rahmen 3er taucht dort erst auf Seite 3 auf, weil die Begriffe vorne im Titel fehlen.',
+        bringt: '+3 bis 8 Verkäufe im Monat, etwa +35 bis 95 € Gewinn.',
+        einsatz: 'Kein Werbebudget. Neuer Titel und Suchbegriffe, der Vorschlag liegt bereit.',
+        action: 'Titelvorschlag übernehmen', doneTxt: 'Übernommen: Der neue Titel geht nach deiner Freigabe unter „Heute erledigen“ zu Amazon',
+        rechnung: rows([['Gewinn je Verkauf', 'ca. 12,10 €'], ['„slab display“ bei Amazon-Vorschlägen', 'unter den Top 3'], ['Dein Artikel bei dieser Suche', 'ab Seite 3'], ['Neuer Titelanfang', 'Slab Display Rahmen 3er für PSA, CGC, BGS']]),
+        quelle: 'Suchbegriff-Vorschläge der Amazon-Werbeschnittstelle, Prüfung der Suchergebnisse' },
+      { id: 'acryl', grp: 'test', typ: 'Werbung testen', conf: 'mittel', cost: 45, lo: 25, hi: 60,
+        title: 'Acryl Case für Booster Bundle · UV-Schutz bewerben',
+        warum: 'Gute Marge und 4,8 Sterne, aber nur rund 9 Besucher am Tag. Für „booster bundle case“ bieten bisher wenige Händler, die Klicks sind günstig.',
+        bringt: '+9 bis 13 Verkäufe im Monat, nach Werbekosten etwa +25 bis 60 € Gewinn.',
+        einsatz: 'Test über 30 Tage, höchstens 1,50 € am Tag, insgesamt höchstens 45 €.',
+        action: 'Test starten (höchstens 45 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Preis', '17,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 8,00 €'], ['Amazon-Vorschlag pro Klick', '0,35 €'], ['Klicks für 45 €', 'ca. 128'], ['Kaufrate bei Werbebesuchern', '7 bis 10 %'], ['Lohnt sich bis', '0,56 € pro Klick']]),
+        quelle: 'Amazon-Geschäftsberichte, Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' },
+      { id: 'onetouch', grp: 'gratis', typ: 'Preis & Buy Box', conf: 'hoch', cost: 0, lo: 20, hi: 35,
+        title: 'Buy Box zurückholen: Ultra PRO ONE-TOUCH 35pt',
+        warum: 'Ein anderer Händler bekommt in 6 von 10 Fällen den Warenkorb, weil er 0,10 € günstiger ist. Deine Marge verträgt die kleine Preissenkung.',
+        bringt: '+24 bis 39 Verkäufe im Monat, etwa +20 bis 35 € Gewinn.',
+        einsatz: 'Kein Werbebudget. Preisregel: 0,01 € unter dem günstigsten Händler, nie unter 3,19 €.',
+        action: 'Preisregel aktivieren', doneTxt: 'Aktiv: Die Preisregel findest du unter „Buy Box & Preise“',
+        rechnung: rows([['Dein Preis', '3,49 €'], ['Günstigster anderer Händler', '3,39 €'], ['Dein Anteil am Warenkorb', '4 von 10'], ['Gewinn je Verkauf nach Preissenkung', 'ca. 0,95 €'], ['Mindestpreis', '3,19 €']]),
+        quelle: 'Buy-Box-Prüfung über die Amazon-Verkäuferschnittstelle' },
+      { id: 'lager', grp: 'gratis', typ: 'Lager abbauen', conf: 'mittel', cost: 0, lo: 15, hi: 40,
+        title: 'Ladenhüter abbauen: Magnetic Card Holder 130pt',
+        warum: '312 Stück in vier Farben liegen seit über 5 Monaten, im Schnitt gehen 3 im Monat weg. Darin stecken rund 560 € Einkaufswert.',
+        bringt: 'Etwa +15 bis 40 € Gewinn im Monat und rund 280 € weniger Geld im Lager gebunden.',
+        einsatz: 'Kein Werbebudget. Als 3er-Set anbieten und auf eBay 10 % günstiger.',
+        action: 'Aktion vorbereiten', doneTxt: 'Vorbereitet: Set-Angebot und Preis erscheinen unter „Heute erledigen“',
+        rechnung: rows([['Bestand', '312 Stück'], ['Verkäufe', '3 im Monat'], ['Reicht noch', 'über 8 Jahre'], ['Einkaufswert im Lager', 'ca. 560 €']]),
+        quelle: 'Billbee-Bestand und Verkäufe' },
+      { id: 'wall', grp: 'test', typ: 'Werbung testen', conf: 'niedrig', cost: 30, lo: -5, hi: 40,
+        title: 'Slab Wall Mount 10er · Schwarz bewerben',
+        warum: 'Pro Verkauf bleiben rund 24 € übrig, aber es gibt erst 4 Verkäufe im Monat. Ob Werbung hier trägt, zeigt nur ein Test.',
+        bringt: '+1 bis 3 Verkäufe im Monat, zwischen −5 € und +40 € Gewinn. Unsicher, dafür ein günstiger Test.',
+        einsatz: 'Test über 30 Tage, höchstens 1 € am Tag, insgesamt höchstens 30 €.',
+        action: 'Test starten (höchstens 30 €)', doneTxt: 'Test startet morgen früh. Stopp nach 15 € ohne Verkauf.',
+        rechnung: rows([['Preis', '49,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 24,00 €'], ['Amazon-Vorschlag pro Klick', '0,55 €'], ['Klicks für 30 €', 'ca. 55'], ['Kaufrate bei Werbebesuchern', '2 bis 6 %']]),
+        quelle: 'Amazon-Geschäftsberichte, Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' }
+    ];
+    const setCh = (id, v) => {
+      const n = { ...this.state.ch };
+      if (v) n[id] = v; else delete n[id];
+      const patch = { ch: n };
+      if (id === 'xmas') patch.planned = { ...this.state.planned, xmas: v === 'go' };
+      this.setState(patch);
+    };
+    const opMid = (c) => (c.lo + c.hi) / 2;
+    const opSorted = opRaw.slice().sort((a, b) => ((s.ch[a.id] === 'no') - (s.ch[b.id] === 'no')) || (opMid(b) - opMid(a)));
+    const chItems = opSorted.filter((c) => s.chFilter === 'alle' || c.grp === s.chFilter).map((c) => {
+      const d = s.ch[c.id], open = s.chOpen === c.id;
+      return {
+        ...c, free: c.cost === 0, typBg: tc[c.grp][0], typFg: tc[c.grp][1],
+        isOpen: !d, isDone: !!d, op: d === 'no' ? 0.75 : 1, border: d ? 'var(--line)' : 'var(--line-2)',
+        doneLabel: d === 'go' ? c.doneTxt : 'Zurückgestellt, AdPilot schlägt es in 30 Tagen noch einmal vor',
+        doneBg: d === 'go' ? 'var(--accent-tint)' : 'var(--page)', doneColor: d === 'go' ? 'var(--accent-strong)' : 'var(--ink-2)',
+        go: () => setCh(c.id, 'go'), skip: () => setCh(c.id, 'no'), undo: () => setCh(c.id, null),
+        calcOpen: open, calcExpanded: open ? 'true' : 'false', calcSign: open ? '−' : '+',
+        toggleCalc: () => this.setState({ chOpen: this.state.chOpen === c.id ? null : c.id })
+      };
+    });
+    const opGo = opRaw.filter((c) => s.ch[c.id] === 'go');
+    const opPlanned = opGo.reduce((a, c) => a + c.cost, 0);
+    const opLo = opGo.reduce((a, c) => a + c.lo, 0), opHi = opGo.reduce((a, c) => a + c.hi, 0);
+    const opFree = opRaw.filter((c) => c.cost === 0).length;
+    const opTop = opSorted.find((c) => !s.ch[c.id]);
+    const chFilters = [['alle', 'Alle'], ['gratis', 'Ohne Werbebudget'], ['test', 'Werbung testen'], ['saison', 'Saison']].map(([id, label]) => {
+      const a = s.chFilter === id;
+      return { id, label, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink)', border: a ? 'var(--seg-active)' : 'var(--line-2)', pick: () => this.setState({ chFilter: id }) };
+    });
+    const chBudgets = [50, 100, 150, 250].map((v) => {
+      const a = s.chBudget === v;
+      return { label: v + ' €', active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'transparent', fg: a ? 'var(--seg-active-fg)' : 'var(--ink-2)', pick: () => this.setState({ chBudget: v }) };
+    });
+    const keepOn = s.chKeep;
+    const st = (k, v, color) => ({ k, v, color: color || 'var(--ink)' });
+    const chTests = [
+      { name: 'Neuheit: PSA Graded Card Slab Guard Single Panel', status: 'läuft, Tag 12 von 30', bg: chip.blue[0], fg: chip.blue[1], hasProgress: true, pct: 40, canKeep: false,
+        stats: [st('Werbekosten', '18,40 € von 40 €'), st('Verkäufe über Werbung', '5'), st('Gewinn nach Werbung', '+21,60 €', good)],
+        fazit: 'Zwischenstand: lohnt sich. Der Test läuft weiter bis zum 4. November.' },
+      { name: 'Lockable Aluminium Case für PSA Slabs 25er', status: 'abgeschlossen', bg: chip.ok[0], fg: chip.ok[1], hasProgress: false, canKeep: true,
+        stats: [st('Werbekosten', '31,20 €'), st('Verkäufe über Werbung', '7'), st('Gewinn nach Werbung', '+64,10 €', good)],
+        fazit: 'Hat sich gelohnt: Jeder Werbe-Euro hat rund 2 € Gewinn gebracht.',
+        keep: () => this.setState({ chKeep: !this.state.chKeep }), keepLabel: keepOn ? 'Läuft dauerhaft weiter · Rückgängig' : 'Dauerhaft weiterlaufen lassen (1 € am Tag)',
+        keepBg: keepOn ? 'var(--accent-tint)' : 'var(--surface)', keepFg: keepOn ? 'var(--accent-strong)' : 'var(--accent)' },
+      { name: 'TCG Holz Stand, Anzeige außerhalb der Suche', status: 'automatisch gestoppt', bg: chip.warn[0], fg: chip.warn[1], hasProgress: false, canKeep: false,
+        stats: [st('Werbekosten', '15,00 €'), st('Verkäufe über Werbung', '0'), st('Gewinn nach Werbung', '−15,00 €', bad)],
+        fazit: 'Nach 15 € ohne Verkauf gestoppt. Gelernt: Für den Holz Stand bringen nur Anzeigen in der Amazon-Suche etwas.' }
+    ];
+
     return {
+      isChancen: s.view === 'chancen', goChancen: go('chancen'), chIcon: opIcon,
+      chItems, chFilters, chBudgets, chTests, chEmpty: chItems.length === 0,
+      chRules: ['Jeder Test stoppt automatisch, wenn nach 15 € Werbekosten kein Verkauf kam.', 'Getestet wird nur, solange genug Bestand da ist.', 'Nach 30 Tagen bekommst du ein Ergebnis und entscheidest, ob es weiterläuft.'],
+      chPlannedTxt: eur0(opPlanned), chBudgetTxt: eur0(s.chBudget), chOver: opPlanned > s.chBudget,
+      chBarPct: Math.min(100, Math.round(opPlanned / s.chBudget * 100)), chBarColor: opPlanned > s.chBudget ? 'var(--warn)' : 'var(--accent)',
+      chGainTxt: opGo.length ? range(opLo, opHi) : '0 €',
+      chCountTxt: opRaw.length + ' Chancen gefunden, ' + opFree + ' davon ohne Werbebudget',
+      chStartTxt: opOpenCount ? opOpenCount + ' Chancen gefunden' : 'alles gesichtet',
+      chStartSub: opTop ? 'Die größte: ' + opTop.title + ' (' + range(opTop.lo, opTop.hi) + ' im Monat). ' + opFree + ' Chancen kosten kein Werbegeld.' : 'Neue Chancen kommen jede Nacht dazu.',
       isEbay: s.view === 'ebay', ebayKpis, ebayMissing, ebayPricey, eFehltCount: intDe(eFehlt.length), eBeendetCount: intDe(eBeendet.length), eTeurerCount: intDe(eTeurer.length),
       ePotentialTxt: intDe(ePotential) + ' €', goArtEbayFehlt: goArt('ebayfehlt', 'umsatz'), goArtEbayTeurer: goArt('ebayteurer', 'umsatz'), chanRows,
       artFiltersClass: s.artFiltersOpen ? 'open' : '', artFiltersExpanded: s.artFiltersOpen ? 'true' : 'false',
