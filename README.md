@@ -24,7 +24,7 @@ python3 tools/build_standalone.py
 
 ## Bereiche im Prototyp
 
-Übersicht, Heute erledigen (Freigaben und Autopilot), Chancenfinder (wo sich Werbung lohnt: Produkte, Suchbegriffe, Konkurrenz-Seiten, Saison und Neuheiten, mit Testbudget, Stopp-Regeln und Liste, wo keine Werbung sinnvoll ist), Alle Artikel (Suche, Filter, Mehrfachauswahl für 800+ SKUs), Werbekampagnen (Liste und Detail mit Budget, Strategie, Keywords, Was-wäre-wenn), Buy Box & Preise (inkl. Preisregeln für Fremdmarken), eBay (Angebots-Check, Preisvergleich), Saison & Termine, Suchbegriffe, Gewinn pro Produkt (je Kanal), Lagerbestand, Berichte, Benachrichtigungen. Hell- und Dunkelmodus.
+Übersicht, Heute erledigen (Freigaben und Autopilot), Chancenfinder (wo sich Werbung lohnt: Produkte, Suchbegriffe, Konkurrenz-Seiten, Saison und Neuheiten; dazu Chancen ohne Werbebudget wie eBay-Lücken, Titel, Buy Box und Ladenhüter; Testbudget, Stopp-Regeln und Liste, wo keine Werbung sinnvoll ist), Alle Artikel (Suche, Filter, Mehrfachauswahl für 800+ SKUs), Werbekampagnen (Liste und Detail mit Budget, Strategie, Keywords, Was-wäre-wenn), Buy Box & Preise (inkl. Preisregeln für Fremdmarken), eBay (Angebots-Check, Preisvergleich), Saison & Termine, Suchbegriffe, Gewinn pro Produkt (je Kanal), Lagerbestand, Berichte, Benachrichtigungen. Hell- und Dunkelmodus.
 
 ## Geplante Architektur (Kurzfassung)
 

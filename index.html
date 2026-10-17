@@ -498,12 +498,15 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <article style="background: var(--surface); border: 1px solid {{c.border}}; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px; opacity: {{c.op}}">
 <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
 <span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: {{c.typBg}}; color: {{c.typFg}}">{{c.typ}}</span>
+<sc-if value="{{c.free}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-strong)">ohne Werbebudget</span>
+</sc-if>
 <span style="font-size: 12px; color: var(--muted)">Schätzung: {{c.conf}}</span>
 </div>
 <h3 style="margin: 0; font-size: 18px; font-weight: 600; line-height: 1.35">{{c.title}}</h3>
 <div style="display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--ink-2); line-height: 1.45">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg>
-<span><strong style="color: var(--ink); font-weight: 600">Wo die Anzeige erscheint:</strong> {{c.wo}}</span>
+<span><strong style="color: var(--ink); font-weight: 600">{{c.woLabel}}</strong> {{c.wo}}</span>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
 <div style="background: var(--tint-2); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
@@ -1924,11 +1927,11 @@ class Component extends DCLogic {
 
     const unreadCount = s.notifRead ? 0 : 3;
     const opIcon = 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z';
-    const opOpenCount = 8 - Object.keys(s.ch).length;
+    const opOpenCount = 12 - Object.keys(s.ch).length;
     const sectionsRaw = [
       { id: 'start', title: 'Übersicht', sub: 'Wie läuft es heute?', intro: '', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
       { id: 'aufgaben', title: 'Heute erledigen', sub: 'Vorschläge mit Ja oder Nein beantworten', intro: 'AdPilot hat heute Nacht dein Werbekonto geprüft. Beantworte jeden Vorschlag mit Ja oder Nein, ohne dein Okay ändert sich nichts.', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', chip: pendingCount ? pendingCount + ' offen' : 'erledigt', c: pendingCount ? chip.warn : chip.ok },
-      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung für dich lohnt', intro: 'AdPilot sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt. Vorgeschlagen wird nur, was nach Werbekosten Gewinn bringt, und jeder Test hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
+      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung lohnt, und was ohne Werbegeld geht', intro: 'AdPilot sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt, und nach Chancen, die gar kein Werbegeld kosten. Vorgeschlagen wird nur, was nach Kosten Gewinn bringt, und jeder Werbetest hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
       { id: 'artikel', title: 'Alle Artikel', sub: 'Suchen, filtern und mehrere auf einmal bearbeiten', intro: 'Dein komplettes Sortiment mit Marge, Werbung, Bestand und Buy Box. Tippe auf einen Artikel für Details oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
       { id: 'kampagnen', title: 'Werbekampagnen', sub: 'Alle Kampagnen ansehen und bearbeiten', intro: 'Alle Amazon-Kampagnen mit ihren Zahlen der letzten 7 Tage. Ein- und ausschalten geht direkt in der Liste, alles Weitere nach einem Tipp auf den Namen.', icon: 'M3 11l15-6v14L3 13zM7 12v6a2 2 0 0 0 4 0v-4', chip: '1 Budget leer', c: chip.warn },
       { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'AdPilot prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
@@ -2476,7 +2479,7 @@ class Component extends DCLogic {
     const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
     const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
     const rows = (arr) => arr.map((a) => ({ k: a[0], v: a[1] }));
-    const tc = { produkt: chip.blue, suche: chip.blue, gezielt: chip.info, zeit: chip.info };
+    const tc = { produkt: chip.blue, suche: chip.blue, gezielt: chip.info, zeit: chip.info, gratis: chip.ok };
     const ok = (text) => ({ text, color: 'var(--accent)', icon: 'M5 12l5 5 9-10' });
     const hm = (text) => ({ text, color: 'var(--warn)', icon: 'M12 8v5M12 17h.01' });
     const opRaw = [
@@ -2561,9 +2564,58 @@ class Component extends DCLogic {
         rechnung: rows([['Preis', '49,99 €'], ['Gewinn je Verkauf vor Werbung', 'ca. 24,00 €'], ['Amazon-Vorschlag pro Klick', '0,55 €'], ['Klicks für 30 €', 'ca. 55'], ['Kaufrate bei Werbebesuchern', '2 bis 6 %']]),
         quelle: 'Amazon-Geschäftsberichte, Gebotsvorschläge der Amazon-Werbeschnittstelle, Billbee' }
     ];
+    const r5 = (n) => Math.round(n / 5) * 5;
+    const opE = this.cat.filter((x) => x.ebayFehlt);
+    const opESold = opE.filter((x) => x.units + x.sUnits > 0);
+    const opEUnits = opESold.reduce((a, x) => a + x.units + x.sUnits, 0);
+    const opEP = opESold.map((x) => x.pEbay).sort((a, b) => a - b);
+    const opEProfit = opEP.length ? opEP[Math.floor(opEP.length / 2)] : 0;
+    const opELo = r5(opEUnits * 0.1 * opEProfit), opEHi = r5(opEUnits * 0.2 * opEProfit);
+    opRaw.push(
+      { id: 'ebay', grp: 'gratis', typ: 'Neuer Verkaufskanal', conf: 'hoch', cost: 0, lo: opELo, hi: opEHi,
+        title: intDe(opE.length) + ' Artikel zusätzlich auf eBay anbieten', woLabel: 'Was sich ändert:',
+        wo: 'Die Artikel bekommen ein eBay-Angebot, Billbee hält die Bestände wie bei den anderen Kanälen aktuell.',
+        warum: 'Diese Artikel hast du auf Lager, ' + intDe(opESold.length) + ' davon verkaufen sich im Shop oder bei Amazon. Auf eBay gibt es sie noch nicht.',
+        bringt: 'Etwa ' + intDe(opEUnits * 0.1) + ' bis ' + intDe(opEUnits * 0.2) + ' zusätzliche Verkäufe im Monat, ' + range(opELo, opEHi) + ' Gewinn.',
+        einsatz: 'Kein Werbebudget. AdPilot bereitet Titel, Preise und Fotos vor, du gibst sie frei.',
+        checks: [ok('Bestand vorhanden'), ok('verkauft sich bereits woanders'), ok('Gewinn nach eBay-Gebühren positiv')],
+        action: 'Angebote vorbereiten', doneTxt: 'Vorbereitet: Die Angebote erscheinen unter „Heute erledigen“ zum Freigeben',
+        rechnung: rows([['Artikel ohne eBay-Angebot', intDe(opE.length)], ['Davon mit Verkäufen in den letzten 30 Tagen', intDe(opESold.length)], ['Verkäufe davon im Shop und bei Amazon', intDe(opEUnits) + ' im Monat'], ['Annahme eBay zusätzlich', '10 bis 20 %'], ['Gewinn je eBay-Verkauf nach Gebühren und Versand (Mittelwert)', eur(opEProfit)]]),
+        quelle: 'Billbee-Verkäufe aller Kanäle, eBay-Abgleich' },
+      { id: 'slab', grp: 'gratis', typ: 'Besser gefunden werden', conf: 'mittel', cost: 0, lo: 35, hi: 95,
+        title: '„Slab Display“ in den Titel des Display Rahmens aufnehmen', woLabel: 'Was sich ändert:',
+        wo: 'Titel und Suchbegriffe des Slab Display Rahmen 3er bei Amazon, damit er bei passenden Suchen ohne Werbung weiter oben steht.',
+        warum: 'Kunden suchen bei Amazon häufig nach „slab display“ und „psa display“. Dein Rahmen taucht dort erst auf Seite 3 auf, weil die Begriffe vorne im Titel fehlen.',
+        bringt: '+3 bis 8 Verkäufe im Monat, etwa +35 bis 95 € Gewinn.',
+        einsatz: 'Kein Werbebudget. Neuer Titel und Suchbegriffe, der Vorschlag liegt bereit.',
+        checks: [ok('Eigene Marke, Titel änderbar'), ok('Bestand reicht'), ok('4,7 Sterne')],
+        action: 'Titelvorschlag übernehmen', doneTxt: 'Übernommen: Der neue Titel geht nach deiner Freigabe unter „Heute erledigen“ zu Amazon',
+        rechnung: rows([['Gewinn je Verkauf', 'ca. 12,10 €'], ['„slab display“ bei Amazon-Vorschlägen', 'unter den Top 3'], ['Dein Artikel bei dieser Suche', 'ab Seite 3'], ['Neuer Titelanfang', 'Slab Display Rahmen 3er für PSA, CGC, BGS']]),
+        quelle: 'Suchbegriff-Vorschläge der Amazon-Werbeschnittstelle, Prüfung der Suchergebnisse' },
+      { id: 'onetouch', grp: 'gratis', typ: 'Preis & Buy Box', conf: 'hoch', cost: 0, lo: 20, hi: 35,
+        title: 'Buy Box zurückholen: Ultra PRO ONE-TOUCH 35pt', woLabel: 'Was sich ändert:',
+        wo: 'Eine Preisregel hält deinen Preis 0,01 € unter dem günstigsten anderen Händler, aber nie unter 3,19 €.',
+        warum: 'Ein anderer Händler bekommt in 6 von 10 Fällen den Warenkorb, weil er 0,10 € günstiger ist. Deine Marge verträgt die kleine Preissenkung. Danach lohnt sich hier auch Werbung.',
+        bringt: '+24 bis 39 Verkäufe im Monat, etwa +20 bis 35 € Gewinn.',
+        einsatz: 'Kein Werbebudget, nur ein etwas niedrigerer Preis.',
+        checks: [ok('Marge reicht auch nach Preissenkung'), ok('Bestand reicht'), hm('Buy Box nur 4 von 10')],
+        action: 'Preisregel aktivieren', doneTxt: 'Aktiv: Die Preisregel findest du unter „Buy Box & Preise“',
+        rechnung: rows([['Dein Preis', '3,49 €'], ['Günstigster anderer Händler', '3,39 €'], ['Dein Anteil am Warenkorb', '4 von 10'], ['Gewinn je Verkauf nach Preissenkung', 'ca. 0,95 €'], ['Mindestpreis', '3,19 €']]),
+        quelle: 'Buy-Box-Prüfung über die Amazon-Verkäuferschnittstelle' },
+      { id: 'lager', grp: 'gratis', typ: 'Lager abbauen', conf: 'mittel', cost: 0, lo: 15, hi: 40,
+        title: 'Ladenhüter abbauen: Magnetic Card Holder 130pt', woLabel: 'Was sich ändert:',
+        wo: 'Der Artikel wird zusätzlich als 3er-Set angeboten und auf eBay 10 % günstiger.',
+        warum: '312 Stück in vier Farben liegen seit über 5 Monaten, im Schnitt gehen 3 im Monat weg. Darin stecken rund 560 € Einkaufswert.',
+        bringt: 'Etwa +15 bis 40 € Gewinn im Monat und rund 280 € weniger Geld im Lager gebunden.',
+        einsatz: 'Kein Werbebudget, nur ein neues Set-Angebot und ein angepasster Preis.',
+        checks: [ok('Bestand mehr als genug'), ok('Marge reicht auch im Set'), hm('Türkis: schwache Bewertungen')],
+        action: 'Aktion vorbereiten', doneTxt: 'Vorbereitet: Set-Angebot und Preis erscheinen unter „Heute erledigen“',
+        rechnung: rows([['Bestand', '312 Stück'], ['Verkäufe', '3 im Monat'], ['Reicht noch', 'über 8 Jahre'], ['Einkaufswert im Lager', 'ca. 560 €']]),
+        quelle: 'Billbee-Bestand und Verkäufe' }
+    );
     const chNo = [
       { name: 'CGC Bumper Classic, einzeln (3,99 €)', grund: 'Marge zu klein', text: 'Nach Einkauf und Amazon-Gebühren bleiben 0,94 € pro Verkauf. Schon ein Klick kostet ungefähr so viel.', erst: 'stattdessen das 10er-Pack bewerben, dort bleiben rund 9 € übrig.' },
-      { name: 'Ultra PRO ONE-TOUCH 35pt', grund: 'Buy Box meist weg', text: 'In 6 von 10 Fällen landet der Kauf bei einem anderen Händler. Deine Werbung würde zum Teil für ihn werben.', erst: 'Preisregel unter „Buy Box & Preise“ aktivieren, dann neu prüfen.' },
+      { name: 'Ultra PRO ONE-TOUCH 35pt', grund: 'Buy Box meist weg', text: 'In 6 von 10 Fällen landet der Kauf bei einem anderen Händler. Deine Werbung würde zum Teil für ihn werben.', erst: 'Buy Box zurückholen, die Preisregel steht oben bei den Chancen ohne Werbebudget.' },
       { name: 'TCG Holz Stand · Eiche', grund: 'Bestand zu knapp', text: 'Nur noch 9 Stück, Nachschub dauert 3 Wochen. Werbung würde den Artikel nur schneller ausverkaufen.', erst: 'nachbestellen, AdPilot schlägt die Werbung wieder vor, sobald die Ware da ist.' },
       { name: 'Magnetic Card Holder 130pt · Türkis', grund: 'schwache Bewertungen', text: '3,6 Sterne. Werbung bringt Klicks, aber auffällig wenige Käufe, Kunden springen nach den Bewertungen ab.', erst: 'Bewertungen ansehen und das Problem beheben, dann neu testen.' }
     ];
@@ -2579,7 +2631,7 @@ class Component extends DCLogic {
     const chItems = opSorted.filter((c) => s.chFilter === 'alle' || c.grp === s.chFilter).map((c) => {
       const d = s.ch[c.id], open = s.chOpen === c.id;
       return {
-        ...c, typBg: tc[c.grp][0], typFg: tc[c.grp][1],
+        ...c, free: c.cost === 0, woLabel: c.woLabel || 'Wo die Anzeige erscheint:', typBg: tc[c.grp][0], typFg: tc[c.grp][1],
         isOpen: !d, isDone: !!d, op: d === 'no' ? 0.75 : 1, border: d ? 'var(--line)' : 'var(--line-2)',
         doneLabel: d === 'go' ? c.doneTxt : 'Zurückgestellt, AdPilot schlägt es in 30 Tagen noch einmal vor',
         doneBg: d === 'go' ? 'var(--accent-tint)' : 'var(--page)', doneColor: d === 'go' ? 'var(--accent-strong)' : 'var(--ink-2)',
@@ -2592,7 +2644,7 @@ class Component extends DCLogic {
     const opPlanned = opGo.reduce((a, c) => a + c.cost, 0);
     const opLo = opGo.reduce((a, c) => a + c.lo, 0), opHi = opGo.reduce((a, c) => a + c.hi, 0);
     const opTop = opSorted.find((c) => !s.ch[c.id]);
-    const chFilters = [['alle', 'Alle'], ['produkt', 'Produkte'], ['suche', 'Suchbegriffe'], ['gezielt', 'Konkurrenz & Erinnerung'], ['zeit', 'Saison & Neuheiten']].map(([id, label]) => {
+    const chFilters = [['alle', 'Alle'], ['gratis', 'Ohne Werbebudget'], ['produkt', 'Produkte'], ['suche', 'Suchbegriffe'], ['gezielt', 'Konkurrenz & Erinnerung'], ['zeit', 'Saison & Neuheiten']].map(([id, label]) => {
       const a = s.chFilter === id;
       return { id, label, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink)', border: a ? 'var(--seg-active)' : 'var(--line-2)', pick: () => this.setState({ chFilter: id }) };
     });
@@ -2623,9 +2675,9 @@ class Component extends DCLogic {
       chPlannedTxt: eur0(opPlanned), chBudgetTxt: eur0(s.chBudget), chOver: opPlanned > s.chBudget,
       chBarPct: Math.min(100, Math.round(opPlanned / s.chBudget * 100)), chBarColor: opPlanned > s.chBudget ? 'var(--warn)' : 'var(--accent)',
       chGainTxt: opGo.length ? range(opLo, opHi) : '0 €',
-      chCountTxt: opRaw.length + ' Stellen, an denen sich Werbung lohnen dürfte',
-      chStartTxt: opOpenCount ? opOpenCount + ' Stellen, an denen sich Werbung lohnen dürfte' : 'alles gesichtet',
-      chStartSub: opTop ? 'Ganz oben: ' + opTop.title + ' (' + range(opTop.lo, opTop.hi) + ' Gewinn nach Werbekosten). Jeder Test hat einen festen Höchstbetrag.' : 'Neue Vorschläge kommen jede Nacht dazu.',
+      chCountTxt: opRaw.length + ' Chancen: ' + opRaw.filter((c) => c.cost > 0).length + ' Werbeplätze und ' + opRaw.filter((c) => c.cost === 0).length + ' ohne Werbebudget',
+      chStartTxt: opOpenCount ? opOpenCount + ' Chancen gefunden' : 'alles gesichtet',
+      chStartSub: opTop ? 'Ganz oben: ' + opTop.title + ' (' + range(opTop.lo, opTop.hi) + ' Gewinn). ' + opRaw.filter((c) => c.cost === 0).length + ' Chancen kosten kein Werbegeld, jeder Werbetest hat einen festen Höchstbetrag.' : 'Neue Vorschläge kommen jede Nacht dazu.',
       isEbay: s.view === 'ebay', ebayKpis, ebayMissing, ebayPricey, eFehltCount: intDe(eFehlt.length), eBeendetCount: intDe(eBeendet.length), eTeurerCount: intDe(eTeurer.length),
       ePotentialTxt: intDe(ePotential) + ' €', goArtEbayFehlt: goArt('ebayfehlt', 'umsatz'), goArtEbayTeurer: goArt('ebayteurer', 'umsatz'), chanRows,
       artFiltersClass: s.artFiltersOpen ? 'open' : '', artFiltersExpanded: s.artFiltersOpen ? 'true' : 'false',
