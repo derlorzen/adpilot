@@ -580,12 +580,33 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 </sc-if>
 
+<sc-if value="{{isProdWs}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: -8px">
+<h1 style="margin: 0; font-size: 24px; font-weight: 600">Produkte</h1>
+<div role="tablist" aria-label="Suche und geöffnete Artikel" style="display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); padding-top: 2px">
+<button type="button" role="tab" aria-selected="{{wsSearch.sel}}" onClick="{{wsSearch.pick}}" style="flex: none; display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 14px; border: 1px solid {{wsSearch.border}}; border-bottom: 0; border-radius: 10px 10px 0 0; background: {{wsSearch.bg}}; color: var(--ink); font-size: 14px; font-weight: {{wsSearch.w}}; cursor: pointer; margin-bottom: -1px; box-shadow: inset 0 3px 0 {{wsSearch.bar}}">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"></path></svg>Suche<span class="num" style="font-size: 12px; color: var(--muted); font-weight: 500">{{wsSearch.count}}</span></button>
+<sc-for list="{{wsTabs}}" as="t" hint-placeholder-count="3">
+<div style="flex: none; display: flex; align-items: center; max-width: 280px; border: 1px solid {{t.border}}; border-bottom: 0; border-radius: 10px 10px 0 0; background: {{t.bg}}; margin-bottom: -1px; box-shadow: inset 0 3px 0 {{t.bar}}">
+<button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" title="{{t.name}}" style="min-width: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px; min-height: 48px; padding: 4px 4px 4px 14px; border: 0; background: transparent; color: var(--ink); cursor: pointer; text-align: left">
+<span style="max-width: 210px; font-size: 13px; font-weight: {{t.w}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{t.name}}</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted)"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 4px; background: {{t.dot}}"></span><span class="num">{{t.sku}}</span></span>
+</button>
+<button type="button" onClick="{{t.close}}" aria-label="{{t.closeLabel}}" style="flex: none; width: 36px; height: 36px; margin-right: 4px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer">×</button>
+</div>
+</sc-for>
+<sc-if value="{{wsMany}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{wsCloseAll}}" style="flex: none; margin-left: auto; min-height: 44px; padding: 0 12px; border: 0; background: transparent; color: var(--accent); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap">Alle schließen</button>
+</sc-if>
+</div>
+<sc-if value="{{wsHint}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 13px; color: var(--muted)">Tipp: Ein Klick auf einen Artikel öffnet ihn in einem eigenen Tab. So kannst du mehrere offen haben und hin und her springen.</span>
+</sc-if>
+</div>
+</sc-if>
+
 <sc-if value="{{isProdukt}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; gap: 16px">
-<button type="button" onClick="{{goProdukte}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 15px; font-weight: 500; cursor: pointer">
-<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
-<span>Zurück zu den Produkten</span>
-</button>
 
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
 <div aria-hidden="true" style="width: 88px; height: 88px; flex: none; border-radius: 14px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
@@ -605,6 +626,60 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">{{f.k}}</span><span class="num" style="font-size: 17px; font-weight: 500">{{f.v}}</span><span style="font-size: 11px; color: var(--muted)">{{f.src}}</span></div>
 </sc-for>
 </div>
+</section>
+
+<section aria-label="Überblick" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600">Wohin geht der Preis?</span>
+<div role="img" aria-label="{{pd.ov.barAria}}" style="display: flex; gap: 2px; height: 18px; border-radius: 0 4px 4px 0; overflow: hidden">
+<span style="display: block; width: {{pd.ov.wEk}}%; background: var(--c-ek)"></span>
+<span style="display: block; width: {{pd.ov.wGeb}}%; background: var(--c-geb)"></span>
+<span style="display: block; width: {{pd.ov.wAd}}%; background: var(--c-ad)"></span>
+<span style="display: block; width: {{pd.ov.wGewinn}}%; background: var(--c-gw)"></span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--ink-2)">
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ek)"></span>Einkauf</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-geb)"></span>Gebühren</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ad)"></span>Werbung</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-gw)"></span>Gewinn</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600">Bestand je Kanal</span>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; text-align: center">
+<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">Lager</span><span class="num" style="font-size: 15px; font-weight: 500">{{pd.ov.lager}}</span></div>
+<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">Shop</span><span class="num" style="font-size: 15px; font-weight: 500">{{pd.ov.stShop}}</span></div>
+<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">eBay</span><span class="num" style="font-size: 15px; font-weight: 500; color: {{pd.ov.ebayColor}}">{{pd.ov.stEbay}}</span></div>
+<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">FBA</span><span class="num" style="font-size: 15px; font-weight: 500; color: var(--muted)">{{pd.ov.stFba}}</span></div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600">Gewinn pro Verkauf je Kanal (30 Tage)</span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{pd.ov.chan}}" as="c" hint-placeholder-count="3">
+<div style="background: {{c.bg}}; border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 1px">
+<span style="font-size: 11px; color: var(--ink-2)">{{c.label}}</span>
+<span class="num" style="font-size: 14px; font-weight: {{c.weight}}; color: {{c.color}}">{{c.value}}</span>
+<span style="font-size: 11px; color: var(--muted)">{{c.units}}</span>
+<span style="font-size: 11px; color: var(--accent-strong); font-weight: 600">{{c.bestTag}}</span>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: {{pd.ov.ebayTxtColor}}">{{pd.ov.ebayTxt}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 600">Amazon</span>
+<span style="font-size: 14px; font-weight: 500; color: {{pd.ov.bbColor}}">{{pd.ov.bbTxt}}</span>
+<span style="font-size: 13px; color: var(--ink-2)">{{pd.ov.adTxt}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px">
+<sc-for list="{{pd.ov.actions}}" as="a" hint-placeholder-count="2">
+<button type="button" style="min-height: 40px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 13px; cursor: pointer">{{a.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+
 </section>
 
 <section aria-label="Datenqualität" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
@@ -1262,7 +1337,15 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 4px">
 <span style="font-size: 14px; color: var(--ink-2)">{{artResultText}}</span>
+<span style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--muted)">Balken = wohin der Preis geht:
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ek)"></span>Einkauf</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-geb)"></span>Gebühren</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ad)"></span>Werbung</span>
+<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-gw)"></span>Gewinn</span>
+</span>
+</div>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
 <sc-if value="{{hasArtFilter}}" hint-placeholder-val="{{false}}">
 <button type="button" onClick="{{resetArt}}" style="min-height: 40px; padding: 0 12px; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 500; cursor: pointer">Filter zurücksetzen</button>
@@ -1308,8 +1391,8 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-for>
 </div>
 </div>
-<button type="button" onClick="{{r.toggleOpen}}" aria-expanded="{{r.openStr}}" aria-label="{{r.detLabel}}" style="width: 44px; height: 44px; flex: none; margin-left: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink-2); cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{r.chevron}}"></path></svg>
+<button type="button" onClick="{{r.openProd}}" aria-label="{{r.openLabel}}" style="width: 44px; height: 44px; flex: none; margin-left: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink-2); cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
 </button>
 </div>
 <div style="flex: 1 1 440px; display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); gap: 8px; align-items: start">
@@ -1318,62 +1401,15 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">ACoS</span><span class="num" style="font-size: 14px; font-weight: 500; color: {{r.acosColor}}">{{r.acos}}</span></div>
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">Umsatz 30 T.</span><span class="num" style="font-size: 14px; font-weight: 500">{{r.sales}}</span></div>
 <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">Lager</span><span class="num" style="font-size: 14px; font-weight: 500">{{r.lager}}</span><span style="font-size: 11px; color: {{r.reachColor}}">{{r.reachTxt}}</span></div>
-</div>
-
-</div>
-<sc-if value="{{r.open}}" hint-placeholder-val="{{false}}">
-<div style="border-top: 1px solid var(--tint); padding-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
-<div style="display: flex; flex-direction: column; gap: 8px">
-<span style="font-size: 13px; font-weight: 600">Wohin geht der Preis?</span>
-<div role="img" aria-label="{{r.barAria}}" style="display: flex; gap: 2px; height: 18px; border-radius: 0 4px 4px 0; overflow: hidden">
+<div role="img" aria-label="{{r.barAria}}" style="grid-column: 1 / -1; display: flex; gap: 2px; height: 8px; border-radius: 0 3px 3px 0; overflow: hidden">
 <span style="display: block; width: {{r.wEk}}%; background: var(--c-ek)"></span>
 <span style="display: block; width: {{r.wGeb}}%; background: var(--c-geb)"></span>
 <span style="display: block; width: {{r.wAd}}%; background: var(--c-ad)"></span>
 <span style="display: block; width: {{r.wGewinn}}%; background: var(--c-gw)"></span>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--ink-2)">
-<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ek)"></span>Einkauf</span>
-<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-geb)"></span>Gebühren</span>
-<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-ad)"></span>Werbung</span>
-<span style="display: flex; align-items: center; gap: 5px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--c-gw)"></span>Gewinn</span>
 </div>
+
 </div>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<span style="font-size: 13px; font-weight: 600">Bestand je Kanal</span>
-<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; text-align: center">
-<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">Lager</span><span class="num" style="font-size: 15px; font-weight: 500">{{r.lager}}</span></div>
-<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">Shop</span><span class="num" style="font-size: 15px; font-weight: 500">{{r.stShop}}</span></div>
-<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">eBay</span><span class="num" style="font-size: 15px; font-weight: 500; color: {{r.ebayColor}}">{{r.stEbay}}</span></div>
-<div style="background: var(--tint-2); border-radius: 10px; padding: 6px 2px; display: flex; flex-direction: column"><span style="font-size: 11px; color: var(--muted)">FBA</span><span class="num" style="font-size: 15px; font-weight: 500; color: var(--muted)">{{r.stFba}}</span></div>
-</div>
-</div>
-<div style="display: flex; flex-direction: column; gap: 8px">
-<span style="font-size: 13px; font-weight: 600">Gewinn pro Verkauf je Kanal (30 Tage)</span>
-<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
-<sc-for list="{{r.chan}}" as="c" hint-placeholder-count="3">
-<div style="background: {{c.bg}}; border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 1px">
-<span style="font-size: 11px; color: var(--ink-2)">{{c.label}}</span>
-<span class="num" style="font-size: 14px; font-weight: {{c.weight}}; color: {{c.color}}">{{c.value}}</span>
-<span style="font-size: 11px; color: var(--muted)">{{c.units}}</span>
-<span style="font-size: 11px; color: var(--accent-strong); font-weight: 600">{{c.bestTag}}</span>
-</div>
-</sc-for>
-</div>
-<span style="font-size: 13px; color: {{r.ebayTxtColor}}">{{r.ebayTxt}}</span>
-</div>
-<div style="display: flex; flex-direction: column; gap: 6px">
-<button type="button" onClick="{{r.openProd}}" style="align-self: flex-start; min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Produkt bearbeiten</button>
-<span style="font-size: 13px; font-weight: 600">Amazon</span>
-<span style="font-size: 14px; font-weight: 500; color: {{r.bbColor}}">{{r.bbTxt}}</span>
-<span style="font-size: 13px; color: var(--ink-2)">{{r.adTxt}}</span>
-<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px">
-<sc-for list="{{r.actions}}" as="a" hint-placeholder-count="2">
-<button type="button" style="min-height: 40px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 13px; cursor: pointer">{{a.label}}</button>
-</sc-for>
-</div>
-</div>
-</div>
-</sc-if>
 </article>
 </sc-for>
 </div>
@@ -2043,7 +2079,7 @@ class Component extends DCLogic {
       campQuery: '', kwQuery: '', view: 'start', menu: false, glossar: false, period: '7', dec: {}, ap: { neg: true, bid: false, budget: false },
       campMode: 'klassisch', campStatus: 'alle', campType: 'alle', sel: null, negInput: '', savedNote: false,
       bb: { auto: true, resume: true }, planned: {},
-      prod: null, pTab: 'stamm', pEdits: {}, pAi: {}, pAiPrev: {}, pPub: {}, jobs: {},
+      prod: null, openTabs: [], pTab: 'stamm', pEdits: {}, pAi: {}, pAiPrev: {}, pPub: {}, jobs: {},
       ch: {}, chBudget: 100, chFilter: 'alle', chOpen: null, chKeep: false,
       rp: { u1: { on: true, mp: 30, strat: 'hold' }, u2: { on: true, mp: 30, strat: 'hold' } }, notifRead: false, channel: 'push', review: false,
       prefs: { brief: true, budget: true, bb: true, stock: true, rating: true, auto: false, quiet: true },
@@ -2790,7 +2826,7 @@ class Component extends DCLogic {
     const pageItems = found.slice((page - 1) * s.artSize, page * s.artSize);
     const selCount = Object.keys(s.artSel).length;
     const flagChip = (label, bg, fg) => ({ label, bg, fg });
-    const artRows = pageItems.map((x) => {
+    const rowOf = (x) => {
       const flags = [];
       if (x.leer) flags.push(flagChip('Ausverkauft', 'var(--warn)', '#FFFFFF'));
       if (x.verlust) flags.push(flagChip('Verlust mit Werbung', 'var(--warn-tint)', 'var(--warn-ink)'));
@@ -2808,7 +2844,8 @@ class Component extends DCLogic {
         sku: x.sku, gtin: x.gtin, name: x.name, meta: x.cat + ', ' + x.brand, flags: flags.slice(0, 3),
         chs: chDefs.map((c) => { const st = stat(x, c.id); return { label: c.short + (st === 'online' ? '' : ' ' + stTxt[st]), dot: stDot[st] }; }),
         q: qual(x).q, qColor: qual(x).q >= 85 ? 'var(--muted)' : qual(x).q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
-        openProd: () => { this.setState({ view: 'produkt', prod: x.sku, pTab: 'stamm', menu: false }); this.pushView('produkt'); try { window.scrollTo(0, 0); } catch (e) {} },
+        openLabel: 'In eigenem Tab öffnen: ' + x.name,
+        openProd: () => { const cur = this.state.openTabs; const arr = cur.indexOf(x.sku) >= 0 ? cur : cur.concat([x.sku]).slice(-8); this.setState({ view: 'produkt', prod: x.sku, pTab: 'stamm', menu: false, openTabs: arr }); this.pushView('produkt'); try { window.scrollTo(0, 0); } catch (e) {} },
         price: e2(x.price), profit: (x.profit >= 0 ? '+' : '−') + e2(Math.abs(x.profit)), profitColor: x.profit >= 0 ? 'var(--accent-strong)' : bad,
         acos: x.acos === null ? '-' : x.acos + ' %', acosColor: x.acos === null ? 'var(--muted)' : (x.profit < 0 ? bad : 'var(--ink)'),
         sales: intDe(x.sales) + ' €', lager: x.lager + ' Stk.', reachTxt: x.reach >= 999 ? 'kein Abverkauf' : x.lager === 0 ? 'leer' : 'reicht ' + x.reach + ' T.',
@@ -2831,7 +2868,8 @@ class Component extends DCLogic {
         adTxt: x.acos === null ? 'Wird nicht beworben' : 'Beworben · ACoS ' + x.acos + ' % · ' + x.units + ' Verkäufe in 30 Tagen',
         actions: [x.acos === null ? 'Werbung starten' : 'Werbung pausieren', x.brand === 'JohtoMarket' ? 'Kampagnen ansehen' : 'Preisregel einrichten'].concat(x.diff ? ['Bestand korrigieren'] : []).concat(x.ebayFehlt ? ['Bei eBay einstellen'] : []).map((l) => ({ label: l }))
       };
-    });
+    };
+    const artRows = pageItems.map(rowOf);
     const pageSkus = pageItems.map((x) => x.sku);
     const allOnPage = pageSkus.length > 0 && pageSkus.every((k) => s.artSel[k]);
     const bulk = (txt) => () => this.setState({ artSel: {}, artNote: selCount + ' Artikel: ' + txt + ', zur Freigabe unter „Heute erledigen“ vorgemerkt.' });
@@ -2930,7 +2968,7 @@ class Component extends DCLogic {
         return { label, req: req || '', reqColor: miss ? 'var(--warn-ink)' : 'var(--muted)', value: v, border: miss ? 'var(--warn)' : 'var(--line-2)', on: (e) => setPE(x, k, e.target.value), ph: '', count: '', ...(extra ? extra(v) : {}) };
       };
       pd = {
-        name: x.name, sku: x.sku, gtin: x.gtin, brand: x.brand, cat: x.cat, q: Q.q, qBar, qText: Q.q >= 85 ? 'var(--accent-strong)' : Q.q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
+        ov: rowOf(x), name: x.name, sku: x.sku, gtin: x.gtin, brand: x.brand, cat: x.cat, q: Q.q, qBar, qText: Q.q >= 85 ? 'var(--accent-strong)' : Q.q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
         missing: Q.miss, hasMissing: Q.miss.length > 0, allGood: Q.miss.length === 0,
         facts: [{ k: 'Preis', v: e2(x.price), src: 'im Shop' }, { k: 'Einkauf', v: e2(x.ek), src: 'aus Billbee' }, { k: 'Bestand', v: x.lager + ' Stk.', src: 'aus Billbee' }],
         chs: chDefs.map((cd) => { const st = stat(x, cd.id); return { label: cd.name, statusTxt: stTxt[st], dot: stDot[st], pick: () => this.setState({ pTab: cd.id }) }; }),
@@ -2983,6 +3021,18 @@ class Component extends DCLogic {
       }
     }
 
+    const wsList = s.openTabs.map((k) => this.cat.find((x) => x.sku === k)).filter(Boolean);
+    const closeTab = (sku) => {
+      const cur = this.state.openTabs, arr = cur.filter((k) => k !== sku); let patch = { openTabs: arr };
+      if (this.state.view === 'produkt' && this.state.prod === sku) { const nx = arr[Math.min(cur.indexOf(sku), arr.length - 1)]; patch = nx ? { ...patch, prod: nx } : { ...patch, prod: null, view: 'artikel' }; }
+      this.setState(patch);
+    };
+    const wsTabs = wsList.map((x) => {
+      const sel = s.view === 'produkt' && s.prod === x.sku, bad = chDefs.some((c) => stat(x, c.id) === 'fehler');
+      return { name: x.name, sku: x.sku, sel: sel ? 'true' : 'false', w: sel ? '600' : '500', bg: sel ? 'var(--surface)' : 'transparent', border: sel ? 'var(--line)' : 'transparent', bar: sel ? 'var(--accent)' : 'transparent', dot: bad ? 'var(--warn)' : 'var(--accent)', pick: () => this.setState({ view: 'produkt', prod: x.sku }), close: () => closeTab(x.sku), closeLabel: 'Tab schließen: ' + x.name };
+    });
+    const wsSel = s.view === 'artikel' || (s.view === 'produkt' && !prodItem);
+    const wsSearch = { sel: wsSel ? 'true' : 'false', w: wsSel ? '600' : '500', bg: wsSel ? 'var(--surface)' : 'transparent', border: wsSel ? 'var(--line)' : 'transparent', bar: wsSel ? 'var(--accent)' : 'transparent', count: intDe(found.length), pick: () => { this.setState({ view: 'artikel' }); this.pushView('artikel'); } };
     // Chancenfinder: wo sich Werbung lohnt
     const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
     const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
@@ -3180,6 +3230,7 @@ class Component extends DCLogic {
       isKanaele: s.view === 'kanaele', goKanaele: go('kanaele'), chanCards, covHead: chDefs.map((c) => c.short), covRows, chanIssues,
       isProdukt: s.view === 'produkt' && !!prodItem, pd, pc, goProdukte: go('artikel'), menuGroups, tileGroups,
       bulkPub: bulk('auf allen fehlenden Kanälen angelegt'),
+      isProdWs: s.view === 'artikel' || s.view === 'produkt', wsTabs, wsSearch, wsMany: wsList.length > 1, wsCloseAll: () => this.setState({ openTabs: [], view: 'artikel', prod: null }), wsHint: wsList.length === 0 && s.view === 'artikel',
       isChancen: s.view === 'chancen', goChancen: go('chancen'), chIcon: opIcon,
       chItems, chFilters, chBudgets, chTests, chNo, chEmpty: chItems.length === 0,
       chRules: ['Jeder Test stoppt automatisch, wenn nach 15 € Werbekosten kein Verkauf kam.', 'Getestet wird nur, solange genug Bestand da ist.', 'Nach 30 Tagen bekommst du ein Ergebnis und entscheidest, ob es weiterläuft.'],
@@ -3227,7 +3278,7 @@ class Component extends DCLogic {
       hasUnread: unreadCount > 0, unreadCount, markRead: () => this.setState({ notifRead: true }),
       goHinweise: go('hinweise'), bellLabel: unreadCount ? 'Benachrichtigungen, ' + unreadCount + ' neu' : 'Benachrichtigungen',
       sections, tiles, current,
-      isStart: s.view === 'start', isSub: s.view !== 'start' && s.view !== 'kampagne' && s.view !== 'produkt',
+      isStart: s.view === 'start', isSub: s.view !== 'start' && s.view !== 'kampagne' && s.view !== 'produkt' && s.view !== 'artikel',
       isKampagne: s.view === 'kampagne' && !!s.sel, camp, goKampagnen: go('kampagnen'),
       campModes, campClassic: s.campMode === 'klassisch', campSimple: s.campMode === 'einfach', campStatusFilters, campTypeFilters, campRows, tot, campCountText,
       hasChanges: changes.length > 0, save, discard,
