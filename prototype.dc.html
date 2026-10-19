@@ -698,6 +698,44 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 </sc-if>
 
+<sc-if value="{{pd.isPreise}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: flex-end">
+<p style="margin: 0; flex: 1 1 300px; font-size: 14px; color: var(--ink-2); line-height: 1.5">Rechne die Preise mit einem Regelwerk einmalig neu und übernimm nur die Kanäle, die du anhakst. Danach dürfen die Buy-Box-Preisregel und die Marktplätze den Preis wieder ändern.</p>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Regelwerk
+<select value="{{pd.calcRule}}" onChange="{{pd.onRule}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<sc-for list="{{ruleOpts}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+</div>
+<div style="overflow-x: auto; border: 1px solid var(--line); border-radius: 10px">
+<table>
+<thead><tr><th>Übernehmen</th><th>Kanal</th><th class="r">Preis jetzt</th><th class="r">Gewinn jetzt</th><th class="r">Neu berechnet</th><th class="r">Gewinn neu</th><th class="r">Änderung</th></tr></thead>
+<tbody>
+<sc-for list="{{pd.priceRows}}" as="r" hint-placeholder-count="4">
+<tr>
+<td><input type="checkbox" checked="{{r.sel}}" onChange="{{r.toggle}}" aria-label="{{r.selLabel}}" style="width: 20px; height: 20px; accent-color: var(--accent)"></td>
+<td style="font-weight: 600">{{r.name}}</td>
+<td class="r num">{{r.cur}}</td>
+<td class="r num" style="color: {{r.curColor}}">{{r.curProfit}}</td>
+<td class="r num" style="font-weight: 600">{{r.calc}}</td>
+<td class="r num" style="color: {{r.calcColor}}">{{r.calcProfit}}</td>
+<td class="r num" style="color: {{r.deltaColor}}">{{r.delta}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<sc-if value="{{pd.hasPriceLog}}" hint-placeholder-val="{{false}}">
+<span role="status" style="font-size: 14px; font-weight: 500; color: var(--accent-strong)">{{pd.priceLog}}</span>
+</sc-if>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-top: 1px solid var(--tint); padding-top: 14px">
+<span style="flex: 1 1 240px; font-size: 13px; color: var(--muted)">{{pd.priceFoot}}</span>
+<button type="button" onClick="{{pd.applyPrices}}" style="min-height: 48px; padding: 0 20px; border: 0; border-radius: 12px; background: {{pd.applyBg}}; color: {{pd.applyFg}}; font-size: 15px; font-weight: 600; cursor: pointer">{{pd.applyLabel}}</button>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{pd.isChan}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center">
@@ -761,6 +799,79 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-if>
 
 </section>
+</div>
+</sc-if>
+
+<sc-if value="{{isKalk}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">So rechnet ein Regelwerk</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px">
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--tint-2)">Einkauf netto</span><span aria-hidden="true" style="color: var(--muted)">+</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--tint-2)">Versand und Kanalgebühren</span><span aria-hidden="true" style="color: var(--muted)">+</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--tint-2)">Zielmarge</span><span aria-hidden="true" style="color: var(--muted)">+</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--tint-2)">19 % MwSt.</span><span aria-hidden="true" style="color: var(--muted)">→</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--tint-2)">gerundet</span><span aria-hidden="true" style="color: var(--muted)">=</span>
+<span style="padding: 6px 10px; border-radius: 8px; background: var(--accent-tint); color: var(--accent-strong); font-weight: 600">Preis je Kanal</span>
+</div>
+<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">Ein Regelwerk greift nur, wenn du es anklickst: im Artikel unter „Preise“ oder für viele Artikel über die Gruppenfunktion. Es setzt die Preise einmal und bleibt danach nicht am Artikel hängen. Die Buy-Box-Preisregel und die Marktplätze dürfen den Preis danach wieder ändern, Marktschreier überschreibt nichts automatisch.</p>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<div role="group" aria-label="Regelwerk wählen" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{kRules}}" as="r" hint-placeholder-count="3">
+<button type="button" onClick="{{r.pick}}" aria-pressed="{{r.active}}" style="min-height: 40px; padding: 0 14px; border: 1px solid {{r.border}}; border-radius: 999px; background: {{r.bg}}; color: {{r.fg}}; font-size: 14px; cursor: pointer">{{r.name}}</button>
+</sc-for>
+</div>
+<button type="button" onClick="{{kAdd}}" style="min-height: 40px; padding: 0 14px; border: 1px dashed var(--line-2); border-radius: 999px; background: transparent; color: var(--accent); font-size: 14px; font-weight: 500; cursor: pointer">+ Neues Regelwerk</button>
+</div>
+
+<section aria-label="Regelwerk bearbeiten" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Name
+<input type="text" autocomplete="off" value="{{kCur.name}}" onChange="{{kCur.onName}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Mindestgewinn je Verkauf in €
+<input type="number" inputmode="decimal" step="0.1" min="0" value="{{kCur.min}}" onChange="{{kCur.onMin}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+</div>
+<div style="overflow-x: auto; border: 1px solid var(--line); border-radius: 10px">
+<table>
+<thead><tr><th>Kanal</th><th>Zielmarge</th><th>Gebühren des Kanals</th><th>Kosten je Verkauf</th><th>Preis endet auf</th></tr></thead>
+<tbody>
+<sc-for list="{{kCur.lines}}" as="l" hint-placeholder-count="4">
+<tr>
+<td style="font-weight: 600">{{l.name}}</td>
+<td><span style="display: flex; align-items: center; gap: 6px"><input type="number" inputmode="decimal" step="1" min="0" max="80" aria-label="{{l.mLabel}}" value="{{l.m}}" onChange="{{l.onM}}" style="width: 76px; min-height: 40px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box">%</span></td>
+<td style="color: var(--ink-2)">{{l.fee}}</td>
+<td style="color: var(--ink-2)">{{l.cost}}</td>
+<td><select aria-label="{{l.rLabel}}" value="{{l.r}}" onChange="{{l.onR}}" style="min-height: 40px; padding: 0 8px; border: 1px solid var(--line-2); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)"><option value="99">,99</option><option value="95">,95</option><option value="90">,90</option><option value="00">,00</option></select></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<span style="font-size: 13px; color: var(--muted); line-height: 1.45">Zielmarge heißt: Dieser Anteil vom Nettopreis bleibt nach Einkauf, Versand und Gebühren als Gewinn übrig. Fällt der Gewinn unter den Mindestgewinn, wird der Preis so weit angehoben, dass er erreicht wird.</span>
+</section>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Vorschau an Beispielartikeln</h2>
+<div style="overflow-x: auto; border: 1px solid var(--line); border-radius: 10px">
+<table>
+<thead><tr><th>Artikel</th><th class="r">Einkauf netto</th><sc-for list="{{covHead}}" as="h" hint-placeholder-count="4"><th class="r">{{h}}</th></sc-for></tr></thead>
+<tbody>
+<sc-for list="{{kPrev}}" as="r" hint-placeholder-count="3">
+<tr><td>{{r.name}}</td><td class="r num">{{r.ek}}</td>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4"><td class="r"><span class="num" style="display: block; font-weight: 600">{{c.p}}</span><span class="num" style="display: block; font-size: 12px; color: var(--muted)">{{c.g}}</span></td></sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<span style="font-size: 12px; color: var(--muted)">Obere Zahl: Verkaufspreis inkl. MwSt. Untere Zahl: Gewinn je Verkauf nach Einkauf, Versand und Gebühren. Die Gebührensätze sind Beispielwerte und lassen sich im echten Tool je Kanal hinterlegen.</span>
+</section>
+
 </div>
 </sc-if>
 
@@ -1300,9 +1411,114 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <sc-if value="{{hasArtFilter}}" hint-placeholder-val="{{false}}">
 <button type="button" onClick="{{resetArt}}" style="min-height: 40px; padding: 0 12px; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 500; cursor: pointer">Filter zurücksetzen</button>
 </sc-if>
+<button type="button" onClick="{{grpOpenFn}}" style="display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--seg-active); color: var(--seg-active-fg); font-size: 14px; font-weight: 600; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M4 12h10M4 18h10M18 5v4M16 7h4M18 15v4M16 17h4"></path></svg>Gruppenfunktion</button>
 <button type="button" style="min-height: 40px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Als Excel exportieren</button>
 </div>
 </div>
+
+<sc-if value="{{grpOpen}}" hint-placeholder-val="{{false}}">
+<section aria-label="Gruppenfunktion" style="background: var(--surface); border: 1px solid var(--accent); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 10px; justify-content: space-between; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Gruppenfunktion</h2>
+<span style="font-size: 14px; color: var(--ink-2)">{{grpScope}}</span>
+</div>
+<button type="button" onClick="{{grpClose}}" aria-label="Gruppenfunktion schließen" style="width: 44px; height: 44px; flex: none; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 20px; cursor: pointer">×</button>
+</div>
+<div role="group" aria-label="Was soll passieren?" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{grpActs}}" as="a" hint-placeholder-count="5">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.active}}" style="min-height: 40px; padding: 0 14px; border: 1px solid {{a.border}}; border-radius: 999px; background: {{a.bg}}; color: {{a.fg}}; font-size: 14px; cursor: pointer">{{a.label}}</button>
+</sc-for>
+</div>
+
+<sc-if value="{{grpIsPreis}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Regelwerk
+<select value="{{grp.rule}}" onChange="{{grpOn.rule}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<option value="auto">Passendes Regelwerk je Artikel</option>
+<sc-for list="{{ruleOpts}}" as="o" hint-placeholder-count="3"><option value="{{o.id}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center">
+<legend style="font-size: 13px; color: var(--ink-2); padding: 0; margin-bottom: 4px">Kanäle</legend>
+<sc-for list="{{grpChs}}" as="c" hint-placeholder-count="4">
+<label style="display: flex; align-items: center; gap: 6px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{c.on}}" onChange="{{c.toggle}}" style="width: 20px; height: 20px; accent-color: var(--accent)">{{c.name}}</label>
+</sc-for>
+</fieldset>
+<label style="display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{grp.onlyUp}}" onChange="{{grpOn.onlyUp}}" style="width: 20px; height: 20px; accent-color: var(--accent)">Nur erhöhen, nie senken</label>
+</div>
+</sc-if>
+
+<sc-if value="{{grpIsKanal}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Kanal
+<select value="{{grp.kanal}}" onChange="{{grpOn.kanal}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<sc-for list="{{grpChOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.id}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Aktion
+<select value="{{grp.kanalAct}}" onChange="{{grpOn.kanalAct}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<option value="anlegen">Fehlende Angebote anlegen</option>
+<option value="update">Texte und Preise neu übertragen</option>
+</select>
+</label>
+</div>
+</sc-if>
+
+<sc-if value="{{grpIsMerkmal}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Merkmal
+<select value="{{grp.feld}}" onChange="{{grpOn.feld}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<option value="attr.material">Material</option><option value="attr.art">Produktart</option><option value="attr.farbe">Farbe</option><option value="attr.passend">Passend für</option><option value="attr.marke">Marke</option>
+</select>
+</label>
+<label style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Neuer Wert
+<input type="text" autocomplete="off" value="{{grp.wert}}" onChange="{{grpOn.wert}}" placeholder="z. B. TPU, weich und stoßfest" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+<label style="display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; cursor: pointer"><input type="checkbox" checked="{{grp.onlyEmpty}}" onChange="{{grpOn.onlyEmpty}}" style="width: 20px; height: 20px; accent-color: var(--accent)">Nur wo das Feld leer ist</label>
+</div>
+</sc-if>
+
+<sc-if value="{{grpIsKi}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Texte für
+<select value="{{grp.kiCh}}" onChange="{{grpOn.kiCh}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<option value="stamm">Stammdaten (Beschreibung)</option>
+<sc-for list="{{grpChOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.id}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+</div>
+</sc-if>
+
+<sc-if value="{{grpIsWerb}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Aktion
+<select value="{{grp.werb}}" onChange="{{grpOn.werb}}" style="min-height: 44px; padding: 0 10px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink)">
+<option value="pause">Werbung pausieren</option><option value="start">Werbung starten (Testbudget)</option><option value="acos">Ziel-ACoS aus der Marge neu berechnen</option>
+</select>
+</label>
+</div>
+</sc-if>
+
+<div style="background: var(--tint-2); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: var(--ink-2)">Vorschau</span>
+<sc-for list="{{grpPrev}}" as="l" hint-placeholder-count="3"><span style="font-size: 14px; line-height: 1.45; color: {{l.color}}">{{l.t}}</span></sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end">
+<button type="button" onClick="{{grpClose}}" style="min-height: 48px; padding: 0 18px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--surface); color: var(--ink); font-size: 15px; cursor: pointer">Abbrechen</button>
+<button type="button" onClick="{{grpRun}}" style="min-height: 48px; padding: 0 20px; border: 0; border-radius: 12px; background: {{grpRunBg}}; color: {{grpRunFg}}; font-size: 15px; font-weight: 600; cursor: pointer">{{grpRunLabel}}</button>
+</div>
+</section>
+</sc-if>
+<sc-if value="{{grpHasDone}}" hint-placeholder-val="{{false}}">
+<div role="status" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: var(--accent-tint); color: var(--accent-strong); border-radius: 12px; padding: 8px 8px 8px 14px; font-size: 14px; font-weight: 500">
+<span style="flex: 1 1 260px">{{grpDone}}</span>
+<div style="display: flex; gap: 6px">
+<sc-if value="{{grpCanUndo}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{grpUndo}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Rückgängig</button></sc-if>
+<button type="button" onClick="{{grpDoneClose}}" aria-label="Hinweis schließen" style="width: 40px; height: 40px; border: 0; background: transparent; color: var(--accent-strong); font-size: 18px; cursor: pointer">×</button>
+</div>
+</div>
+</sc-if>
 
 <sc-if value="{{hasArtNote}}" hint-placeholder-val="{{false}}">
 <div role="status" style="display: flex; gap: 10px; align-items: center; justify-content: space-between; background: var(--accent-tint); color: var(--accent-strong); border-radius: 12px; padding: 8px 8px 8px 14px; font-size: 14px; font-weight: 500">
@@ -1394,10 +1610,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Mehrfachauswahl" class="safe-bottom" style="position: sticky; bottom: 12px; z-index: 6; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
 <span style="flex: 1 1 160px; font-size: 15px; font-weight: 600; padding-left: 4px">{{selText}}</span>
-<button type="button" onClick="{{bulkPub}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Auf fehlenden Kanälen anlegen</button>
-<button type="button" onClick="{{bulkPause}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Werbung pausieren</button>
-<button type="button" onClick="{{bulkAcos}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Ziel-ACoS neu berechnen</button>
-<button type="button" onClick="{{bulkRule}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Preisregel an</button>
+<button type="button" onClick="{{grpOpenFn}}" style="min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Gruppenfunktion öffnen</button>
 <button type="button" onClick="{{clearSel}}" style="min-height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 500; cursor: pointer">Auswahl aufheben</button>
 </div>
 </sc-if>
@@ -1859,7 +2072,13 @@ class Component extends DCLogic {
       campQuery: '', kwQuery: '', view: 'start', menu: false, glossar: false, period: '7', dec: {}, ap: { neg: true, bid: false, budget: false },
       campMode: 'klassisch', campStatus: 'alle', campType: 'alle', sel: null, negInput: '', savedNote: false,
       bb: { auto: true, resume: true }, planned: {},
-      prod: null, openTabs: [], pTab: 'stamm', pEdits: {}, pAi: {}, pAiPrev: {}, pPub: {}, jobs: {},
+      prod: null, openTabs: [], pTab: 'stamm', prices: {}, priceLog: {}, calcRule: {}, calcSel: {}, ruleSel: 'std', grpDone: '', grpUndoData: null,
+      grp: { open: false, act: 'preis', rule: 'auto', chs: { shop: true, amazon: true, ebay: true, tiktok: false }, onlyUp: false, feld: 'attr.material', wert: '', onlyEmpty: true, kanal: 'ebay', kanalAct: 'anlegen', kiCh: 'amazon', werb: 'pause' },
+      rules: [
+        { id: 'std', name: 'Standard', minProfit: 1, lines: { shop: { m: 38, r: '99' }, amazon: { m: 28, r: '99' }, ebay: { m: 30, r: '99' }, tiktok: { m: 30, r: '99' } } },
+        { id: 'klein', name: 'Kleinteile und Bumper', minProfit: 1.5, lines: { shop: { m: 45, r: '99' }, amazon: { m: 35, r: '99' }, ebay: { m: 38, r: '99' }, tiktok: { m: 38, r: '99' } } },
+        { id: 'fremd', name: 'Fremdmarken, eng kalkuliert', minProfit: 0.8, lines: { shop: { m: 25, r: '95' }, amazon: { m: 18, r: '95' }, ebay: { m: 20, r: '95' }, tiktok: { m: 20, r: '95' } } }
+      ], pEdits: {}, pAi: {}, pAiPrev: {}, pPub: {}, jobs: {},
       ch: {}, chBudget: 100, chFilter: 'alle', chOpen: null, chKeep: false,
       rp: { u1: { on: true, mp: 30, strat: 'hold' }, u2: { on: true, mp: 30, strat: 'hold' } }, notifRead: false, channel: 'push', review: false,
       prefs: { brief: true, budget: true, bb: true, stock: true, rating: true, auto: false, quiet: true },
@@ -1872,7 +2091,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     if (typeof window === 'undefined') return;
-    const valid = ['start', 'aufgaben', 'chancen', 'kanaele', 'produkt', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
+    const valid = ['start', 'aufgaben', 'chancen', 'kanaele', 'produkt', 'kalkulation', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
     const fromHash = () => { const h = (window.location.hash || '').slice(1); return valid.indexOf(h) >= 0 ? h : 'start'; };
     try {
       const v = fromHash();
@@ -2120,8 +2339,25 @@ class Component extends DCLogic {
       return { ...c, ...a };
     });
     const missTotal = chanAgg.reduce((t, a) => t + a.fehlt + a.fehler, 0);
-    const grpOf = { start: 'allg', aufgaben: 'allg', hinweise: 'allg', kanaele: 'prod', artikel: 'prod', ebay: 'prod', buybox: 'prod', bestand: 'prod', chancen: 'werb', kampagnen: 'werb', suchbegriffe: 'werb', kalender: 'werb', produkte: 'zahl', berichte: 'zahl' };
-    const grpOrder = ['start', 'aufgaben', 'hinweise', 'kanaele', 'artikel', 'ebay', 'buybox', 'bestand', 'chancen', 'kampagnen', 'suchbegriffe', 'kalender', 'produkte', 'berichte'];
+    // Preiskalkulation: Rechenkern
+    const feeOf = { shop: { p: 0.025, f: 0.25, t: '2,5 % + 0,25 € Zahlung' }, amazon: { p: 0.15, f: 0, t: '15 % Verkaufsgebühr' }, ebay: { p: 0.11, f: 0.35, t: '11 % + 0,35 €' }, tiktok: { p: 0.09, f: 0, t: '9 % (Beispielwert)' } };
+    const costFix = (x, ch) => ch === 'amazon' ? Math.max(x.fee - 0.15 * x.price, 0) : feeOf[ch].f + x.ship;
+    const profitAt = (x, ch, P) => P / 1.19 - feeOf[ch].p * P - costFix(x, ch) - x.ek;
+    const roundEnd = (P, r) => { const c = Math.ceil(P - 0.001); return r === '00' ? c : Math.max(c - ({ '99': 0.01, '95': 0.05, '90': 0.1 }[r] || 0.01), 0.99); };
+    const ruleById = (id) => s.rules.find((r) => r.id === id) || s.rules[0];
+    const suggestRule = (x) => x.brand !== 'JohtoMarket' ? 'fremd' : (x.ek < 3 || x.cat === 'Bumper') ? 'klein' : 'std';
+    const calcPrice = (x, ch, rule) => {
+      const ln = rule.lines[ch], fe = feeOf[ch], fix = costFix(x, ch), den = (1 - ln.m / 100) / 1.19 - fe.p;
+      let P = den > 0.01 ? (x.ek + fix) / den : 999;
+      if (profitAt(x, ch, P) < rule.minProfit) P = (x.ek + fix + rule.minProfit) / (1 / 1.19 - fe.p);
+      return Math.round(roundEnd(P, ln.r) * 100) / 100;
+    };
+    const basePrice = (x, ch) => ch === 'ebay' ? x.ePrice : x.price;
+    const curPrice = (x, ch) => { const k = pk(x, 'price.' + ch); return Object.prototype.hasOwnProperty.call(s.prices, k) ? s.prices[k] : basePrice(x, ch); };
+    const nowHM = () => { const d = new Date(); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0') + ' Uhr'; };
+
+    const grpOf = { start: 'allg', aufgaben: 'allg', hinweise: 'allg', kanaele: 'prod', artikel: 'prod', kalkulation: 'prod', ebay: 'prod', buybox: 'prod', bestand: 'prod', chancen: 'werb', kampagnen: 'werb', suchbegriffe: 'werb', kalender: 'werb', produkte: 'zahl', berichte: 'zahl' };
+    const grpOrder = ['start', 'aufgaben', 'hinweise', 'kanaele', 'artikel', 'kalkulation', 'ebay', 'buybox', 'bestand', 'chancen', 'kampagnen', 'suchbegriffe', 'kalender', 'produkte', 'berichte'];
     const grpDefs = [['allg', 'Allgemein'], ['prod', 'Produkte & Kanäle'], ['werb', 'Werbung'], ['zahl', 'Zahlen']];
 
     const unreadCount = s.notifRead ? 0 : 3;
@@ -2133,6 +2369,7 @@ class Component extends DCLogic {
       { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung lohnt, und was ohne Werbegeld geht', intro: 'Marktschreier sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt, und nach Chancen, die gar kein Werbegeld kosten. Vorgeschlagen wird nur, was nach Kosten Gewinn bringt, und jeder Werbetest hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
       { id: 'kanaele', title: 'Kanäle & Angebote', sub: 'Welcher Artikel ist wo online, und was fehlt?', intro: 'Alle Verkaufskanäle auf einen Blick. Marktschreier legt die Angebote an und hält Texte, Bilder und Preise aktuell, die Bestände kommen weiter aus Billbee.', icon: 'M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v5H4zM13 14h7v5h-7z', chip: missTotal ? missTotal.toLocaleString('de-DE') + ' Lücken' : 'alles online', c: missTotal ? chip.warn : chip.ok },
       { id: 'artikel', title: 'Produkte', sub: 'Texte, Bilder und Merkmale für alle Kanäle', intro: 'Dein komplettes Sortiment. Tippe auf einen Namen, um Texte, Bilder und Merkmale für alle Kanäle zu bearbeiten, oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
+      { id: 'kalkulation', title: 'Preiskalkulation', sub: 'Regelwerke vom Einkauf zum Preis je Kanal', intro: 'Lege fest, wie aus dem Netto-Einkaufspreis der Verkaufspreis je Kanal entsteht. Angewendet wird nur auf Klick, im Artikel oder über die Gruppenfunktion.', icon: 'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM9 7h6M9 11h1M12 11h1M15 11h0M9 15h1M12 15h1M9 18h1M12 18h1M15 15v3', chip: s.rules.length + ' Regelwerke', c: chip.info },
       { id: 'kampagnen', title: 'Werbekampagnen', sub: 'Alle Kampagnen ansehen und bearbeiten', intro: 'Alle Amazon-Kampagnen mit ihren Zahlen der letzten 7 Tage. Ein- und ausschalten geht direkt in der Liste, alles Weitere nach einem Tipp auf den Namen.', icon: 'M3 11l15-6v14L3 13zM7 12v6a2 2 0 0 0 4 0v-4', chip: '1 Budget leer', c: chip.warn },
       { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'Marktschreier prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
       { id: 'ebay', title: 'eBay', sub: 'Fehlende Angebote, Preise und Gewinn auf eBay', intro: 'Billbee hält die Bestände auf eBay aktuell, legt aber keine Angebote an. Marktschreier zeigt, was bei eBay fehlt, wo du teurer bist als andere Anbieter und was eBay dir unterm Strich bringt.', icon: 'M4 7h16l-1 12H5zM9 7V5a3 3 0 0 1 6 0v2', chip: this.cat.filter((x) => x.ebayFehlt).length + ' nicht gelistet', c: chip.warn },
@@ -2750,19 +2987,37 @@ class Component extends DCLogic {
       pd = {
         ov: rowOf(x), name: x.name, sku: x.sku, gtin: x.gtin, brand: x.brand, cat: x.cat, q: Q.q, qBar, qText: Q.q >= 85 ? 'var(--accent-strong)' : Q.q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
         missing: Q.miss, hasMissing: Q.miss.length > 0, allGood: Q.miss.length === 0,
-        facts: [{ k: 'Preis', v: e2(x.price), src: 'im Shop' }, { k: 'Einkauf', v: e2(x.ek), src: 'aus Billbee' }, { k: 'Bestand', v: x.lager + ' Stk.', src: 'aus Billbee' }],
+        facts: [{ k: 'Preis', v: e2(curPrice(x, 'shop')), src: 'im Shop' }, { k: 'Einkauf', v: e2(x.ek), src: 'aus Billbee' }, { k: 'Bestand', v: x.lager + ' Stk.', src: 'aus Billbee' }],
         chs: chDefs.map((cd) => { const st = stat(x, cd.id); return { label: cd.name, statusTxt: stTxt[st], dot: stDot[st], pick: () => this.setState({ pTab: cd.id }) }; }),
-        tabs: [{ id: 'stamm', name: 'Stammdaten' }].concat(chDefs).map((t) => {
+        tabs: [{ id: 'stamm', name: 'Stammdaten' }, { id: 'preise', name: 'Preise' }].concat(chDefs).map((t) => {
           const sel = s.pTab === t.id, st = t.id === 'stamm' ? null : stat(x, t.id);
           return { label: t.name, sel: sel ? 'true' : 'false', line: sel ? 'var(--accent)' : 'transparent', fg: sel ? 'var(--ink)' : 'var(--ink-2)', w: sel ? '600' : '500', hasBadge: st === 'fehler' || st === 'entwurf', badge: st ? stDot[st] : '', pick: () => this.setState({ pTab: t.id }) };
         }),
-        isStamm: s.pTab === 'stamm', isChan: s.pTab !== 'stamm',
+        isStamm: s.pTab === 'stamm', isChan: s.pTab !== 'stamm' && s.pTab !== 'preise',
         title: val(x, 'title'), onTitle: (e) => setPE(x, 'title', e.target.value),
         desc, onDesc: (e) => setPE(x, 'desc', e.target.value), descCount: desc.length + ' Zeichen', descColor: desc.length < 120 ? 'var(--warn-ink)' : 'var(--muted)',
         attrs: attrDefs.map(([k, label]) => mkField(k, label, reqs[k], () => ({ ph: k === 'attr.material' ? 'z. B. ' + c.mat : '' }))),
         imgCount: x.imgs, imgs: [0, 1, 2, 3, 4, 5].map((i) => i < x.imgs ? { bg: 'var(--accent-tint)', border: 'solid', fg: 'var(--accent-strong)', txt: i === 0 ? 'Hauptbild' : 'Bild ' + (i + 1) } : { bg: 'transparent', border: 'dashed', fg: 'var(--muted)', txt: 'frei' }),
         ai: () => applyAi(x, 'stamm'), aiDraft: s.pAi[pk(x, 'stamm')] === 'draft', aiAccept: () => aiAccept(x, 'stamm'), aiDiscard: () => aiDiscard(x, 'stamm')
       };
+      const ruleId = s.calcRule[x.sku] || suggestRule(x), rule = ruleById(ruleId);
+      const sgn = (g) => (g >= 0 ? '+' : '−') + e2(Math.abs(g));
+      const priceRows = chDefs.map((c) => {
+        const cur = curPrice(x, c.id), calc = calcPrice(x, c.id, rule), key = pk(x, c.id), d = (calc - cur) / cur, changed = Math.abs(calc - cur) >= 0.01;
+        const sel = Object.prototype.hasOwnProperty.call(s.calcSel, key) ? s.calcSel[key] : changed;
+        const gc = profitAt(x, c.id, cur), gn = profitAt(x, c.id, calc);
+        return { id: c.id, name: c.name, cur: e2(cur), calc: e2(calc), calcVal: calc, changed, curProfit: sgn(gc), calcProfit: sgn(gn), curColor: gc < 0 ? bad : 'var(--ink-2)', calcColor: gn < 0 ? bad : 'var(--accent-strong)',
+          delta: changed ? (d > 0 ? '+' : '−') + Math.abs(Math.round(d * 100)) + ' %' : 'gleich', deltaColor: d < -0.005 ? 'var(--warn-ink)' : 'var(--ink-2)',
+          sel, selLabel: c.name + ' übernehmen', toggle: () => this.setState({ calcSel: { ...this.state.calcSel, [key]: !sel } }) };
+      });
+      const toApply = priceRows.filter((r) => r.sel && r.changed), plog = s.priceLog[x.sku];
+      Object.assign(pd, {
+        isPreise: s.pTab === 'preise', calcRule: rule.id, onRule: (e) => this.setState({ calcRule: { ...this.state.calcRule, [x.sku]: e.target.value } }),
+        priceRows, hasPriceLog: !!plog, priceLog: plog ? 'Zuletzt einmalig gesetzt: ' + plog.chs + ' mit „' + plog.rule + '“, ' + plog.when + '.' : '',
+        priceFoot: 'Regelwerk „' + rule.name + '“' + (s.calcRule[x.sku] ? '' : ' (passend zu diesem Artikel vorgeschlagen)') + '. Die Preise werden nur jetzt gesetzt, es bleibt keine Regel am Artikel hängen.',
+        applyLabel: toApply.length ? toApply.length + (toApply.length === 1 ? ' Preis' : ' Preise') + ' einmalig übernehmen' : 'Nichts zu übernehmen', applyBg: toApply.length ? 'var(--accent-bg)' : 'var(--tint)', applyFg: toApply.length ? '#FFFFFF' : 'var(--muted)',
+        applyPrices: () => { if (!toApply.length) return; const pr = { ...this.state.prices }, cs = { ...this.state.calcSel }; toApply.forEach((r) => { pr[pk(x, 'price.' + r.id)] = r.calcVal; delete cs[pk(x, r.id)]; }); this.setState({ prices: pr, calcSel: cs, priceLog: { ...this.state.priceLog, [x.sku]: { rule: rule.name, when: 'heute ' + nowHM(), chs: toApply.map((r) => r.name).join(', ') } } }); }
+      });
       const cd = chDefs.find((d) => d.id === s.pTab);
       if (cd) {
         const st = stat(x, cd.id), t = String(chTitle(x, cd.id)), own = has(x, cd.id + '.title'), tooLong = t.length > cd.titleMax;
@@ -2777,10 +3032,10 @@ class Component extends DCLogic {
         if (cd.id === 'tiktok') { fieldsTitle = 'Text für TikTok'; fields = [mkField('tiktok.desc', 'Kurzbeschreibung', 'empfohlen', (v) => ({ count: v.length + ' / 500', ph: 'Locker und kurz, so wie man es Sammlern erzählt' }))]; }
         if (cd.id === 'shop') { fieldsTitle = 'Suchmaschinen'; fields = [mkField('shop.seo', 'SEO-Titel für Google', '', (v) => ({ count: v.length + ' / 70' })), mkField('shop.handle', 'Adresse im Shop (johtomarket.de/products/…)', '')]; }
         const info = {
-          amazon: [{ k: 'Produkttyp', v: c.amz }, { k: 'ASIN', v: st === 'online' || st === 'fehler' ? 'B0' + x.gtin.slice(-8) : 'wird beim Anlegen vergeben, Abgleich über die GTIN' }, { k: 'Preis', v: e2(x.price) + (x.brand !== 'JohtoMarket' ? ', mit Preisregel' : '') }],
-          ebay: [{ k: 'Kategorie', v: 'Sammeln & Seltenes › Sammelkartenspiele › Zubehör' }, { k: 'Preis', v: e2(x.ePrice) }, { k: 'Versand', v: x.ship > 3 ? 'Paket, 4,49 €' : 'Warensendung, 1,10 €' }],
-          tiktok: [{ k: 'Kategorie', v: 'Sammlerstücke › Zubehör für Sammelkarten' }, { k: 'Preis', v: e2(x.price) }, { k: 'Video', v: 'Keins. Ein kurzes Video bringt bei TikTok deutlich mehr Reichweite.' }],
-          shop: [{ k: 'Kollektionen', v: x.cat + ', ' + (x.brand === 'JohtoMarket' ? 'Eigenmarke' : x.brand) }, { k: 'Preis', v: e2(x.price) }, { k: 'Für Kunden sichtbar', v: st === 'online' ? 'ja' : 'nein, Entwurf' }]
+          amazon: [{ k: 'Produkttyp', v: c.amz }, { k: 'ASIN', v: st === 'online' || st === 'fehler' ? 'B0' + x.gtin.slice(-8) : 'wird beim Anlegen vergeben, Abgleich über die GTIN' }, { k: 'Preis', v: e2(curPrice(x, 'amazon')) + (x.brand !== 'JohtoMarket' ? ', Buy-Box-Preisregel darf anpassen' : '') }],
+          ebay: [{ k: 'Kategorie', v: 'Sammeln & Seltenes › Sammelkartenspiele › Zubehör' }, { k: 'Preis', v: e2(curPrice(x, 'ebay')) }, { k: 'Versand', v: x.ship > 3 ? 'Paket, 4,49 €' : 'Warensendung, 1,10 €' }],
+          tiktok: [{ k: 'Kategorie', v: 'Sammlerstücke › Zubehör für Sammelkarten' }, { k: 'Preis', v: e2(curPrice(x, 'tiktok')) }, { k: 'Video', v: 'Keins. Ein kurzes Video bringt bei TikTok deutlich mehr Reichweite.' }],
+          shop: [{ k: 'Kollektionen', v: x.cat + ', ' + (x.brand === 'JohtoMarket' ? 'Eigenmarke' : x.brand) }, { k: 'Preis', v: e2(curPrice(x, 'shop')) }, { k: 'Für Kunden sichtbar', v: st === 'online' ? 'ja' : 'nein, Entwurf' }]
         }[cd.id];
         const stLong = { online: 'Online, zuletzt übertragen heute 06:02', fehlt: 'Noch nicht angelegt', fehler: 'Abgelehnt, siehe Hinweis', pausiert: 'Pausiert, weil ausverkauft. Kommt automatisch zurück, sobald Billbee Bestand meldet.', entwurf: 'Entwurf bereit, wartet auf deine Freigabe', queue: 'Wird übertragen' }[st];
         const pub = () => this.setState({ pPub: { ...this.state.pPub, [pk(x, cd.id)]: true } });
@@ -2813,6 +3068,74 @@ class Component extends DCLogic {
     });
     const wsSel = s.view === 'artikel' || (s.view === 'produkt' && !prodItem);
     const wsSearch = { sel: wsSel ? 'true' : 'false', w: wsSel ? '600' : '500', bg: wsSel ? 'var(--surface)' : 'transparent', border: wsSel ? 'var(--line)' : 'transparent', bar: wsSel ? 'var(--accent)' : 'transparent', count: intDe(found.length), pick: () => { this.setState({ view: 'artikel' }); this.pushView('artikel'); } };
+    // Preiskalkulation: Regelwerke bearbeiten
+    const ruleOpts = s.rules.map((r) => ({ id: r.id, name: r.name }));
+    const setRule = (id, fn) => this.setState({ rules: this.state.rules.map((r) => r.id === id ? fn(JSON.parse(JSON.stringify(r))) : r) });
+    const toNum = (v, d) => { const q = parseFloat(String(v).replace(',', '.')); return isNaN(q) ? d : q; };
+    const kSel = ruleById(s.ruleSel);
+    const kRules = s.rules.map((r) => { const a = r.id === kSel.id; return { name: r.name, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink)', border: a ? 'var(--seg-active)' : 'var(--line-2)', pick: () => this.setState({ ruleSel: r.id }) }; });
+    const kAdd = () => { const id = 'r' + Date.now(), copy = JSON.parse(JSON.stringify(kSel)); copy.id = id; copy.name = 'Neues Regelwerk'; this.setState({ rules: this.state.rules.concat([copy]), ruleSel: id }); };
+    const kCur = {
+      name: kSel.name, onName: (e) => setRule(kSel.id, (r) => { r.name = e.target.value; return r; }),
+      min: String(kSel.minProfit), onMin: (e) => setRule(kSel.id, (r) => { r.minProfit = Math.max(toNum(e.target.value, 0), 0); return r; }),
+      lines: chDefs.map((c) => ({ name: c.name, m: String(kSel.lines[c.id].m), r: kSel.lines[c.id].r, mLabel: 'Zielmarge ' + c.name + ' in Prozent', rLabel: 'Preisendung ' + c.name, fee: feeOf[c.id].t, cost: c.id === 'amazon' ? 'FBA-Gebühr je Artikel' : 'Versand je nach Versandart',
+        onM: (e) => setRule(kSel.id, (r) => { r.lines[c.id].m = Math.min(Math.max(toNum(e.target.value, 0), 0), 80); return r; }), onR: (e) => setRule(kSel.id, (r) => { r.lines[c.id].r = e.target.value; return r; }) }))
+    };
+    const kSamples = [this.cat.find((x) => x.name === 'PSA Bumper Glossy · Schwarz'), this.cat.find((x) => x.cat === 'Acryl Cases'), this.cat.find((x) => x.cat === 'Aluminium Cases')].filter(Boolean);
+    const kPrev = kSamples.map((x) => ({ name: x.name, ek: e2(x.ek), cells: chDefs.map((c) => { const P = calcPrice(x, c.id, kSel), g = profitAt(x, c.id, P); return { p: e2(P), g: (g >= 0 ? '+' : '−') + e2(Math.abs(g)) + ' Gewinn' }; }) }));
+
+    // Gruppenfunktion
+    const G = s.grp;
+    const selSkus = Object.keys(s.artSel);
+    const gItems = selSkus.length ? this.cat.filter((x) => s.artSel[x.sku]) : found;
+    const gN = gItems.length;
+    const gScope = selSkus.length ? 'Gilt für die ' + intDe(gN) + ' ausgewählten Artikel.' : 'Gilt für alle ' + intDe(gN) + ' Treffer der aktuellen Suche. Mit den Kästchen kannst du auch einzelne Artikel auswählen.';
+    const setG = (patch) => this.setState({ grp: { ...this.state.grp, ...patch } });
+    const gActs = [['preis', 'Preise berechnen'], ['kanal', 'Auf Kanälen anlegen'], ['merkmal', 'Merkmal setzen'], ['ki', 'Texte mit KI'], ['werb', 'Werbung']].map(([id, label]) => { const a = G.act === id; return { label, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink)', border: a ? 'var(--seg-active)' : 'var(--line-2)', pick: () => setG({ act: id }) }; });
+    const grpChs = chDefs.map((c) => ({ name: c.name, on: !!G.chs[c.id], toggle: () => setG({ chs: { ...this.state.grp.chs, [c.id]: !this.state.grp.chs[c.id] } }) }));
+    const grpChOpts = chDefs.map((c) => ({ id: c.id, name: c.name }));
+    const grpOn = { rule: (e) => setG({ rule: e.target.value }), onlyUp: () => setG({ onlyUp: !this.state.grp.onlyUp }), kanal: (e) => setG({ kanal: e.target.value }), kanalAct: (e) => setG({ kanalAct: e.target.value }), feld: (e) => setG({ feld: e.target.value }), wert: (e) => setG({ wert: e.target.value }), onlyEmpty: () => setG({ onlyEmpty: !this.state.grp.onlyEmpty }), kiCh: (e) => setG({ kiCh: e.target.value }), werb: (e) => setG({ werb: e.target.value }) };
+    const gL = (t, color) => ({ t, color: color || 'var(--ink)' });
+    const gClose = { ...G, open: false };
+    let gPrev = [], gRun = null, gRunLabel = '', gEnabled = false;
+    if (G.act === 'preis') {
+      const chs = chDefs.filter((c) => G.chs[c.id]), todo = []; let up = 0, down = 0, skip = 0, worst = null;
+      gItems.forEach((x) => { const rule = ruleById(G.rule === 'auto' ? suggestRule(x) : G.rule); chs.forEach((c) => { const cur = curPrice(x, c.id), P = calcPrice(x, c.id, rule); if (Math.abs(P - cur) < 0.01) return; if (P < cur && G.onlyUp) { skip++; return; } if (P > cur) up++; else { down++; const d = (P - cur) / cur; if (!worst || d < worst.d) worst = { d, name: x.name, c: c.name }; } todo.push([x, c.id, P]); }); });
+      gPrev = [chs.length ? gL(intDe(todo.length) + ' Preise ändern sich: ' + intDe(up) + ' steigen, ' + intDe(down) + ' sinken.') : gL('Bitte mindestens einen Kanal anhaken.', 'var(--warn-ink)'), worst ? gL('Größte Senkung: −' + Math.abs(Math.round(worst.d * 100)) + ' % bei ' + worst.name + ' (' + worst.c + ').', 'var(--warn-ink)') : null, skip ? gL(intDe(skip) + ' Senkungen werden übersprungen, weil „Nur erhöhen“ an ist.', 'var(--muted)') : null, gL('Einmalig: Es bleibt keine Regel an den Artikeln hängen. Buy-Box-Preisregel und Marktplätze dürfen danach wieder ändern.', 'var(--muted)')].filter(Boolean);
+      gEnabled = todo.length > 0; gRunLabel = 'Preise für ' + intDe(todo.length) + ' Angebote einmalig setzen';
+      gRun = () => { const pr = { ...this.state.prices }, prev = {}; todo.forEach(([x, c, P]) => { const k = pk(x, 'price.' + c); prev[k] = Object.prototype.hasOwnProperty.call(pr, k) ? pr[k] : undefined; pr[k] = P; }); this.setState({ prices: pr, grp: gClose, grpDone: intDe(todo.length) + ' Preise einmalig gesetzt. Sie gehen beim nächsten Abgleich an die Kanäle.', grpUndoData: { field: 'prices', prev } }); };
+    }
+    if (G.act === 'kanal') {
+      const c = chDefs.find((d) => d.id === G.kanal) || chDefs[2], neu = G.kanalAct === 'anlegen';
+      const elig = gItems.filter((x) => neu ? ['fehlt', 'entwurf'].indexOf(stat(x, c.id)) >= 0 && x.lager > 0 : stat(x, c.id) === 'online');
+      const blocked = neu && (c.id === 'amazon' || c.id === 'ebay') ? elig.filter((x) => !matOk(x)).length : 0;
+      gPrev = [gL(neu ? intDe(elig.length) + ' Artikel fehlen auf ' + c.name + ' und haben Bestand.' : intDe(elig.length) + ' Angebote auf ' + c.name + ' werden neu übertragen.'), blocked ? gL(intDe(blocked) + ' davon brauchen noch das Merkmal „Material“, sonst lehnt ' + c.name + ' sie ab.', 'var(--warn-ink)') : null, neu ? gL('Fehlende Texte ergänzt die KI beim Anlegen als Entwurf.', 'var(--muted)') : null].filter(Boolean);
+      gEnabled = elig.length > 0; gRunLabel = neu ? intDe(elig.length) + ' Angebote auf ' + c.name + ' anlegen' : intDe(elig.length) + ' Angebote übertragen';
+      gRun = () => { const pp = { ...this.state.pPub }; elig.forEach((x) => { pp[pk(x, c.id)] = true; }); this.setState({ pPub: pp, grp: gClose, grpDone: intDe(elig.length) + ' Angebote für ' + c.name + ' in der Warteschlange.', grpUndoData: null }); };
+    }
+    if (G.act === 'merkmal') {
+      const v = String(G.wert || '').trim(), label = { 'attr.material': 'Material', 'attr.art': 'Produktart', 'attr.farbe': 'Farbe', 'attr.passend': 'Passend für', 'attr.marke': 'Marke' }[G.feld];
+      const tgt = gItems.filter((x) => !G.onlyEmpty || !String(val(x, G.feld)).trim());
+      gPrev = v ? [gL('„' + label + '“ wird bei ' + intDe(tgt.length) + ' Artikeln auf „' + v + '“ gesetzt.'), G.onlyEmpty ? gL(intDe(gN - tgt.length) + ' Artikel haben schon einen Wert und bleiben unverändert.', 'var(--muted)') : gL('Vorhandene Werte werden überschrieben.', 'var(--warn-ink)')] : [gL('Bitte einen neuen Wert eintragen. ' + intDe(tgt.length) + ' Artikel kämen in Frage.', 'var(--muted)')];
+      gEnabled = !!v && tgt.length > 0; gRunLabel = 'Bei ' + intDe(tgt.length) + ' Artikeln setzen';
+      gRun = () => { const pe = { ...this.state.pEdits }, prev = {}; tgt.forEach((x) => { const k = pk(x, G.feld); prev[k] = Object.prototype.hasOwnProperty.call(pe, k) ? pe[k] : undefined; pe[k] = v; }); this.setState({ pEdits: pe, grp: gClose, grpDone: '„' + label + '“ bei ' + intDe(tgt.length) + ' Artikeln gesetzt.', grpUndoData: { field: 'pEdits', prev } }); };
+    }
+    if (G.act === 'ki') {
+      const chn = G.kiCh === 'stamm' ? 'die Stammdaten' : (chDefs.find((d) => d.id === G.kiCh) || chDefs[1]).name;
+      gPrev = [gL('Für ' + intDe(gN) + ' Artikel schreibt die KI Texte für ' + chn + '.'), gL('Sie landen als Entwurf im Artikel. Übernommen wird erst, wenn du sie geprüft hast.', 'var(--muted)')];
+      gEnabled = gN > 0; gRunLabel = intDe(gN) + ' Entwürfe erstellen';
+      gRun = () => { const pe = { ...this.state.pEdits }, ai = { ...this.state.pAi }, aip = { ...this.state.pAiPrev }; gItems.forEach((x) => { const vals = aiVals(x, G.kiCh), prev = {}; Object.keys(vals).forEach((k) => { const key = pk(x, k); prev[k] = Object.prototype.hasOwnProperty.call(pe, key) ? pe[key] : undefined; pe[key] = vals[k]; }); ai[pk(x, G.kiCh)] = 'draft'; aip[pk(x, G.kiCh)] = prev; }); this.setState({ pEdits: pe, pAi: ai, pAiPrev: aip, grp: gClose, grpDone: intDe(gN) + ' KI-Entwürfe erstellt. Du findest sie im jeweiligen Artikel zum Prüfen.', grpUndoData: null }); };
+    }
+    if (G.act === 'werb') {
+      const lbl = { pause: 'Werbung pausieren', start: 'Werbung mit Testbudget starten', acos: 'Ziel-ACoS aus der Marge neu berechnen' }[G.werb];
+      const ads = gItems.filter((x) => G.werb === 'start' ? x.acos === null : x.acos !== null).length;
+      gPrev = [gL(lbl + ': ' + intDe(ads) + ' Artikel.'), G.werb === 'start' ? gL('Jeder Test hat einen Höchstbetrag aus dem Testbudget im Chancenfinder.', 'var(--muted)') : gL('Größere Änderungen landen unter „Heute erledigen“ zur Freigabe.', 'var(--muted)')];
+      gEnabled = ads > 0; gRunLabel = 'Für ' + intDe(ads) + ' Artikel ausführen';
+      gRun = () => this.setState({ grp: gClose, grpDone: lbl + ' für ' + intDe(ads) + ' Artikel vorgemerkt, zur Freigabe unter „Heute erledigen“.', grpUndoData: null });
+    }
+    const grpUndo = () => { const u = this.state.grpUndoData; if (!u) return; const obj = { ...this.state[u.field] }; Object.keys(u.prev).forEach((k) => { if (u.prev[k] === undefined) delete obj[k]; else obj[k] = u.prev[k]; }); this.setState({ [u.field]: obj, grpUndoData: null, grpDone: 'Rückgängig gemacht.' }); };
+    const grpOpenFn = () => { this.setState({ grp: { ...this.state.grp, open: true }, grpDone: '' }); setTimeout(() => { try { const el = document.querySelector('section[aria-label="Gruppenfunktion"]'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} }, 40); };
+
     // Chancenfinder: wo sich Werbung lohnt
     const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
     const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
@@ -3011,6 +3334,10 @@ class Component extends DCLogic {
       isProdukt: s.view === 'produkt' && !!prodItem, pd, pc, goProdukte: go('artikel'), menuGroups, tileGroups,
       bulkPub: bulk('auf allen fehlenden Kanälen angelegt'),
       isProdWs: s.view === 'artikel' || s.view === 'produkt', wsTabs, wsSearch, wsMany: wsList.length > 1, wsCloseAll: () => this.setState({ openTabs: [], view: 'artikel', prod: null }), wsHint: wsList.length === 0 && s.view === 'artikel',
+      isKalk: s.view === 'kalkulation', kRules, kAdd, kCur, kPrev, ruleOpts,
+      grpOpen: G.open, grp: G, grpScope: gScope, grpActs: gActs, grpChs, grpChOpts, grpOn, grpPrev: gPrev, grpRunLabel: gRunLabel, grpRun: gEnabled ? gRun : () => {}, grpRunBg: gEnabled ? 'var(--accent-bg)' : 'var(--tint)', grpRunFg: gEnabled ? '#FFFFFF' : 'var(--muted)',
+      grpIsPreis: G.act === 'preis', grpIsKanal: G.act === 'kanal', grpIsMerkmal: G.act === 'merkmal', grpIsKi: G.act === 'ki', grpIsWerb: G.act === 'werb',
+      grpClose: () => setG({ open: false }), grpOpenFn, grpHasDone: !!s.grpDone, grpDone: s.grpDone, grpCanUndo: !!s.grpUndoData, grpUndo, grpDoneClose: () => this.setState({ grpDone: '', grpUndoData: null }),
       isChancen: s.view === 'chancen', goChancen: go('chancen'), chIcon: opIcon,
       chItems, chFilters, chBudgets, chTests, chNo, chEmpty: chItems.length === 0,
       chRules: ['Jeder Test stoppt automatisch, wenn nach 15 € Werbekosten kein Verkauf kam.', 'Getestet wird nur, solange genug Bestand da ist.', 'Nach 30 Tagen bekommst du ein Ergebnis und entscheidest, ob es weiterläuft.'],
