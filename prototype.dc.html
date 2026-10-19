@@ -51,15 +51,40 @@ button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visib
 html{background:#F3F4F6}
 html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 @media (prefers-color-scheme: dark){html:has(.app[data-mode="auto"]){background:#111214;color-scheme:dark}}
+.sidebar{display:none}
+.nav-item[aria-current="false"]:hover{background:var(--tint-2) !important}
+@media (min-width: 1100px){.sidebar{display:flex;position:fixed;top:0;left:0;bottom:0;width:248px;z-index:5}.shell{margin-left:248px}.only-narrow{display:none !important}}
 @media (prefers-reduced-motion: reduce){.app *{transition:none !important;animation:none !important}}
 </style>
 </helmet>
 <div class="app" data-mode="{{themeMode}}" style="min-height: 100vh; background: var(--page); display: flex; flex-direction: column">
 <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+<aside class="sidebar" style="flex-direction: column; background: var(--surface); border-right: 1px solid var(--line); overflow-y: auto; box-sizing: border-box">
+<button type="button" onClick="{{goStart}}" aria-label="Zur Übersicht" style="display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 16px 18px 14px; cursor: pointer; text-align: left">
+<svg aria-hidden="true" width="30" height="30" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0B6E69"></rect><path d="M7 12h3l7-4v12l-7-4H7zM10 16l1.3 4.5M20.5 11.5a3.5 3.5 0 0 1 0 5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span style="display: flex; flex-direction: column"><span translate="no" style="font-weight: 600; font-size: 16px; color: var(--ink)">Marktschreier</span><span style="font-size: 12px; color: var(--muted)">johtomarket.de</span></span>
+</button>
+<nav aria-label="Hauptmenü" style="display: flex; flex-direction: column; gap: 14px; padding: 4px 10px 16px">
+<sc-for list="{{menuGroups}}" as="g" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-2); padding: 4px 10px">{{g.label}}</span>
+<sc-for list="{{g.items}}" as="m" hint-placeholder-count="3">
+<button type="button" class="nav-item" onClick="{{m.go}}" aria-current="{{m.current}}" style="display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 10px; border: 0; border-radius: 8px; background: {{m.menuBg}}; box-shadow: inset 3px 0 0 {{m.navBar}}; color: {{m.navFg}}; font-size: 14px; font-weight: {{m.navW}}; cursor: pointer; text-align: left">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none; color: {{m.navIcon}}"><path d="{{m.icon}}"></path></svg>
+<span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.title}}</span>
+<sc-if value="{{m.hasBadge}}" hint-placeholder-val="{{false}}"><span class="num" style="flex: none; font-size: 11px; font-weight: 600; min-width: 20px; padding: 1px 7px; box-sizing: border-box; border-radius: 999px; background: {{m.badgeBg}}; color: {{m.badgeFg}}; text-align: center">{{m.badge}}</span></sc-if>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+<div style="margin-top: auto; padding: 12px 18px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--muted)"><span>Billbee, Shopify, Amazon, eBay und TikTok verbunden</span><span>Demo-Daten</span></div>
+</aside>
+<div class="shell" style="display: flex; flex-direction: column; min-height: 100vh">
 
 <div style="background: var(--surface); border-bottom: 1px solid var(--line)">
 <div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; min-height: 60px">
-<button type="button" onClick="{{goStart}}" aria-label="Zur Übersicht" style="display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 0; min-height: 44px; cursor: pointer">
+<button type="button" class="only-narrow" onClick="{{goStart}}" aria-label="Zur Übersicht" style="display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 0; min-height: 44px; cursor: pointer">
 <svg aria-hidden="true" width="30" height="30" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0B6E69"></rect><path d="M7 12h3l7-4v12l-7-4H7zM10 16l1.3 4.5M20.5 11.5a3.5 3.5 0 0 1 0 5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <span style="display: flex; flex-direction: column; align-items: flex-start">
 <span translate="no" style="font-weight: 600; font-size: 16px; color: var(--ink)">Marktschreier</span>
@@ -76,7 +101,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <span class="num" style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 10px; background: var(--warn); color: #FFFFFF; font-size: 11px; display: flex; align-items: center; justify-content: center">{{unreadCount}}</span>
 </sc-if>
 </button>
-<button type="button" onClick="{{toggleMenu}}" aria-expanded="{{menuExpanded}}" aria-label="{{menuLabel}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-2); border-radius: 10px; background: {{menuBtnBg}}; color: var(--ink); font-size: 15px; font-weight: 500; cursor: pointer">
+<button type="button" class="only-narrow" onClick="{{toggleMenu}}" aria-expanded="{{menuExpanded}}" aria-label="{{menuLabel}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-2); border-radius: 10px; background: {{menuBtnBg}}; color: var(--ink); font-size: 15px; font-weight: 500; cursor: pointer">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="{{menuIcon}}"></path></svg>
 <span class="hide-sm">{{menuLabel}}</span>
 <sc-if value="{{hasOpenTasks}}" hint-placeholder-val="{{true}}">
@@ -87,27 +112,18 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
-<nav aria-label="Hauptmenü" style="background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 8px 24px rgba(21,23,28,0.08)">
-<div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
+<nav aria-label="Hauptmenü" class="only-narrow" style="background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 8px 24px rgba(21,23,28,0.08)">
+<div style="max-width: 1100px; margin: 0 auto; padding: 8px 12px 16px; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; align-items: start">
 <sc-for list="{{menuGroups}}" as="g" hint-placeholder-count="4">
 <div style="display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 12px; font-weight: 600; color: var(--muted); padding: 6px 14px 2px">{{g.label}}</span>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4px">
+<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-2); padding: 4px 10px">{{g.label}}</span>
 <sc-for list="{{g.items}}" as="m" hint-placeholder-count="3">
-<button type="button" onClick="{{m.go}}" aria-current="{{m.current}}" style="display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 14px; border: 0; border-radius: 12px; background: {{m.menuBg}}; text-align: left; cursor: pointer">
-<span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{m.icon}}"></path></svg>
-</span>
-<span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
-<span style="font-size: 16px; font-weight: 600; color: var(--ink)">{{m.title}}</span>
-<span style="font-size: 13px; color: var(--muted)">{{m.sub}}</span>
-</span>
-<sc-if value="{{m.hasChip}}" hint-placeholder-val="{{false}}">
-<span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: {{m.chipBg}}; color: {{m.chipFg}}; white-space: nowrap">{{m.chip}}</span>
-</sc-if>
+<button type="button" class="nav-item" onClick="{{m.go}}" aria-current="{{m.current}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: {{m.menuBg}}; box-shadow: inset 3px 0 0 {{m.navBar}}; color: {{m.navFg}}; font-size: 14px; font-weight: {{m.navW}}; cursor: pointer; text-align: left">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none; color: {{m.navIcon}}"><path d="{{m.icon}}"></path></svg>
+<span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.title}}</span>
+<sc-if value="{{m.hasBadge}}" hint-placeholder-val="{{false}}"><span class="num" style="flex: none; font-size: 11px; font-weight: 600; min-width: 20px; padding: 1px 7px; box-sizing: border-box; border-radius: 999px; background: {{m.badgeBg}}; color: {{m.badgeFg}}; text-align: center">{{m.badge}}</span></sc-if>
 </button>
 </sc-for>
-</div>
 </div>
 </sc-for>
 </div>
@@ -118,7 +134,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 
 <sc-if value="{{isSub}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; gap: 6px">
-<button type="button" onClick="{{goStart}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 15px; font-weight: 500; cursor: pointer">
+<button type="button" class="only-narrow" onClick="{{goStart}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 15px; font-weight: 500; cursor: pointer">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
 <span>Zur Übersicht</span>
 </button>
@@ -249,7 +265,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-if>
 </section>
 
-<section style="display: flex; flex-direction: column; gap: 12px">
+<section class="only-narrow" style="display: flex; flex-direction: column; gap: 12px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Bereiche</h2>
 <sc-for list="{{tileGroups}}" as="g" hint-placeholder-count="4">
 <h3 style="margin: 4px 0 0; font-size: 14px; font-weight: 600; color: var(--muted)">{{g.label}}</h3>
@@ -1793,6 +1809,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 
 </main>
 </div>
+</div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
 class Component extends DCLogic {
@@ -2090,10 +2107,13 @@ class Component extends DCLogic {
       { id: 'berichte', title: 'Berichte', sub: 'Wochen- und Monatszahlen zum Download', intro: 'Diese Berichte entstehen automatisch. Du bekommst sie per E-Mail oder lädst sie hier herunter.', icon: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5', chip: 'Woche 41 neu', c: chip.blue },
       { id: 'hinweise', title: 'Benachrichtigungen', sub: 'Was Marktschreier dir meldet, und wie', intro: 'Marktschreier meldet sich aufs Handy oder per E-Mail, sobald etwas deine Aufmerksamkeit braucht.', icon: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0', chip: unreadCount ? unreadCount + ' neu' : 'alles gelesen', c: unreadCount ? chip.warn : chip.ok }
     ];
+    const navView = s.view === 'produkt' ? 'artikel' : s.view === 'kampagne' ? 'kampagnen' : s.view;
     const sections = sectionsRaw.map((m) => ({
-      ...m, go: go(m.id), current: s.view === m.id ? 'page' : 'false',
-      menuBg: s.view === m.id ? 'var(--accent-sel)' : 'transparent',
-      hasChip: !!m.chip, chipBg: m.c ? m.c[0] : '', chipFg: m.c ? m.c[1] : ''
+      ...m, go: go(m.id), current: navView === m.id ? 'page' : 'false',
+      menuBg: navView === m.id ? 'var(--accent-sel)' : 'transparent',
+      hasChip: !!m.chip, chipBg: m.c ? m.c[0] : '', chipFg: m.c ? m.c[1] : '',
+      navFg: navView === m.id ? 'var(--ink)' : 'var(--ink-2)', navW: navView === m.id ? '600' : '500', navBar: navView === m.id ? 'var(--accent)' : 'transparent', navIcon: navView === m.id ? 'var(--accent)' : 'var(--muted)',
+      ...(() => { const n = m.chip && /^[\d.]+/.exec(m.chip); const on = !!n && m.id !== 'kanaele' && (m.c === chip.warn || m.id === 'chancen'); return { hasBadge: on, badge: n ? n[0] : '', badgeBg: m.c === chip.warn ? 'var(--warn-tint)' : 'var(--accent-tint)', badgeFg: m.c === chip.warn ? 'var(--warn-ink)' : 'var(--accent-strong)' }; })()
     }));
     const tiles = sections.filter((m) => m.id !== 'start');
     const byId = {}; sections.forEach((m) => { byId[m.id] = m; });
