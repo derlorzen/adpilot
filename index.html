@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AdPilot Ads-Suite</title>
+<title>Marktschreier Ads-Suite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
@@ -107,9 +107,9 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="background: var(--surface); border-bottom: 1px solid var(--line)">
 <div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; min-height: 60px">
 <button type="button" onClick="{{goStart}}" aria-label="Zur Übersicht" style="display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 0; min-height: 44px; cursor: pointer">
-<svg aria-hidden="true" width="30" height="30" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0B6E69"></rect><path d="M7 19l5-6 4 3 5-7" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<svg aria-hidden="true" width="30" height="30" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0B6E69"></rect><path d="M7 12h3l7-4v12l-7-4H7zM10 16l1.3 4.5M20.5 11.5a3.5 3.5 0 0 1 0 5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 <span style="display: flex; flex-direction: column; align-items: flex-start">
-<span translate="no" style="font-weight: 600; font-size: 16px; color: var(--ink)">AdPilot</span>
+<span translate="no" style="font-weight: 600; font-size: 16px; color: var(--ink)">Marktschreier</span>
 <span class="hide-sm" style="font-size: 12px; color: var(--muted)">johtomarket.de</span>
 </span>
 </button>
@@ -135,8 +135,12 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
 <nav aria-label="Hauptmenü" style="background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 8px 24px rgba(21,23,28,0.08)">
-<div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px 16px; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px">
-<sc-for list="{{sections}}" as="m" hint-placeholder-count="7">
+<div style="max-width: 1100px; margin: 0 auto; padding: 8px 16px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{menuGroups}}" as="g" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; font-weight: 600; color: var(--muted); padding: 6px 14px 2px">{{g.label}}</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4px">
+<sc-for list="{{g.items}}" as="m" hint-placeholder-count="3">
 <button type="button" onClick="{{m.go}}" aria-current="{{m.current}}" style="display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 14px; border: 0; border-radius: 12px; background: {{m.menuBg}}; text-align: left; cursor: pointer">
 <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{m.icon}}"></path></svg>
@@ -149,6 +153,9 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <span style="font-size: 12px; padding: 4px 9px; border-radius: 999px; background: {{m.chipBg}}; color: {{m.chipFg}}; white-space: nowrap">{{m.chip}}</span>
 </sc-if>
 </button>
+</sc-for>
+</div>
+</div>
 </sc-for>
 </div>
 </nav>
@@ -176,13 +183,30 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <span style="font-size: 12px; padding: 3px 9px; border-radius: 999px; background: #3A2A1E; color: #F5C9A6">Demo-Daten</span>
 </div>
 <h1 style="margin: 0; font-size: 26px; font-weight: 600; color: #FFFFFF; line-height: 1.25">Guten Morgen, Benny.</h1>
-<p style="margin: 0; font-size: 17px; line-height: 1.55">Gestern hast du <strong style="color: #FFFFFF">712 €</strong> umgesetzt, 7 % mehr als letzten Freitag. Die Werbung läuft im grünen Bereich. <strong style="color: #FFFFFF">{{pendingSentence}}</strong></p>
+<p style="margin: 0; font-size: 17px; line-height: 1.55">Gestern hast du <strong style="color: #FFFFFF">712 €</strong> auf 4 Kanälen umgesetzt, 7 % mehr als letzten Freitag. <strong style="color: #FFFFFF">{{pendingSentence}}</strong></p>
 <sc-if value="{{hasOpenTasks}}" hint-placeholder-val="{{true}}">
 <button type="button" onClick="{{goAufgaben}}" style="align-self: stretch; min-height: 52px; border: 0; border-radius: 12px; background: var(--accent-bg); color: #FFFFFF; font-size: 16px; font-weight: 600; cursor: pointer">Jetzt erledigen · dauert ca. 2 Minuten</button>
 </sc-if>
 <sc-if value="{{allDone}}" hint-placeholder-val="{{false}}">
 <span style="font-size: 16px; color: #7FD1C9; font-weight: 500">Alles erledigt für heute. Die Änderungen werden um 07:00 Uhr umgesetzt.</span>
 </sc-if>
+</section>
+
+<section aria-label="Deine Kanäle" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Deine Kanäle</h2>
+<button type="button" onClick="{{goKanaele}}" style="min-height: 40px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer">Alle Kanäle ansehen</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
+<sc-for list="{{chanCards}}" as="k" hint-placeholder-count="4">
+<button type="button" onClick="{{goKanaele}}" style="text-align: left; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); cursor: pointer; min-width: 0">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink)"><span aria-hidden="true" style="width: 22px; height: 22px; flex: none; border-radius: 6px; background: {{k.color}}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{k.letter}}</span>{{k.name}}</span>
+<span class="num" style="font-size: 20px; font-weight: 500; color: var(--ink)">{{k.onlineTxt}}</span>
+<span style="font-size: 12px; color: {{k.subColor}}; line-height: 1.35">{{k.sub}}</span>
+<span aria-hidden="true" style="display: block; width: 100%; height: 6px; border-radius: 3px; background: var(--accent-track)"><span style="display: block; height: 6px; border-radius: 3px; background: var(--accent); width: {{k.pct}}%"></span></span>
+</button>
+</sc-for>
+</div>
 </section>
 
 <button type="button" onClick="{{goChancen}}" style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; text-align: left; padding: 16px 18px; border: 1px solid var(--accent); border-radius: 14px; background: var(--accent-tint); cursor: pointer">
@@ -244,7 +268,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <span style="font-size: 13px; color: var(--accent); font-weight: 500">Rückblick letzte Woche · KW 41</span>
-<h2 style="margin: 0; font-size: 20px; font-weight: 600; line-height: 1.35">AdPilot hat 6 Änderungen umgesetzt, unterm Strich <span style="color: var(--accent-strong)">+47 € mehr Gewinn</span>.</h2>
+<h2 style="margin: 0; font-size: 20px; font-weight: 600; line-height: 1.35">Marktschreier hat 6 Änderungen umgesetzt, unterm Strich <span style="color: var(--accent-strong)">+47 € mehr Gewinn</span>.</h2>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
 <sc-for list="{{reviewStats}}" as="r" hint-placeholder-count="3">
@@ -274,8 +298,10 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 
 <section style="display: flex; flex-direction: column; gap: 12px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Bereiche</h2>
+<sc-for list="{{tileGroups}}" as="g" hint-placeholder-count="4">
+<h3 style="margin: 4px 0 0; font-size: 14px; font-weight: 600; color: var(--muted)">{{g.label}}</h3>
 <div class="tiles" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px">
-<sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
+<sc-for list="{{g.items}}" as="t" hint-placeholder-count="3">
 <button type="button" onClick="{{t.go}}" style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-align: left; min-height: 132px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); cursor: pointer">
 <span style="display: flex; flex-wrap: wrap; width: 100%; justify-content: space-between; align-items: center; gap: 8px">
 <span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 10px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
@@ -288,6 +314,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </button>
 </sc-for>
 </div>
+</sc-for>
 </section>
 
 <section aria-label="Umsatz durch Werbung und Werbekosten" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
@@ -426,7 +453,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Automatisch erledigen lassen</h2>
-<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Was hier eingeschaltet ist, macht AdPilot künftig ohne Rückfrage, aber nie mehr als 20 % Änderung pro Tag und nie über 90 € Werbebudget am Tag.</p>
+<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Was hier eingeschaltet ist, macht Marktschreier künftig ohne Rückfrage, aber nie mehr als 20 % Änderung pro Tag und nie über 90 € Werbebudget am Tag.</p>
 </div>
 <sc-for list="{{autopilot}}" as="a" hint-placeholder-count="3">
 <div style="display: flex; gap: 12px; align-items: center; padding: 6px 0; border-top: 1px solid var(--tint)">
@@ -447,6 +474,252 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 </sc-if>
 
+<sc-if value="{{isKanaele}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+<sc-for list="{{chanCards}}" as="k" hint-placeholder-count="4">
+<article style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 36px; height: 36px; flex: none; border-radius: 10px; background: {{k.color}}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{k.letter}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">{{k.name}}</h2>
+<span style="font-size: 12px; color: var(--muted)">{{k.conn}}</span>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{k.stats}}" as="x" hint-placeholder-count="3">
+<div style="background: var(--tint-2); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 1px; min-width: 0">
+<span class="num" style="font-size: 17px; font-weight: 500; color: {{x.color}}">{{x.v}}</span>
+<span style="font-size: 11px; color: var(--muted)">{{x.k}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div aria-hidden="true" style="height: 8px; border-radius: 4px; background: var(--accent-track)"><div style="height: 8px; border-radius: 4px; background: var(--accent); width: {{k.pct}}%"></div></div>
+<span style="font-size: 12px; color: var(--ink-2)">{{k.pctTxt}}</span>
+</div>
+<sc-if value="{{k.hasJob}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: var(--accent-tint); color: var(--accent-strong); border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.45">{{k.jobTxt}}</div>
+</sc-if>
+<sc-if value="{{k.hasAction}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{k.act}}" style="min-height: 44px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">{{k.actLabel}}</button>
+</sc-if>
+</article>
+</sc-for>
+<div style="border: 1px dashed var(--line-2); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; justify-content: center">
+<span style="font-size: 15px; font-weight: 600">Weitere Kanäle</span>
+<span style="font-size: 13px; color: var(--muted); line-height: 1.45">Kaufland, OTTO Market oder Etsy lassen sich später genauso anbinden. Die Produktdaten sind ja schon da.</span>
+</div>
+</div>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Was die Kanäle melden</h2>
+<sc-for list="{{chanIssues}}" as="i" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--tint)">
+<span aria-hidden="true" style="width: 28px; height: 28px; flex: none; border-radius: 8px; background: {{i.color}}; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{i.letter}}</span>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 3px; min-width: 0">
+<span style="font-size: 15px; font-weight: 600">{{i.title}}</span>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.45">{{i.text}}</span>
+</div>
+<button type="button" onClick="{{i.go}}" style="min-height: 40px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">{{i.btn}}</button>
+</div>
+</sc-for>
+</section>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Abdeckung je Kategorie</h2>
+<p style="margin: 0; font-size: 14px; color: var(--muted)">Anteil der Artikel einer Kategorie, die auf dem Kanal online sind.</p>
+</div>
+<div style="overflow-x: auto; border: 1px solid var(--line); border-radius: 10px">
+<table>
+<thead><tr><th>Kategorie</th><th class="r">Artikel</th><sc-for list="{{covHead}}" as="h" hint-placeholder-count="4"><th class="r">{{h}}</th></sc-for></tr></thead>
+<tbody>
+<sc-for list="{{covRows}}" as="r" hint-placeholder-count="6">
+<tr><td>{{r.cat}}</td><td class="r num">{{r.n}}</td><sc-for list="{{r.cells}}" as="c" hint-placeholder-count="4"><td class="r num" style="color: {{c.color}}; font-weight: {{c.w}}">{{c.txt}}</td></sc-for></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Wer macht was?</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px">
+<div style="background: var(--accent-tint); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+<span translate="no" style="font-size: 15px; font-weight: 600; color: var(--accent-strong)">Marktschreier</span>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.5">Texte, Bilder, Merkmale und Preise. Legt Angebote auf allen Kanälen an und hält sie aktuell. Dazu die Werbung.</span>
+</div>
+<div style="background: var(--tint-2); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+<span translate="no" style="font-size: 15px; font-weight: 600">Billbee</span>
+<span style="font-size: 14px; color: var(--ink-2); line-height: 1.5">Bestände und Bestellungen auf allen Kanälen, Rechnungen und Versand. Daran ändert Marktschreier nichts.</span>
+</div>
+</div>
+</section>
+
+</div>
+</sc-if>
+
+<sc-if value="{{isProdukt}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<button type="button" onClick="{{goProdukte}}" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 15px; font-weight: 500; cursor: pointer">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+<span>Zurück zu den Produkten</span>
+</button>
+
+<section style="background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+<div aria-hidden="true" style="width: 88px; height: 88px; flex: none; border-radius: 14px; background: var(--accent-tint); color: var(--accent); display: flex; align-items: center; justify-content: center">
+<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"></path></svg>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 24px; font-weight: 600; line-height: 1.25; text-wrap: balance">{{pd.name}}</h1>
+<span style="font-size: 13px; color: var(--muted)"><span class="num">{{pd.sku}}</span> · GTIN <span class="num">{{pd.gtin}}</span> · {{pd.brand}} · {{pd.cat}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px">
+<sc-for list="{{pd.chs}}" as="c" hint-placeholder-count="4">
+<button type="button" onClick="{{c.pick}}" style="display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px 0 10px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font-size: 13px; cursor: pointer"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: {{c.dot}}"></span>{{c.label}}: {{c.statusTxt}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; gap: 20px; flex-wrap: wrap">
+<sc-for list="{{pd.facts}}" as="f" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">{{f.k}}</span><span class="num" style="font-size: 17px; font-weight: 500">{{f.v}}</span><span style="font-size: 11px; color: var(--muted)">{{f.src}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section aria-label="Datenqualität" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Datenqualität</h2>
+<span class="num" style="font-size: 16px; font-weight: 600; color: {{pd.qText}}">{{pd.q}} %</span>
+</div>
+<div aria-hidden="true" style="height: 8px; border-radius: 4px; background: var(--accent-track)"><div style="height: 8px; border-radius: 4px; background: {{pd.qBar}}; width: {{pd.q}}%"></div></div>
+<sc-if value="{{pd.hasMissing}}" hint-placeholder-val="{{true}}">
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink-2); line-height: 1.45">
+<sc-for list="{{pd.missing}}" as="m" hint-placeholder-count="3"><li>{{m}}</li></sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{pd.allGood}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 14px; color: var(--accent-strong)">Alles vollständig, bereit für alle Kanäle.</span>
+</sc-if>
+</section>
+
+<div role="tablist" aria-label="Produktdaten" style="display: flex; gap: 2px; overflow-x: auto; border-bottom: 1px solid var(--line)">
+<sc-for list="{{pd.tabs}}" as="t" hint-placeholder-count="5">
+<button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="flex: none; display: flex; align-items: center; gap: 6px; min-height: 46px; padding: 0 14px; border: 0; border-bottom: 3px solid {{t.line}}; background: transparent; color: {{t.fg}}; font-size: 15px; font-weight: {{t.w}}; cursor: pointer; margin-bottom: -1px; white-space: nowrap">{{t.label}}<sc-if value="{{t.hasBadge}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: {{t.badge}}"></span></sc-if></button>
+</sc-for>
+</div>
+
+<section role="tabpanel" style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 16px">
+
+<sc-if value="{{pd.isStamm}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center">
+<p style="margin: 0; flex: 1 1 280px; font-size: 14px; color: var(--ink-2); line-height: 1.5">Diese Daten gelten für alle Kanäle. Ein Kanal kann einen eigenen Titel bekommen, sonst übernimmt er den von hier.</p>
+<button type="button" onClick="{{pd.ai}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--accent); border-radius: 10px; background: var(--surface); color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.6L12 15l-1.8-4.4L5.5 9l4.7-1.4zM19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg>Beschreibung mit KI schreiben</button>
+</div>
+<sc-if value="{{pd.aiDraft}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: var(--accent-tint); color: var(--accent-strong); border-radius: 10px; padding: 8px 8px 8px 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<span style="font-size: 14px">KI-Vorschlag eingesetzt. Bitte kurz lesen, dann übernehmen.</span>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{pd.aiAccept}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Übernehmen</button><button type="button" onClick="{{pd.aiDiscard}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Verwerfen</button></div>
+</div>
+</sc-if>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">Titel
+<input type="text" name="stammtitel" autocomplete="off" value="{{pd.title}}" onChange="{{pd.onTitle}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span>Beschreibung</span><span class="num" style="color: {{pd.descColor}}">{{pd.descCount}}</span></span>
+<textarea name="beschreibung" rows="4" value="{{pd.desc}}" onInput="{{pd.onDesc}}" style="padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 10px; font-size: 15px; font-family: inherit; line-height: 1.5; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%; resize: vertical"></textarea>
+</label>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 600">Merkmale</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<sc-for list="{{pd.attrs}}" as="a" hint-placeholder-count="6">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">
+<span>{{a.label}} <span style="color: {{a.reqColor}}; font-size: 12px">{{a.req}}</span></span>
+<input type="text" autocomplete="off" value="{{a.value}}" onChange="{{a.on}}" placeholder="{{a.ph}}" style="min-height: 44px; padding: 0 12px; border: 1px solid {{a.border}}; border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 600">Bilder <span style="font-weight: 400; color: var(--muted)">({{pd.imgCount}} von 6 empfohlen)</span></span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px">
+<sc-for list="{{pd.imgs}}" as="i" hint-placeholder-count="6">
+<div style="aspect-ratio: 1; border-radius: 10px; background: {{i.bg}}; border: 1px {{i.border}} var(--line-2); display: flex; align-items: center; justify-content: center; color: {{i.fg}}; font-size: 12px">{{i.txt}}</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{pd.isChan}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center">
+<div style="display: flex; align-items: center; gap: 10px; min-width: 0">
+<span aria-hidden="true" style="width: 36px; height: 36px; flex: none; border-radius: 10px; background: {{pc.color}}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); color: #FFFFFF; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{pc.letter}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 16px; font-weight: 600">{{pc.name}}</span><span style="font-size: 13px; color: {{pc.statusColor}}">{{pc.statusLong}}</span></div>
+</div>
+<button type="button" onClick="{{pc.ai}}" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--accent); border-radius: 10px; background: var(--surface); color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.6L12 15l-1.8-4.4L5.5 9l4.7-1.4zM19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg>{{pc.aiLabel}}</button>
+</div>
+<sc-if value="{{pc.hasError}}" hint-placeholder-val="{{false}}">
+<div role="alert" style="background: var(--warn-tint); color: var(--warn-ink); border-radius: 10px; padding: 10px 10px 10px 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between">
+<span style="flex: 1 1 260px; font-size: 14px; line-height: 1.45"><strong>{{pc.name}} meldet:</strong> {{pc.errTxt}}</span>
+<button type="button" onClick="{{pc.fixErr}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 600; cursor: pointer">{{pc.fixLabel}}</button>
+</div>
+</sc-if>
+<sc-if value="{{pc.aiDraft}}" hint-placeholder-val="{{false}}">
+<div role="status" style="background: var(--accent-tint); color: var(--accent-strong); border-radius: 10px; padding: 8px 8px 8px 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between">
+<span style="font-size: 14px">KI-Vorschlag eingesetzt. Bitte kurz lesen, dann übernehmen.</span>
+<div style="display: flex; gap: 6px"><button type="button" onClick="{{pc.aiAccept}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Übernehmen</button><button type="button" onClick="{{pc.aiDiscard}}" style="min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Verwerfen</button></div>
+</div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span>Titel auf {{pc.name}}</span><span class="num" style="color: {{pc.tColor}}">{{pc.tCount}}</span></span>
+<input type="text" autocomplete="off" value="{{pc.title}}" onChange="{{pc.onTitle}}" style="min-height: 44px; padding: 0 12px; border: 1px solid {{pc.tBorder}}; border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px">
+<span style="padding: 3px 9px; border-radius: 999px; background: var(--tint); color: var(--ink-2)">{{pc.inheritTxt}}</span>
+<sc-if value="{{pc.isOwn}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{pc.resetTitle}}" style="min-height: 36px; padding: 0 4px; border: 0; background: transparent; color: var(--accent); font-size: 13px; font-weight: 500; cursor: pointer">Wieder den Stammtitel verwenden</button>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{pc.hasFields}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 14px; font-weight: 600">{{pc.fieldsTitle}}</span>
+<sc-for list="{{pc.fields}}" as="f" hint-placeholder-count="5">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2)">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span>{{f.label}} <span style="color: {{f.reqColor}}; font-size: 12px">{{f.req}}</span></span><span class="num" style="color: var(--muted)">{{f.count}}</span></span>
+<input type="text" autocomplete="off" value="{{f.value}}" onChange="{{f.on}}" placeholder="{{f.ph}}" style="min-height: 44px; padding: 0 12px; border: 1px solid {{f.border}}; border-radius: 10px; font-size: 15px; font-family: inherit; background: var(--surface); color: var(--ink); box-sizing: border-box; width: 100%">
+</label>
+</sc-for>
+</div>
+</sc-if>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px">
+<sc-for list="{{pc.info}}" as="i" hint-placeholder-count="3">
+<div style="background: var(--tint-2); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: var(--muted)">{{i.k}}</span><span style="font-size: 14px; line-height: 1.4">{{i.v}}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-top: 1px solid var(--tint); padding-top: 14px">
+<span style="flex: 1 1 240px; font-size: 13px; color: {{pc.footColor}}; line-height: 1.45">{{pc.foot}}</span>
+<sc-if value="{{pc.canPub}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{pc.pub}}" style="min-height: 48px; padding: 0 20px; border: 0; border-radius: 12px; background: var(--accent-bg); color: #FFFFFF; font-size: 15px; font-weight: 600; cursor: pointer">{{pc.pubLabel}}</button>
+</sc-if>
+<sc-if value="{{pc.isQueued}}" hint-placeholder-val="{{false}}">
+<span role="status" style="font-size: 14px; font-weight: 600; color: var(--accent-strong)">In der Warteschlange, geht in etwa 2 Minuten raus.</span>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+</section>
+</div>
+</sc-if>
+
 <sc-if value="{{isChancen}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-direction: column; gap: 16px">
 
@@ -454,7 +727,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-start">
 <div style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 280px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Dein Testbudget pro Monat</h2>
-<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">So viel darf AdPilot höchstens für Werbetests ausgeben. Mehr wird nie ausgegeben, auch nicht, wenn ein Test gut läuft.</p>
+<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">So viel darf Marktschreier höchstens für Werbetests ausgeben. Mehr wird nie ausgegeben, auch nicht, wenn ein Test gut läuft.</p>
 </div>
 <div role="group" aria-label="Testbudget wählen" style="display: flex; background: var(--page); border: 1px solid var(--line); border-radius: 10px; padding: 3px">
 <sc-for list="{{chBudgets}}" as="b" hint-placeholder-count="4">
@@ -469,7 +742,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </div>
 <div aria-hidden="true" style="height: 10px; border-radius: 5px; background: var(--accent-track); overflow: hidden"><div style="height: 10px; border-radius: 5px; background: {{chBarColor}}; width: {{chBarPct}}%"></div></div>
 <sc-if value="{{chOver}}" hint-placeholder-val="{{false}}">
-<span role="status" style="font-size: 13px; color: var(--warn-ink)">Mehr eingeplant als das Budget hergibt. AdPilot startet die Tests nacheinander, die besten zuerst.</span>
+<span role="status" style="font-size: 13px; color: var(--warn-ink)">Mehr eingeplant als das Budget hergibt. Marktschreier startet die Tests nacheinander, die besten zuerst.</span>
 </sc-if>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px">
@@ -555,7 +828,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-for>
 
 <sc-if value="{{chEmpty}}" hint-placeholder-val="{{false}}">
-<p style="margin: 0; padding: 18px; background: var(--surface); border: 1px dashed var(--line-2); border-radius: 14px; font-size: 15px; color: var(--ink-2)">In dieser Gruppe gibt es gerade keine Chancen. AdPilot sucht jede Nacht neu.</p>
+<p style="margin: 0; padding: 18px; background: var(--surface); border: 1px dashed var(--line-2); border-radius: 14px; font-size: 15px; color: var(--ink-2)">In dieser Gruppe gibt es gerade keine Chancen. Marktschreier sucht jede Nacht neu.</p>
 </sc-if>
 
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
@@ -840,7 +1113,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </label>
 <div style="overflow-x: auto">
 <table style="min-width: 980px">
-<thead><tr><th class="stick">Name</th><th>Typ</th><th>Aktiv</th><th>Gebot pro Klick</th><th>Vorschlag AdPilot</th><th class="r">Klicks</th><th class="r">Ausgaben</th><th class="r">Bestell.</th><th class="r">ACoS</th></tr></thead>
+<thead><tr><th class="stick">Name</th><th>Typ</th><th>Aktiv</th><th>Gebot pro Klick</th><th>Vorschlag Marktschreier</th><th class="r">Klicks</th><th class="r">Ausgaben</th><th class="r">Bestell.</th><th class="r">ACoS</th></tr></thead>
 <tbody>
 <sc-for list="{{camp.kws}}" as="k" hint-placeholder-count="4">
 <tr style="opacity: {{k.opacity}}">
@@ -1002,8 +1275,14 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <input type="checkbox" checked="{{r.checked}}" onChange="{{r.toggleSel}}" aria-label="{{r.selLabel}}" style="width: 20px; height: 20px; accent-color: var(--accent)">
 </label>
 <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; padding-top: 2px">
-<span style="font-size: 15px; font-weight: 600; line-height: 1.3">{{r.name}}</span>
-<span style="font-size: 12px; color: var(--muted)"><span class="num">{{r.sku}}</span>, {{r.meta}}</span>
+<button type="button" onClick="{{r.openProd}}" style="align-self: flex-start; text-align: left; border: 0; background: transparent; padding: 0; font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--ink); cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px">{{r.name}}</button>
+<span style="font-size: 12px; color: var(--muted)"><span class="num">{{r.sku}}</span> · GTIN <span class="num">{{r.gtin}}</span>, {{r.meta}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center">
+<sc-for list="{{r.chs}}" as="c" hint-placeholder-count="4">
+<span style="display: flex; align-items: center; gap: 5px; font-size: 12px; padding: 2px 8px 2px 6px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: {{c.dot}}"></span>{{c.label}}</span>
+</sc-for>
+<span style="font-size: 12px; color: {{r.qColor}}">Daten {{r.q}} %</span>
+</div>
 <div style="display: flex; flex-wrap: wrap; gap: 6px">
 <sc-for list="{{r.flags}}" as="f" hint-placeholder-count="1">
 <span style="font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}">{{f.label}}</span>
@@ -1064,6 +1343,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <span style="font-size: 13px; color: {{r.ebayTxtColor}}">{{r.ebayTxt}}</span>
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
+<button type="button" onClick="{{r.openProd}}" style="align-self: flex-start; min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--accent-bg); color: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Produkt bearbeiten</button>
 <span style="font-size: 13px; font-weight: 600">Amazon</span>
 <span style="font-size: 14px; font-weight: 500; color: {{r.bbColor}}">{{r.bbTxt}}</span>
 <span style="font-size: 13px; color: var(--ink-2)">{{r.adTxt}}</span>
@@ -1109,6 +1389,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
 <div role="region" aria-label="Mehrfachauswahl" class="safe-bottom" style="position: sticky; bottom: 12px; z-index: 6; background: var(--inverse); color: #FFFFFF; border-radius: 14px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 10px 30px rgba(21,23,28,0.25)">
 <span style="flex: 1 1 160px; font-size: 15px; font-weight: 600; padding-left: 4px">{{selText}}</span>
+<button type="button" onClick="{{bulkPub}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Auf fehlenden Kanälen anlegen</button>
 <button type="button" onClick="{{bulkPause}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Werbung pausieren</button>
 <button type="button" onClick="{{bulkAcos}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Ziel-ACoS neu berechnen</button>
 <button type="button" onClick="{{bulkRule}}" style="min-height: 44px; padding: 0 12px; border: 1px solid var(--inverse-line); border-radius: 10px; background: transparent; color: #FFFFFF; font-size: 14px; cursor: pointer">Preisregel an</button>
@@ -1190,7 +1471,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px">
 <div style="display: flex; flex-direction: column; gap: 3px; flex: 1 1 240px">
 <span style="font-size: 15px; font-weight: 600">Mindestpreis: <span class="num">{{r.minTxt}}</span></span>
-<span style="font-size: 13px; color: var(--muted); line-height: 1.45">Einkauf {{r.ekTxt}} (aus Billbee) + Amazon-Gebühren ca. {{r.feeTxt}} + dein Mindestgewinn. Darunter geht AdPilot nie.</span>
+<span style="font-size: 13px; color: var(--muted); line-height: 1.45">Einkauf {{r.ekTxt}} (aus Billbee) + Amazon-Gebühren ca. {{r.feeTxt}} + dein Mindestgewinn. Darunter geht Marktschreier nie.</span>
 </div>
 <div style="display: flex; flex-direction: column; gap: 4px; align-items: center">
 <span style="font-size: 12px; color: var(--muted)">Mindestgewinn pro Stück</span>
@@ -1265,7 +1546,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Preisvergleich: bei {{eTeurerCount}} Artikeln bist du teurer</h2>
-<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">Bei eBay gibt es keine Buy Box, aber viele Käufer sortieren nach dem günstigsten Preis inklusive Versand. AdPilot prüft für jeden Artikel, ob sich ein Mitgehen nach eBay-Gebühren und Versand überhaupt lohnt.</p>
+<p style="margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5">Bei eBay gibt es keine Buy Box, aber viele Käufer sortieren nach dem günstigsten Preis inklusive Versand. Marktschreier prüft für jeden Artikel, ob sich ein Mitgehen nach eBay-Gebühren und Versand überhaupt lohnt.</p>
 </div>
 <sc-for list="{{ebayPricey}}" as="p" hint-placeholder-count="4">
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 0; border-top: 1px solid var(--tint)">
@@ -1282,7 +1563,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </section>
 
 <div style="background: var(--accent-tint); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--accent-strong); line-height: 1.5">
-<strong>Bestand:</strong> Den Abgleich zwischen Lager und eBay übernimmt Billbee. AdPilot prüft nur, ob die Zahlen stimmen, Abweichungen findest du unter „Lagerbestand“.
+<strong>Bestand:</strong> Den Abgleich zwischen Lager und eBay übernimmt Billbee. Marktschreier prüft nur, ob die Zahlen stimmen, Abweichungen findest du unter „Lagerbestand“.
 </div>
 </div>
 </sc-if>
@@ -1319,7 +1600,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 </sc-if>
 <sc-if value="{{e.isPlanned}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; background: var(--accent-tint); border-radius: 10px; padding: 8px 8px 8px 14px">
-<span style="font-size: 14px; font-weight: 500; color: var(--accent-strong)">Eingeplant, AdPilot setzt es um und fragt vorher per Push nach</span>
+<span style="font-size: 14px; font-weight: 500; color: var(--accent-strong)">Eingeplant, Marktschreier setzt es um und fragt vorher per Push nach</span>
 <button type="button" onClick="{{e.plan}}" style="min-height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer">Rückgängig</button>
 </div>
 </sc-if>
@@ -1353,7 +1634,7 @@ html:has(.app[data-mode="dark"]){background:#111214;color-scheme:dark}
 <section style="background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
 <div style="display: flex; flex-direction: column; gap: 4px">
 <h2 style="margin: 0; font-size: 18px; font-weight: 600">Worüber willst du informiert werden?</h2>
-<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">AdPilot meldet sich nur, wenn wirklich etwas zu tun ist. Alles andere steht im Tagesbriefing.</p>
+<p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5">Marktschreier meldet sich nur, wenn wirklich etwas zu tun ist. Alles andere steht im Tagesbriefing.</p>
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <span style="font-size: 14px; font-weight: 500">Wie?</span>
@@ -1742,6 +2023,7 @@ class Component extends DCLogic {
       campQuery: '', kwQuery: '', view: 'start', menu: false, glossar: false, period: '7', dec: {}, ap: { neg: true, bid: false, budget: false },
       campMode: 'klassisch', campStatus: 'alle', campType: 'alle', sel: null, negInput: '', savedNote: false,
       bb: { auto: true, resume: true }, planned: {},
+      prod: null, pTab: 'stamm', pEdits: {}, pAi: {}, pAiPrev: {}, pPub: {}, jobs: {},
       ch: {}, chBudget: 100, chFilter: 'alle', chOpen: null, chKeep: false,
       rp: { u1: { on: true, mp: 30, strat: 'hold' }, u2: { on: true, mp: 30, strat: 'hold' } }, notifRead: false, channel: 'push', review: false,
       prefs: { brief: true, budget: true, bb: true, stock: true, rating: true, auto: false, quiet: true },
@@ -1754,7 +2036,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     if (typeof window === 'undefined') return;
-    const valid = ['start', 'aufgaben', 'chancen', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
+    const valid = ['start', 'aufgaben', 'chancen', 'kanaele', 'produkt', 'artikel', 'kampagnen', 'buybox', 'ebay', 'kalender', 'suchbegriffe', 'produkte', 'bestand', 'berichte', 'hinweise'];
     const fromHash = () => { const h = (window.location.hash || '').slice(1); return valid.indexOf(h) >= 0 ? h : 'start'; };
     try {
       const v = fromHash();
@@ -1771,6 +2053,9 @@ class Component extends DCLogic {
     const code = (c) => c.replace('ß', 'SS').replace('ü', 'UE').slice(0, 3).toUpperCase();
     const r99 = (p) => Math.max(0.99, Math.round(p) - 0.01);
     const out = [];
+    let b2 = 4711;
+    const rnd2 = () => { b2 = (b2 + 0x6D2B79F5) | 0; let t = Math.imul(b2 ^ (b2 >>> 15), 1 | b2); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const ean = (pre) => { let d = pre; while (d.length < 12) d += Math.floor(rnd2() * 10); let sum = 0; for (let i = 0; i < 12; i++) sum += (+d[i]) * (i % 2 ? 3 : 1); return d + ((10 - sum % 10) % 10); };
     const add = (cat, brand, name, sku, price, fix, solo) => {
       const ek = Math.round(price * (0.18 + rnd() * 0.17) * 100) / 100;
       const fee = price * 0.15 + fix;
@@ -1795,7 +2080,12 @@ class Component extends DCLogic {
       const pEbay = ePrice - ek - (ePrice * 0.11 + 0.35) - ship;
       const pShop = price - ek - (price * 0.025 + 0.25) - ship * 0.4;
       const best = pShop >= pEbay && pShop >= profit ? 'shop' : pEbay >= profit ? 'ebay' : 'amazon';
-      out.push({ sku, name, nameL: (name + ' ' + sku).toLowerCase(), cat, brand, price, ek, fee, acos, units, sales: units * price, lager, fba, reach, bb, diff, profit,
+      const gtin = ean(brand === 'Ultra PRO' ? '074427' : brand === 'Sasneking' ? '0697' : '4262');
+      const imgs = 1 + Math.floor(rnd2() * 6), matMissing = rnd2() < 0.08, descShort = rnd2() < 0.22, bullets = 2 + Math.floor(rnd2() * 4);
+      const amzSt = rnd2() < 0.035 ? 'fehlt' : (matMissing && rnd2() < 0.45 ? 'fehler' : 'online');
+      const shopSt = rnd2() < 0.012 ? 'fehlt' : 'online';
+      const ttSt = (cat === 'Bumper' || cat === 'Card Holder' || cat === 'Acryl Cases') && units > 1 && rnd2() < 0.55 ? 'online' : 'fehlt';
+      out.push({ gtin, imgs, matMissing, descShort, bullets, amzSt, shopSt, ttSt, sku, name, nameL: (name + ' ' + sku).toLowerCase(), cat, brand, price, ek, fee, acos, units, sales: units * price, lager, fba, reach, bb, diff, profit,
         ship, eStatus, ePrice, eComp, eUnits, sUnits, pEbay, pShop, best,
         ebayFehlt: eStatus === 'fehlt' && lager > 0, ebayTeurer: eStatus === 'aktiv' && eComp !== null && ePrice > eComp * 1.05,
         verlust: ads && profit < 0, bbIssue: bb === 'lost' || bb === 'hijack', knapp: lager > 0 && reach < 14, leer: lager === 0 && units > 0 });
@@ -1835,14 +2125,14 @@ class Component extends DCLogic {
         kwTitle: 'Zielgruppen', kwSub: 'Amazon sucht passende Kunden in vier automatischen Gruppen',
         kws: k([['Enge Übereinstimmung', 'Auto', 40, 42, 96, 37.40, 46, 229.54], ['Weite Übereinstimmung', 'Auto', 30, 28, 71, 20.60, 24, 119.76], ['Ersatzprodukte', 'Auto', 35, 30, 42, 14.20, 14, 69.86], ['Ergänzende Produkte', 'Auto', 25, 25, 22, 5.40, 9, 44.91]]),
         negs: ['pokemon karten', 'booster display', 'gratis'],
-        history: [{ when: '14.10., 07:00', who: 'AdPilot (automatisch)', what: 'Negatives Keyword „booster display“ hinzugefügt' }, { when: '09.10., 18:12', who: 'Benny (manuell)', what: 'Tagesbudget 12,00 € → 15,00 €' }] },
+        history: [{ when: '14.10., 07:00', who: 'Marktschreier (automatisch)', what: 'Negatives Keyword „booster display“ hinzugefügt' }, { when: '09.10., 18:12', who: 'Benny (manuell)', what: 'Tagesbudget 12,00 € → 15,00 €' }] },
       { id: 'c2', name: 'Exakt | PSA Bumper', ad: 'SP', typShort: 'Sponsored Products · Keywords', typLong: 'Sponsored Products · gezielt auf bewährte Suchbegriffe', start: '15.04.2026', on: true, budget: 20, strategy: 'updown', tos: 30, target: 20, impr: 21350, used: 85, st: 'gut',
         satz: 'Deine beste Kampagne, hier lohnt sich fast jeder Euro.',
         products: P(['PSA Bumper Glossy Farben', 'PSA Bumper Sparkling Farben', 'PSA Bumper Classic Farben']),
         kwTitle: 'Keywords', kwSub: 'Die Anzeige erscheint nur bei genau diesen Suchbegriffen',
         kws: k([['psa bumper', 'Exakt', 45, 48, 98, 44.10, 52, 259.48], ['psa case bumper', 'Exakt', 40, 42, 61, 24.40, 31, 154.69], ['graded card bumper', 'Exakt', 50, 41, 54, 27.00, 26, 129.74], ['cgc bumper', 'Exakt', 40, 40, 37, 14.80, 19, 75.81], ['psa bumper sparkling', 'Exakt', 35, 30, 13, 4.55, 4, 19.96]]),
         negs: ['gebraucht'],
-        history: [{ when: '12.10., 07:00', who: 'AdPilot (automatisch)', what: 'Gebot „psa bumper“ 0,40 € → 0,45 €' }, { when: '02.10., 21:40', who: 'Benny (manuell)', what: 'Keyword „cgc bumper“ hinzugefügt' }] },
+        history: [{ when: '12.10., 07:00', who: 'Marktschreier (automatisch)', what: 'Gebot „psa bumper“ 0,40 € → 0,45 €' }, { when: '02.10., 21:40', who: 'Benny (manuell)', what: 'Keyword „cgc bumper“ hinzugefügt' }] },
       { id: 'c3', name: 'Phrase | Sleeves & Cases', ad: 'SP', typShort: 'Sponsored Products · Keywords', typLong: 'Sponsored Products · Suchbegriffe rund um Hüllen und Cases', start: '01.05.2026', on: true, budget: 10, strategy: 'down', tos: 0, target: 25, impr: 14810, used: 77, st: 'gut',
         satz: 'Läuft ordentlich. Ein Suchbegriff ist zu teuer und einer bringt fast nichts.',
         products: P(['Resealable Toploader Sleeves (100 St.)', 'Resealable PSA Bumper Sleeves (100 St.)', 'Magnetisches Acryl Case Booster Bundle', 'Lockable Aluminium Case PSA Slabs']),
@@ -1863,7 +2153,7 @@ class Component extends DCLogic {
         kwTitle: 'Zielgruppen', kwSub: 'Amazon testet, bei welchen Suchen das Produkt ankommt',
         kws: k([['Enge Übereinstimmung', 'Auto', 45, 45, 28, 12.60, 3, 29.97], ['Weite Übereinstimmung', 'Auto', 35, 35, 19, 6.65, 2, 19.98]]),
         negs: [],
-        history: [{ when: '05.10., 09:15', who: 'AdPilot (automatisch)', what: 'Testkampagne für neues Produkt angelegt' }] },
+        history: [{ when: '05.10., 09:15', who: 'Marktschreier (automatisch)', what: 'Testkampagne für neues Produkt angelegt' }] },
       { id: 'c6', name: 'Wiedererkennung', ad: 'SD', typShort: 'Sponsored Display · Remarketing', typLong: 'Sponsored Display · erinnert Leute, die schon geschaut haben', start: '20.05.2026', on: true, budget: 8, strategy: 'conv', tos: 0, target: 22, impr: 31800, used: 39, st: 'gut',
         satz: 'Günstig und wirksam: erinnert Interessenten an deine Produkte.',
         products: P(['Magnetisches Acryl Case Booster Bundle', 'JohtoMarket TCG Holz Stand', 'Lockable Aluminium Case PSA Slabs']),
@@ -1879,7 +2169,7 @@ class Component extends DCLogic {
         negs: [],
         history: [{ when: '01.08., 18:00', who: 'Benny (manuell)', what: 'Kampagne erstellt' }] },
       { id: 'c8', name: 'Weihnachten | Geschenke', ad: 'SP', typShort: 'Sponsored Products · Keywords', typLong: 'Sponsored Products · Saisonkampagne', start: '20.11.2025', on: false, budget: 20, strategy: 'down', tos: 20, target: 25, impr: 0, used: 0, st: 'pausiert',
-        satz: 'Pausiert seit Januar. Tipp: Ab Mitte November wieder einschalten, AdPilot erinnert dich rechtzeitig.',
+        satz: 'Pausiert seit Januar. Tipp: Ab Mitte November wieder einschalten, Marktschreier erinnert dich rechtzeitig.',
         products: P(['JohtoMarket TCG Holz Stand', 'Magnetisches Acryl Case Booster Bundle', 'Lockable Aluminium Case PSA Slabs']),
         kwTitle: 'Keywords', kwSub: 'Die Anzeige erscheint, wenn der Suchbegriff diese Wortgruppe enthält',
         kws: k([['geschenk pokemon fan', 'Phrase', 50, 55, 0, 0, 0, 0], ['sammelkarten zubehör geschenk', 'Phrase', 45, 50, 0, 0, 0, 0]]),
@@ -1925,23 +2215,97 @@ class Component extends DCLogic {
       this.setState({ dec: n });
     };
 
+    // Produktdaten und Kanäle
+    const CI = {
+      'Bumper': { mat: 'TPU, weich und stoßfest', fit: 'PSA-, CGC- und BGS-Slabs', art: 'Slab Bumper', amz: 'Schutzhülle für Sammelkarten', kw: 'slab bumper psa case graded card schutz hülle cgc bgs' },
+      'Sleeves': { mat: 'Polypropylen, säurefrei', fit: 'Standard-Sammelkarten 63,5 × 88 mm', art: 'Kartenhüllen', amz: 'Kartenhüllen', kw: 'sleeves kartenhüllen pokemon karten schutz toploader' },
+      'Card Holder': { mat: 'Acryl mit UV-Schutz', fit: 'Sammelkarten von 35pt bis 360pt', art: 'Kartenhalter', amz: 'Kartenhalter', kw: 'one touch magnetic card holder toploader kartenhalter' },
+      'Acryl Cases': { mat: 'Acryl mit Magnetdeckel', fit: 'Booster Bundles, Elite Trainer Boxen und Displays', art: 'Acryl Case', amz: 'Aufbewahrungsbox', kw: 'acryl case booster bundle etb display schutz' },
+      'Aluminium Cases': { mat: 'Aluminium mit Schaumstoffeinlage', fit: 'PSA-, CGC- und BGS-Slabs', art: 'Slab-Koffer', amz: 'Aufbewahrungskoffer', kw: 'slab koffer psa case aluminium graded aufbewahrung' },
+      'Binder': { mat: 'Kunstleder, säurefreie Taschen', fit: '360 Karten in 9er-Taschen', art: 'Sammelalbum', amz: 'Sammelalbum', kw: 'binder sammelalbum 9 pocket pokemon ordner' },
+      'Deck Boxen': { mat: 'Kunststoff', fit: 'bis 100 Karten mit Hüllen', art: 'Deck Box', amz: 'Kartenbox', kw: 'deck box kartenbox tcg aufbewahrung' },
+      'Stands': { mat: 'Massivholz oder Beton', fit: 'gegradete Slabs von PSA, CGC und BGS', art: 'Slab-Ständer', amz: 'Display-Ständer', kw: 'slab stand display psa ständer holz' },
+      'Wandsysteme': { mat: 'Holz und Acryl', fit: 'PSA-Slabs', art: 'Wandhalterung', amz: 'Wandhalterung', kw: 'slab wand display rahmen psa wandhalterung' }
+    };
+    const chDefs = [
+      { id: 'shop', name: 'Shopify', short: 'Shop', letter: 'S', color: '#4A7A2C', titleMax: 70 },
+      { id: 'amazon', name: 'Amazon', short: 'Amazon', letter: 'a', color: '#232F3E', titleMax: 200 },
+      { id: 'ebay', name: 'eBay', short: 'eBay', letter: 'e', color: '#C4262E', titleMax: 80 },
+      { id: 'tiktok', name: 'TikTok Shop', short: 'TikTok', letter: 'T', color: '#111318', titleMax: 255 }
+    ];
+    const PE = s.pEdits;
+    const pk = (x, k) => x.sku + '|' + k;
+    const has = (x, k) => Object.prototype.hasOwnProperty.call(PE, pk(x, k));
+    const ci = (x) => CI[x.cat] || CI.Bumper;
+    const farbe = (x) => { const m = x.name.split(' · ')[1]; return m ? m.split(',')[0].split(' (')[0] : 'transparent'; };
+    const menge = (x) => { const m = x.name.match(/(\d+)er-Pack/) || x.name.match(/\((\d+) St\.\)/); return m ? m[1] : '1'; };
+    const slug = (t) => t.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const cut = (t, n) => t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)).replace(/[,|\s]+$/, '');
+    const dflt = (x, k) => {
+      const c = ci(x);
+      const map = {
+        'title': x.name,
+        'desc': x.descShort ? c.art + ' für ' + c.fit + '.' : x.name + '. Passend für ' + c.fit + ', aus ' + c.mat + '. Schützt deine Karten zuverlässig vor Kratzern, Staub und Knicken.',
+        'attr.marke': x.brand, 'attr.art': c.art, 'attr.material': x.matMissing ? '' : c.mat, 'attr.farbe': farbe(x), 'attr.passend': c.fit, 'attr.menge': menge(x),
+        'amazon.kw': x.bullets >= 4 ? c.kw : '', 'tiktok.desc': '', 'shop.seo': cut(x.name + ' kaufen | JohtoMarket', 70), 'shop.handle': slug(x.name)
+      };
+      if (k in map) return map[k];
+      const b = k.match(/^amazon\.b(\d)$/);
+      if (b) { const i = +b[1]; return i <= x.bullets ? bulletsAll(x)[i - 1] : ''; }
+      return '';
+    };
+    const val = (x, k) => has(x, k) ? PE[pk(x, k)] : dflt(x, k);
+    const bulletsAll = (x) => { const c = ci(x); const mat = (has(x, 'attr.material') ? PE[pk(x, 'attr.material')] : '') || c.mat; return ['PASSGENAU: für ' + c.fit, 'ROBUST: aus ' + mat, 'SAMMLERQUALITÄT: schützt vor Kratzern, Staub und Fingerabdrücken', 'EINFACH: in Sekunden eingesetzt, ganz ohne Werkzeug', 'AUS DEUTSCHLAND: geprüft und versendet von JohtoMarket']; };
+    const chTitle = (x, ch) => has(x, ch + '.title') ? PE[pk(x, ch + '.title')] : val(x, 'title');
+    const matOk = (x) => !!String(val(x, 'attr.material')).trim();
+    const baseSt = (x, ch) => ch === 'shop' ? x.shopSt : ch === 'amazon' ? x.amzSt : ch === 'ebay' ? (x.eStatus === 'aktiv' ? 'online' : x.eStatus === 'beendet' ? 'pausiert' : 'fehlt') : x.ttSt;
+    const eligible = (x, ch) => baseSt(x, ch) === 'fehlt' && x.lager > 0;
+    const stat = (x, ch) => {
+      if (s.pPub[pk(x, ch)]) return 'queue';
+      const b = baseSt(x, ch);
+      if (b === 'fehlt' && x.lager > 0 && s.jobs[ch]) return s.jobs[ch] === 'pub' ? 'queue' : 'entwurf';
+      return b;
+    };
+    const stDot = { online: 'var(--accent)', fehlt: 'var(--off)', fehler: 'var(--warn)', pausiert: 'var(--muted-2)', entwurf: 'var(--amber-ink)', queue: 'var(--accent-soft)' };
+    const stTxt = { online: 'online', fehlt: 'nicht angelegt', fehler: 'Fehler', pausiert: 'pausiert', entwurf: 'Entwurf bereit', queue: 'wird übertragen' };
+    const qual = (x) => {
+      const miss = []; let q = 100;
+      if (x.imgs < 4) { q -= (4 - x.imgs) * 8; miss.push('Nur ' + x.imgs + (x.imgs === 1 ? ' Bild' : ' Bilder') + ', Amazon und TikTok empfehlen mindestens 4'); }
+      if (!matOk(x)) { q -= 15; miss.push('Material fehlt, Amazon und eBay verlangen es'); }
+      const d = String(val(x, 'desc')); if (d.length < 120) { q -= 10; miss.push('Beschreibung sehr kurz (' + d.length + ' Zeichen, gut sind ab 120)'); }
+      const nb = [1, 2, 3, 4, 5].filter((i) => String(val(x, 'amazon.b' + i)).trim()).length;
+      if (nb < 5) { q -= (5 - nb) * 3; miss.push('Amazon: ' + nb + ' von 5 Stichpunkten ausgefüllt'); }
+      if (!String(val(x, 'amazon.kw')).trim()) { q -= 5; miss.push('Amazon: keine versteckten Suchbegriffe'); }
+      return { q: Math.max(q, 5), miss };
+    };
+    const chanAgg = chDefs.map((c) => {
+      const a = { online: 0, fehlt: 0, fehler: 0, pausiert: 0, entwurf: 0, queue: 0, elig: 0 };
+      this.cat.forEach((x) => { a[stat(x, c.id)]++; if (eligible(x, c.id)) a.elig++; });
+      return { ...c, ...a };
+    });
+    const missTotal = chanAgg.reduce((t, a) => t + a.fehlt + a.fehler, 0);
+    const grpOf = { start: 'allg', aufgaben: 'allg', hinweise: 'allg', kanaele: 'prod', artikel: 'prod', ebay: 'prod', buybox: 'prod', bestand: 'prod', chancen: 'werb', kampagnen: 'werb', suchbegriffe: 'werb', kalender: 'werb', produkte: 'zahl', berichte: 'zahl' };
+    const grpOrder = ['start', 'aufgaben', 'hinweise', 'kanaele', 'artikel', 'ebay', 'buybox', 'bestand', 'chancen', 'kampagnen', 'suchbegriffe', 'kalender', 'produkte', 'berichte'];
+    const grpDefs = [['allg', 'Allgemein'], ['prod', 'Produkte & Kanäle'], ['werb', 'Werbung'], ['zahl', 'Zahlen']];
+
     const unreadCount = s.notifRead ? 0 : 3;
     const opIcon = 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z';
     const opOpenCount = 12 - Object.keys(s.ch).length;
     const sectionsRaw = [
       { id: 'start', title: 'Übersicht', sub: 'Wie läuft es heute?', intro: '', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
-      { id: 'aufgaben', title: 'Heute erledigen', sub: 'Vorschläge mit Ja oder Nein beantworten', intro: 'AdPilot hat heute Nacht dein Werbekonto geprüft. Beantworte jeden Vorschlag mit Ja oder Nein, ohne dein Okay ändert sich nichts.', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', chip: pendingCount ? pendingCount + ' offen' : 'erledigt', c: pendingCount ? chip.warn : chip.ok },
-      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung lohnt, und was ohne Werbegeld geht', intro: 'AdPilot sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt, und nach Chancen, die gar kein Werbegeld kosten. Vorgeschlagen wird nur, was nach Kosten Gewinn bringt, und jeder Werbetest hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
-      { id: 'artikel', title: 'Alle Artikel', sub: 'Suchen, filtern und mehrere auf einmal bearbeiten', intro: 'Dein komplettes Sortiment mit Marge, Werbung, Bestand und Buy Box. Tippe auf einen Artikel für Details oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
+      { id: 'aufgaben', title: 'Heute erledigen', sub: 'Vorschläge mit Ja oder Nein beantworten', intro: 'Marktschreier hat heute Nacht dein Werbekonto geprüft. Beantworte jeden Vorschlag mit Ja oder Nein, ohne dein Okay ändert sich nichts.', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', chip: pendingCount ? pendingCount + ' offen' : 'erledigt', c: pendingCount ? chip.warn : chip.ok },
+      { id: 'chancen', title: 'Chancenfinder', sub: 'Wo sich Werbung lohnt, und was ohne Werbegeld geht', intro: 'Marktschreier sucht jede Nacht nach Produkten, Suchbegriffen und Zeitpunkten, bei denen sich Werbung lohnt, und nach Chancen, die gar kein Werbegeld kosten. Vorgeschlagen wird nur, was nach Kosten Gewinn bringt, und jeder Werbetest hat einen festen Höchstbetrag.', icon: opIcon, chip: opOpenCount ? opOpenCount + ' Vorschläge' : 'alles gesichtet', c: opOpenCount ? chip.blue : chip.ok },
+      { id: 'kanaele', title: 'Kanäle & Angebote', sub: 'Welcher Artikel ist wo online, und was fehlt?', intro: 'Alle Verkaufskanäle auf einen Blick. Marktschreier legt die Angebote an und hält Texte, Bilder und Preise aktuell, die Bestände kommen weiter aus Billbee.', icon: 'M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v5H4zM13 14h7v5h-7z', chip: missTotal ? missTotal.toLocaleString('de-DE') + ' Lücken' : 'alles online', c: missTotal ? chip.warn : chip.ok },
+      { id: 'artikel', title: 'Produkte', sub: 'Texte, Bilder und Merkmale für alle Kanäle', intro: 'Dein komplettes Sortiment. Tippe auf einen Namen, um Texte, Bilder und Merkmale für alle Kanäle zu bearbeiten, oder wähle mehrere aus, um sie gemeinsam zu ändern.', icon: 'M4 6h16M4 12h16M4 18h10M18 16l3 3-3 3', chip: this.cat.length + ' Artikel', c: chip.info },
       { id: 'kampagnen', title: 'Werbekampagnen', sub: 'Alle Kampagnen ansehen und bearbeiten', intro: 'Alle Amazon-Kampagnen mit ihren Zahlen der letzten 7 Tage. Ein- und ausschalten geht direkt in der Liste, alles Weitere nach einem Tipp auf den Namen.', icon: 'M3 11l15-6v14L3 13zM7 12v6a2 2 0 0 0 4 0v-4', chip: '1 Budget leer', c: chip.warn },
-      { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'AdPilot prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
-      { id: 'ebay', title: 'eBay', sub: 'Fehlende Angebote, Preise und Gewinn auf eBay', intro: 'Billbee hält die Bestände auf eBay aktuell, legt aber keine Angebote an. AdPilot zeigt, was bei eBay fehlt, wo du teurer bist als andere Anbieter und was eBay dir unterm Strich bringt.', icon: 'M4 7h16l-1 12H5zM9 7V5a3 3 0 0 1 6 0v2', chip: this.cat.filter((x) => x.ebayFehlt).length + ' nicht gelistet', c: chip.warn },
-      { id: 'kalender', title: 'Saison & Termine', sub: 'Neue Sets, Black Friday, Weihnachten, rechtzeitig vorbereitet', intro: 'Die wichtigsten Verkaufstermine der nächsten Wochen. AdPilot prüft für jeden, ob Bestand und Budget passen, und schlägt einen fertigen Plan vor.', icon: 'M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z', chip: 'Black Friday in 6 Wo.', c: chip.blue },
+      { id: 'buybox', title: 'Buy Box & Preise', sub: 'Hast du das Angebot, oder ein anderer Händler?', intro: 'Marktschreier prüft stündlich, wer bei deinen Produkten den „In den Einkaufswagen“-Knopf hat, und stoppt die Werbung, wenn es nicht du bist.', icon: 'M6 6h15l-1.5 9h-12zM6 6L5 3H2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z', chip: '1 verloren', c: chip.warn },
+      { id: 'ebay', title: 'eBay', sub: 'Fehlende Angebote, Preise und Gewinn auf eBay', intro: 'Billbee hält die Bestände auf eBay aktuell, legt aber keine Angebote an. Marktschreier zeigt, was bei eBay fehlt, wo du teurer bist als andere Anbieter und was eBay dir unterm Strich bringt.', icon: 'M4 7h16l-1 12H5zM9 7V5a3 3 0 0 1 6 0v2', chip: this.cat.filter((x) => x.ebayFehlt).length + ' nicht gelistet', c: chip.warn },
+      { id: 'kalender', title: 'Saison & Termine', sub: 'Neue Sets, Black Friday, Weihnachten, rechtzeitig vorbereitet', intro: 'Die wichtigsten Verkaufstermine der nächsten Wochen. Marktschreier prüft für jeden, ob Bestand und Budget passen, und schlägt einen fertigen Plan vor.', icon: 'M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z', chip: 'Black Friday in 6 Wo.', c: chip.blue },
       { id: 'suchbegriffe', title: 'Suchbegriffe', sub: 'Wonach Kunden gesucht haben', intro: 'Das haben Kunden bei Amazon eingetippt, bevor sie auf deine Anzeige geklickt haben, die letzten 14 Tage.', icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4', chip: '2 Geldfresser', c: chip.warn },
       { id: 'produkte', title: 'Gewinn pro Produkt', sub: 'Was bleibt nach Gebühren und Werbung übrig?', intro: 'Der Balken zeigt, wohin der Verkaufspreis geht, wenn ein Kunde über eine Anzeige kauft.', icon: 'M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01', chip: '2 mit Verlust', c: chip.warn },
       { id: 'bestand', title: 'Lagerbestand', sub: 'Stimmen die Zahlen überall?', intro: 'Hier siehst du, ob Lager, Shop und eBay dieselben Zahlen zeigen, Probleme stehen oben.', icon: 'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8', chip: '2 Probleme', c: chip.warn },
       { id: 'berichte', title: 'Berichte', sub: 'Wochen- und Monatszahlen zum Download', intro: 'Diese Berichte entstehen automatisch. Du bekommst sie per E-Mail oder lädst sie hier herunter.', icon: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5', chip: 'Woche 41 neu', c: chip.blue },
-      { id: 'hinweise', title: 'Benachrichtigungen', sub: 'Was AdPilot dir meldet, und wie', intro: 'AdPilot meldet sich aufs Handy oder per E-Mail, sobald etwas deine Aufmerksamkeit braucht.', icon: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0', chip: unreadCount ? unreadCount + ' neu' : 'alles gelesen', c: unreadCount ? chip.warn : chip.ok }
+      { id: 'hinweise', title: 'Benachrichtigungen', sub: 'Was Marktschreier dir meldet, und wie', intro: 'Marktschreier meldet sich aufs Handy oder per E-Mail, sobald etwas deine Aufmerksamkeit braucht.', icon: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0', chip: unreadCount ? unreadCount + ' neu' : 'alles gelesen', c: unreadCount ? chip.warn : chip.ok }
     ];
     const sections = sectionsRaw.map((m) => ({
       ...m, go: go(m.id), current: s.view === m.id ? 'page' : 'false',
@@ -1949,6 +2313,9 @@ class Component extends DCLogic {
       hasChip: !!m.chip, chipBg: m.c ? m.c[0] : '', chipFg: m.c ? m.c[1] : ''
     }));
     const tiles = sections.filter((m) => m.id !== 'start');
+    const byId = {}; sections.forEach((m) => { byId[m.id] = m; });
+    const menuGroups = grpDefs.map(([g, label]) => ({ label, items: grpOrder.filter((id) => grpOf[id] === g && byId[id]).map((id) => byId[id]) }));
+    const tileGroups = menuGroups.map((g) => ({ label: g.label, items: g.items.filter((m) => m.id !== 'start') })).filter((g) => g.items.length);
     const current = sectionsRaw.find((m) => m.id === s.view);
 
     const periods = [{ id: '7', label: '7 Tage' }, { id: '30', label: '30 Tage' }].map((p) => {
@@ -2241,7 +2608,7 @@ class Component extends DCLogic {
 
     const reports = [
       { rhythm: 'Jeden Morgen · per E-Mail', title: 'Tagesbriefing', desc: 'Drei Sätze: Wie lief gestern, was ist heute zu tun, gibt es Probleme?' },
-      { rhythm: 'Jeden Montag', title: 'Wochenbericht Werbung', desc: 'Was die Werbung gekostet und gebracht hat, und was AdPilot geändert hat.' },
+      { rhythm: 'Jeden Montag', title: 'Wochenbericht Werbung', desc: 'Was die Werbung gekostet und gebracht hat, und was Marktschreier geändert hat.' },
       { rhythm: 'Am 1. jedes Monats', title: 'Monatsabschluss', desc: 'Umsatz je Kanal, Werbekosten und Gewinn, als PDF für die Buchhaltung.' },
       { rhythm: 'Jederzeit', title: 'Gewinn pro Produkt', desc: 'Welche Produkte sich mit Werbung lohnen und welche nicht.' }
     ];
@@ -2310,12 +2677,12 @@ class Component extends DCLogic {
         resTitle = 'Preisregel ist aus'; resText = 'Der Preis bleibt bei ' + e2(x.price) + '. Die Buy Box hat gerade ein anderer Händler, Werbung für dieses Produkt lohnt sich so kaum.';
         resBg = 'var(--page)'; resFg = 'var(--ink-2)'; adText = 'wird pausiert, solange die Buy Box weg ist';
       } else if (reachable) {
-        resTitle = 'AdPilot setzt den Preis auf ' + e2(newP);
+        resTitle = 'Marktschreier setzt den Preis auf ' + e2(newP);
         resText = (r.strat === 'hold' ? 'Damit bist du 1 Cent günstiger als der andere Händler und bekommst die Buy Box voraussichtlich zurück. ' : 'Damit hast du denselben Preis wie der andere Händler und teilt euch die Buy Box. ') + 'Dir bleiben danach ' + e2(profit) + ' pro Stück.';
         resBg = 'var(--accent-tint)'; resFg = 'var(--accent-strong)'; adText = 'läuft normal weiter, sobald die Buy Box zurück ist';
       } else {
         resTitle = 'Der Preis bleibt bei ' + e2(x.price);
-        resText = 'Der andere Händler verkauft für ' + e2(x.comp) + ', das ist unter deinem Mindestpreis von ' + e2(minP) + '. Mitgehen würde Verlust bedeuten. AdPilot wartet ab, bis er ausverkauft ist oder seinen Preis erhöht.';
+        resText = 'Der andere Händler verkauft für ' + e2(x.comp) + ', das ist unter deinem Mindestpreis von ' + e2(minP) + '. Mitgehen würde Verlust bedeuten. Marktschreier wartet ab, bis er ausverkauft ist oder seinen Preis erhöht.';
         resBg = 'var(--warn-tint)'; resFg = 'var(--warn-ink)'; adText = 'Gebote −50 %, bis die Buy Box zurück ist, jeder Klick wäre sonst zu teuer';
       }
       const shopCheap = x.shop < (r.on && reachable ? newP : x.price) - 0.005;
@@ -2374,7 +2741,7 @@ class Component extends DCLogic {
       { id: 'bb', label: 'Buy Box verloren oder fremder Händler', sub: 'sofort, damit du reagieren kannst' },
       { id: 'stock', label: 'Überverkauf-Risiko beim Bestand', sub: 'wenn Lager, Shop und eBay nicht zusammenpassen' },
       { id: 'rating', label: 'Neue schlechte Bewertung (1-2 Sterne)', sub: 'schlechte Bewertungen machen Werbung teurer' },
-      { id: 'auto', label: 'Jede automatische Änderung durch AdPilot', sub: 'für Neugierige, sonst reicht der Wochenrückblick' },
+      { id: 'auto', label: 'Jede automatische Änderung durch Marktschreier', sub: 'für Neugierige, sonst reicht der Wochenrückblick' },
       { id: 'quiet', label: 'Nachts nicht stören', sub: 'keine Meldungen zwischen 22 und 7 Uhr' }
     ].map((a) => ({ ...a, ...sw2(s.prefs[a.id]), toggle: () => this.setState({ prefs: { ...this.state.prefs, [a.id]: !this.state.prefs[a.id] } }) }));
 
@@ -2385,10 +2752,11 @@ class Component extends DCLogic {
       alle: () => true,
       handeln: (x) => x.verlust || x.bbIssue || x.knapp || x.leer || x.diff,
       verlust: (x) => x.verlust, buybox: (x) => x.bbIssue, knapp: (x) => x.knapp || x.leer, abweichung: (x) => x.diff, ohne: (x) => x.acos === null,
-      ebayfehlt: (x) => x.ebayFehlt, ebayteurer: (x) => x.ebayTeurer
+      ebayfehlt: (x) => x.ebayFehlt, ebayteurer: (x) => x.ebayTeurer,
+      kanalfehlt: (x) => chDefs.some((c) => stat(x, c.id) === 'fehlt'), kanalfehler: (x) => chDefs.some((c) => stat(x, c.id) === 'fehler'), daten: (x) => qual(x).q < 80
     };
     const artFilters = [
-      { id: 'alle', label: 'Alle' }, { id: 'handeln', label: 'Mit Handlungsbedarf' }, { id: 'verlust', label: 'Verlust durch Werbung' },
+      { id: 'alle', label: 'Alle' }, { id: 'handeln', label: 'Mit Handlungsbedarf' }, { id: 'kanalfehlt', label: 'Fehlt auf einem Kanal' }, { id: 'kanalfehler', label: 'Fehler auf einem Kanal' }, { id: 'daten', label: 'Daten unvollständig' }, { id: 'verlust', label: 'Verlust durch Werbung' },
       { id: 'buybox', label: 'Buy Box weg' }, { id: 'knapp', label: 'Bestand knapp/leer' }, { id: 'abweichung', label: 'Bestand weicht ab' },
       { id: 'ebayfehlt', label: 'Nicht bei eBay' }, { id: 'ebayteurer', label: 'eBay teurer als Konkurrenz' }, { id: 'ohne', label: 'Ohne Werbung' }
     ].map((f) => { const a = s.artFilter === f.id; return { ...f, count: base.filter(fTests[f.id]).length, active: a ? 'true' : 'false', bg: a ? 'var(--seg-active)' : 'var(--surface)', fg: a ? 'var(--seg-active-fg)' : 'var(--ink-2)', border: a ? 'var(--seg-active)' : 'var(--line-2)', cBg: a ? 'rgba(127,127,127,0.35)' : 'var(--tint)', cFg: a ? 'var(--seg-active-fg)' : 'var(--ink-2)', pick: () => this.setState({ artFilter: f.id, artPage: 1 }) }; });
@@ -2414,7 +2782,10 @@ class Component extends DCLogic {
       const wAd = Math.min(x.acos || 0, rest), wGewinn = Math.max(rest - (x.acos || 0), 0);
       const issue = x.leer || x.verlust || x.bbIssue || x.diff;
       return {
-        sku: x.sku, name: x.name, meta: x.cat + ', ' + x.brand, flags: flags.slice(0, 3),
+        sku: x.sku, gtin: x.gtin, name: x.name, meta: x.cat + ', ' + x.brand, flags: flags.slice(0, 3),
+        chs: chDefs.map((c) => { const st = stat(x, c.id); return { label: c.short + (st === 'online' ? '' : ' ' + stTxt[st]), dot: stDot[st] }; }),
+        q: qual(x).q, qColor: qual(x).q >= 85 ? 'var(--muted)' : qual(x).q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
+        openProd: () => { this.setState({ view: 'produkt', prod: x.sku, pTab: 'stamm', menu: false }); this.pushView('produkt'); try { window.scrollTo(0, 0); } catch (e) {} },
         price: e2(x.price), profit: (x.profit >= 0 ? '+' : '−') + e2(Math.abs(x.profit)), profitColor: x.profit >= 0 ? 'var(--accent-strong)' : bad,
         acos: x.acos === null ? '-' : x.acos + ' %', acosColor: x.acos === null ? 'var(--muted)' : (x.profit < 0 ? bad : 'var(--ink)'),
         sales: intDe(x.sales) + ' €', lager: x.lager + ' Stk.', reachTxt: x.reach >= 999 ? 'kein Abverkauf' : x.lager === 0 ? 'leer' : 'reicht ' + x.reach + ' T.',
@@ -2475,6 +2846,120 @@ class Component extends DCLogic {
       wRev: (c2.rev / chMax * 100).toFixed(1), wProfit: (Math.max(c2.profit, 0) / chMax * 100).toFixed(1), bestTxt: 'bester Kanal für ' + c2.best + ' Artikel' }));
     const catCount = (c) => this.cat.filter((x) => x.cat === c).length;
 
+    // Kanäle-Übersicht
+    const chanCards = chanAgg.map((a) => {
+      const n = this.cat.length, pct = Math.round(a.online / n * 100), job = s.jobs[a.id];
+      const sub = [a.fehlt ? intDe(a.fehlt) + ' nicht angelegt' : '', a.fehler ? a.fehler + ' mit Fehler' : '', a.entwurf ? intDe(a.entwurf) + ' Entwürfe' : '', a.queue ? intDe(a.queue) + ' werden übertragen' : ''].filter(Boolean).join(' · ') || 'alles online';
+      let hasAction = false, actLabel = '', act = null, hasJob = false, jobTxt = '';
+      if (!job && a.elig > 0) { hasAction = true; actLabel = intDe(a.elig) + ' fehlende mit KI vorbereiten'; act = () => this.setState({ jobs: { ...this.state.jobs, [a.id]: 'prep' } }); }
+      else if (job === 'prep') { hasJob = true; jobTxt = intDe(a.elig) + ' Entwürfe vorbereitet. Die KI hat Titel, Texte und Merkmale ergänzt. Prüf ein paar Stichproben, dann veröffentlichen.'; hasAction = true; actLabel = 'Alle ' + intDe(a.elig) + ' veröffentlichen'; act = () => this.setState({ jobs: { ...this.state.jobs, [a.id]: 'pub' } }); }
+      else if (job === 'pub') { hasJob = true; jobTxt = intDe(a.elig) + ' Angebote werden übertragen. Danach werden die Bestände wie bei den anderen Angeboten abgeglichen.'; }
+      return { ...a, pct, onlineTxt: intDe(a.online) + ' online', sub, subColor: a.fehler ? 'var(--warn-ink)' : 'var(--muted)', pctTxt: pct + ' % des Sortiments online' + (a.fehlt > a.elig && !s.jobs[a.id] ? ', ' + (a.fehlt - a.elig) + ' fehlende ohne Bestand ausgenommen' : ''),
+        conn: a.id === 'tiktok' ? 'Verbunden seit 12. Oktober' : 'Verbunden · Abgleich heute 15:32',
+        stats: [{ k: 'online', v: intDe(a.online), color: 'var(--ink)' }, { k: 'fehlen', v: intDe(a.fehlt + a.entwurf), color: 'var(--ink)' }, { k: 'Fehler', v: intDe(a.fehler), color: a.fehler ? 'var(--warn-ink)' : 'var(--ink)' }],
+        hasAction, actLabel, act, hasJob, jobTxt };
+    });
+    const covCats = [];
+    this.cat.forEach((x) => { if (covCats.indexOf(x.cat) < 0) covCats.push(x.cat); });
+    const covRows = covCats.map((cat) => {
+      const items = this.cat.filter((x) => x.cat === cat);
+      return { cat, n: intDe(items.length), cells: chDefs.map((c) => { const p = Math.round(items.filter((x) => stat(x, c.id) === 'online').length / items.length * 100); return { txt: p + ' %', color: p >= 95 ? 'var(--accent-strong)' : p < 50 ? 'var(--warn-ink)' : 'var(--ink)', w: p >= 95 ? '600' : '500' }; }) };
+    });
+    const ttFew = this.cat.filter((x) => stat(x, 'tiktok') !== 'online' && x.imgs < 4).length;
+    const chanIssues = [
+      { c: chDefs[1], title: chanAgg[1].fehler + ' Angebote abgelehnt', text: 'Amazon verlangt das Merkmal „Material“. Einmal in den Stammdaten ergänzen, dann neu übertragen.', btn: 'Betroffene ansehen', go: goArt('kanalfehler'), show: chanAgg[1].fehler > 0 },
+      { c: chDefs[3], title: intDe(ttFew) + ' Artikel mit zu wenigen Bildern', text: 'TikTok zeigt Produkte mit weniger als 4 Bildern kaum an. Bilder in den Stammdaten ergänzen, dann anlegen.', btn: 'Betroffene ansehen', go: goArt('daten'), show: ttFew > 0 },
+      { c: chDefs[2], title: chanAgg[2].pausiert + ' Angebote pausiert', text: 'Ausverkauft. Sie gehen automatisch wieder online, sobald Billbee Bestand meldet.', btn: 'Ansehen', go: goArt('knapp'), show: chanAgg[2].pausiert > 0 },
+      { c: chDefs[0], title: chanAgg[0].fehlt + ' Artikel nur als Entwurf im Shop', text: 'Angelegt, aber für Kunden nicht sichtbar.', btn: 'Ansehen', go: goArt('kanalfehlt'), show: chanAgg[0].fehlt > 0 }
+    ].filter((i) => i.show).map((i) => ({ ...i, letter: i.c.letter, color: i.c.color }));
+
+    // Produktansicht
+    const prodItem = s.prod ? this.cat.find((x) => x.sku === s.prod) : null;
+    const setPE = (x, k, v) => this.setState({ pEdits: { ...this.state.pEdits, [pk(x, k)]: v } });
+    const aiVals = (x, ch) => {
+      const c = ci(x), nm = x.name.replace(' · ', ' '), mat = (has(x, 'attr.material') ? PE[pk(x, 'attr.material')] : '') || c.mat;
+      if (ch === 'amazon') { const o = { 'amazon.title': cut(nm + ', ' + c.art + ' für ' + c.fit + ', aus ' + mat, 200), 'amazon.kw': c.kw }; bulletsAll(x).forEach((b, i) => { o['amazon.b' + (i + 1)] = b; }); if (!matOk(x)) o['attr.material'] = c.mat; return o; }
+      if (ch === 'ebay') return { 'ebay.title': cut(nm + ', ' + c.art + ' für ' + c.fit, 80) };
+      if (ch === 'tiktok') return { 'tiktok.title': cut(nm + ' | ' + c.art + ' für Sammler', 255), 'tiktok.desc': 'Für alle, die ihre besten Karten zeigen wollen: ' + c.art + ' für ' + c.fit + '. Aus ' + mat + ', schnell eingesetzt und sicher geschützt.' };
+      if (ch === 'shop') return { 'shop.seo': cut(nm + ' kaufen | ' + c.art + ' | JohtoMarket', 70) };
+      return { 'desc': x.name + '. ' + c.art + ' für ' + c.fit + ', aus ' + mat + '. Schützt deine Karten zuverlässig vor Kratzern, Staub und Knicken und sorgt dafür, dass sie im Regal oder an der Wand richtig zur Geltung kommen.' };
+    };
+    const applyAi = (x, ch) => {
+      const vals = aiVals(x, ch), prev = {}, pe = { ...this.state.pEdits };
+      Object.keys(vals).forEach((k) => { const key = pk(x, k); prev[k] = Object.prototype.hasOwnProperty.call(pe, key) ? pe[key] : undefined; pe[key] = vals[k]; });
+      this.setState({ pEdits: pe, pAi: { ...this.state.pAi, [pk(x, ch)]: 'draft' }, pAiPrev: { ...this.state.pAiPrev, [pk(x, ch)]: prev } });
+    };
+    const aiAccept = (x, ch) => this.setState({ pAi: { ...this.state.pAi, [pk(x, ch)]: 'ok' } });
+    const aiDiscard = (x, ch) => {
+      const prev = this.state.pAiPrev[pk(x, ch)] || {}, pe = { ...this.state.pEdits };
+      Object.keys(prev).forEach((k) => { if (prev[k] === undefined) delete pe[pk(x, k)]; else pe[pk(x, k)] = prev[k]; });
+      this.setState({ pEdits: pe, pAi: { ...this.state.pAi, [pk(x, ch)]: null } });
+    };
+    let pd = null, pc = null;
+    if (prodItem) {
+      const x = prodItem, c = ci(x), Q = qual(x);
+      const qBar = Q.q >= 85 ? 'var(--accent)' : Q.q >= 60 ? 'var(--ads)' : 'var(--warn)';
+      const desc = String(val(x, 'desc'));
+      const reqs = { 'attr.marke': 'Pflicht für alle Kanäle', 'attr.art': 'Pflicht für eBay', 'attr.material': 'Pflicht für Amazon und eBay' };
+      const attrDefs = [['attr.marke', 'Marke'], ['attr.art', 'Produktart'], ['attr.material', 'Material'], ['attr.farbe', 'Farbe'], ['attr.passend', 'Passend für'], ['attr.menge', 'Stück pro Packung']];
+      const mkField = (k, label, req, extra) => {
+        const v = String(val(x, k)), miss = !!req && !v.trim();
+        return { label, req: req || '', reqColor: miss ? 'var(--warn-ink)' : 'var(--muted)', value: v, border: miss ? 'var(--warn)' : 'var(--line-2)', on: (e) => setPE(x, k, e.target.value), ph: '', count: '', ...(extra ? extra(v) : {}) };
+      };
+      pd = {
+        name: x.name, sku: x.sku, gtin: x.gtin, brand: x.brand, cat: x.cat, q: Q.q, qBar, qText: Q.q >= 85 ? 'var(--accent-strong)' : Q.q >= 60 ? 'var(--amber-ink)' : 'var(--warn-ink)',
+        missing: Q.miss, hasMissing: Q.miss.length > 0, allGood: Q.miss.length === 0,
+        facts: [{ k: 'Preis', v: e2(x.price), src: 'im Shop' }, { k: 'Einkauf', v: e2(x.ek), src: 'aus Billbee' }, { k: 'Bestand', v: x.lager + ' Stk.', src: 'aus Billbee' }],
+        chs: chDefs.map((cd) => { const st = stat(x, cd.id); return { label: cd.name, statusTxt: stTxt[st], dot: stDot[st], pick: () => this.setState({ pTab: cd.id }) }; }),
+        tabs: [{ id: 'stamm', name: 'Stammdaten' }].concat(chDefs).map((t) => {
+          const sel = s.pTab === t.id, st = t.id === 'stamm' ? null : stat(x, t.id);
+          return { label: t.name, sel: sel ? 'true' : 'false', line: sel ? 'var(--accent)' : 'transparent', fg: sel ? 'var(--ink)' : 'var(--ink-2)', w: sel ? '600' : '500', hasBadge: st === 'fehler' || st === 'entwurf', badge: st ? stDot[st] : '', pick: () => this.setState({ pTab: t.id }) };
+        }),
+        isStamm: s.pTab === 'stamm', isChan: s.pTab !== 'stamm',
+        title: val(x, 'title'), onTitle: (e) => setPE(x, 'title', e.target.value),
+        desc, onDesc: (e) => setPE(x, 'desc', e.target.value), descCount: desc.length + ' Zeichen', descColor: desc.length < 120 ? 'var(--warn-ink)' : 'var(--muted)',
+        attrs: attrDefs.map(([k, label]) => mkField(k, label, reqs[k], () => ({ ph: k === 'attr.material' ? 'z. B. ' + c.mat : '' }))),
+        imgCount: x.imgs, imgs: [0, 1, 2, 3, 4, 5].map((i) => i < x.imgs ? { bg: 'var(--accent-tint)', border: 'solid', fg: 'var(--accent-strong)', txt: i === 0 ? 'Hauptbild' : 'Bild ' + (i + 1) } : { bg: 'transparent', border: 'dashed', fg: 'var(--muted)', txt: 'frei' }),
+        ai: () => applyAi(x, 'stamm'), aiDraft: s.pAi[pk(x, 'stamm')] === 'draft', aiAccept: () => aiAccept(x, 'stamm'), aiDiscard: () => aiDiscard(x, 'stamm')
+      };
+      const cd = chDefs.find((d) => d.id === s.pTab);
+      if (cd) {
+        const st = stat(x, cd.id), t = String(chTitle(x, cd.id)), own = has(x, cd.id + '.title'), tooLong = t.length > cd.titleMax;
+        const needMat = (cd.id === 'amazon' || cd.id === 'ebay') && !matOk(x);
+        const blockers = [];
+        if (needMat) blockers.push('Material in den Stammdaten');
+        if (tooLong) blockers.push('ein kürzerer Titel');
+        if (cd.id === 'tiktok' && x.imgs < 4) blockers.push('mindestens 4 Bilder');
+        let fields = [], fieldsTitle = '';
+        if (cd.id === 'amazon') { fieldsTitle = 'Stichpunkte und Suchbegriffe'; fields = [1, 2, 3, 4, 5].map((i) => mkField('amazon.b' + i, 'Stichpunkt ' + i, i <= 3 ? 'empfohlen' : '', (v) => ({ count: v.length + ' / 500' }))).concat([mkField('amazon.kw', 'Versteckte Suchbegriffe', '', (v) => ({ count: v.length + ' / 250', ph: 'Begriffe mit Leerzeichen trennen' }))]); }
+        if (cd.id === 'ebay') { fieldsTitle = 'Artikelmerkmale (aus den Stammdaten, Änderungen gelten überall)'; fields = [['attr.marke', 'Marke', 'Pflicht'], ['attr.art', 'Produktart', 'Pflicht'], ['attr.material', 'Material', 'Pflicht'], ['attr.farbe', 'Farbe', ''], ['attr.menge', 'Anzahl Einheiten', '']].map(([k, l, r]) => mkField(k, l, r)); }
+        if (cd.id === 'tiktok') { fieldsTitle = 'Text für TikTok'; fields = [mkField('tiktok.desc', 'Kurzbeschreibung', 'empfohlen', (v) => ({ count: v.length + ' / 500', ph: 'Locker und kurz, so wie man es Sammlern erzählt' }))]; }
+        if (cd.id === 'shop') { fieldsTitle = 'Suchmaschinen'; fields = [mkField('shop.seo', 'SEO-Titel für Google', '', (v) => ({ count: v.length + ' / 70' })), mkField('shop.handle', 'Adresse im Shop (johtomarket.de/products/…)', '')]; }
+        const info = {
+          amazon: [{ k: 'Produkttyp', v: c.amz }, { k: 'ASIN', v: st === 'online' || st === 'fehler' ? 'B0' + x.gtin.slice(-8) : 'wird beim Anlegen vergeben, Abgleich über die GTIN' }, { k: 'Preis', v: e2(x.price) + (x.brand !== 'JohtoMarket' ? ', mit Preisregel' : '') }],
+          ebay: [{ k: 'Kategorie', v: 'Sammeln & Seltenes › Sammelkartenspiele › Zubehör' }, { k: 'Preis', v: e2(x.ePrice) }, { k: 'Versand', v: x.ship > 3 ? 'Paket, 4,49 €' : 'Warensendung, 1,10 €' }],
+          tiktok: [{ k: 'Kategorie', v: 'Sammlerstücke › Zubehör für Sammelkarten' }, { k: 'Preis', v: e2(x.price) }, { k: 'Video', v: 'Keins. Ein kurzes Video bringt bei TikTok deutlich mehr Reichweite.' }],
+          shop: [{ k: 'Kollektionen', v: x.cat + ', ' + (x.brand === 'JohtoMarket' ? 'Eigenmarke' : x.brand) }, { k: 'Preis', v: e2(x.price) }, { k: 'Für Kunden sichtbar', v: st === 'online' ? 'ja' : 'nein, Entwurf' }]
+        }[cd.id];
+        const stLong = { online: 'Online, zuletzt übertragen heute 06:02', fehlt: 'Noch nicht angelegt', fehler: 'Abgelehnt, siehe Hinweis', pausiert: 'Pausiert, weil ausverkauft. Kommt automatisch zurück, sobald Billbee Bestand meldet.', entwurf: 'Entwurf bereit, wartet auf deine Freigabe', queue: 'Wird übertragen' }[st];
+        const pub = () => this.setState({ pPub: { ...this.state.pPub, [pk(x, cd.id)]: true } });
+        pc = {
+          name: cd.name, letter: cd.letter, color: cd.color, statusLong: stLong, statusColor: st === 'fehler' ? 'var(--warn-ink)' : st === 'online' ? 'var(--accent-strong)' : 'var(--muted)',
+          ai: () => applyAi(x, cd.id), aiLabel: 'Mit KI für ' + cd.name + ' schreiben', aiDraft: s.pAi[pk(x, cd.id)] === 'draft', aiAccept: () => aiAccept(x, cd.id), aiDiscard: () => aiDiscard(x, cd.id),
+          hasError: st === 'fehler', errTxt: needMat ? 'Pflichtfeld „Material“ fehlt. Trag es einmal in den Stammdaten ein, dann gilt es für alle Kanäle.' : 'Das Material ist jetzt ergänzt. Neu übertragen, dann prüft Amazon das Angebot noch einmal.',
+          fixLabel: needMat ? 'Material ergänzen' : 'Neu übertragen', fixErr: needMat ? () => this.setState({ pTab: 'stamm' }) : pub,
+          title: t, onTitle: (e) => setPE(x, cd.id + '.title', e.target.value), tCount: t.length + ' / ' + cd.titleMax + ' Zeichen', tColor: tooLong ? 'var(--warn-ink)' : 'var(--muted)', tBorder: tooLong ? 'var(--warn)' : 'var(--line-2)',
+          isOwn: own, inheritTxt: own ? 'Eigener Titel für ' + cd.name : 'Übernimmt den Titel aus den Stammdaten',
+          resetTitle: () => { const pe = { ...this.state.pEdits }; delete pe[pk(x, cd.id + '.title')]; this.setState({ pEdits: pe }); },
+          hasFields: fields.length > 0, fieldsTitle, fields, info,
+          canPub: st !== 'queue' && blockers.length === 0, isQueued: st === 'queue', pub,
+          pubLabel: st === 'fehlt' || st === 'entwurf' ? 'Auf ' + cd.name + ' anlegen' : st === 'fehler' ? 'Neu übertragen' : 'Änderungen übertragen',
+          foot: blockers.length ? 'Vor dem Übertragen fehlt noch: ' + blockers.join(', ') + '.' : st === 'queue' ? 'Bestand und Bestellungen laufen weiter über Billbee.' : 'Übertragen werden Titel, Texte, Merkmale, Bilder und Preis. Bestand und Bestellungen laufen weiter über Billbee.',
+          footColor: blockers.length ? 'var(--warn-ink)' : 'var(--muted)'
+        };
+      }
+    }
+
     // Chancenfinder: wo sich Werbung lohnt
     const eur0 = (n) => Math.round(n).toLocaleString('de-DE') + ' €';
     const range = (lo, hi) => (lo < 0 ? '−' + eur0(-lo) : '+' + eur0(lo)) + ' bis +' + eur0(hi);
@@ -2490,12 +2975,12 @@ class Component extends DCLogic {
         bringt: '+12 bis 20 Verkäufe im Weihnachtsgeschäft, nach Werbekosten etwa +85 bis 190 € Gewinn.',
         einsatz: '2 € am Tag vom 15.11. bis 20.12., insgesamt höchstens 70 €.',
         checks: [ok('Marge reicht'), ok('Buy Box bei dir'), hm('Holz Stand: nur 9 auf Lager'), ok('4,8 Sterne')],
-        action: 'Im Kalender einplanen (höchstens 70 €)', doneTxt: 'Eingeplant: startet am 15.11., AdPilot fragt vorher per Push nach',
+        action: 'Im Kalender einplanen (höchstens 70 €)', doneTxt: 'Eingeplant: startet am 15.11., Marktschreier fragt vorher per Push nach',
         rechnung: rows([['Verkäufe Dezember 2025 zu Oktober 2025', '3,1-mal so viele'], ['Budget', '2 € × 35 Tage = 70 €'], ['Amazon-Vorschlag pro Klick', '0,38 bis 0,55 €'], ['Erwartete zusätzliche Verkäufe', '12 bis 20'], ['Gewinn je Verkauf vor Werbung', 'ca. 13 € im Schnitt']]),
         quelle: 'Billbee-Verkäufe 2025, Gebotsvorschläge der Amazon-Werbeschnittstelle' },
       { id: 'bumper', grp: 'produkt', typ: 'Produkt bewerben', conf: 'hoch', cost: 40, lo: 85, hi: 150,
         title: 'PSA Bumper Glossy · Schwarz, 10er-Pack',
-        wo: 'in der Amazon-Suche bei passenden Suchen, Amazon wählt die Begriffe in den ersten 2 Wochen selbst aus. Danach übernimmt AdPilot die besten als feste Suchbegriffe.',
+        wo: 'in der Amazon-Suche bei passenden Suchen, Amazon wählt die Begriffe in den ersten 2 Wochen selbst aus. Danach übernimmt Marktschreier die besten als feste Suchbegriffe.',
         warum: 'Verkauft sich ohne Werbung 38-mal im Monat. Von 100 Besuchern kaufen 14, bei deinen anderen Artikeln sind es 8. Mehr Besucher dürften hier gut kaufen.',
         bringt: '+6 bis 9 Verkäufe im Monat, nach Werbekosten etwa +85 bis 150 € Gewinn.',
         einsatz: 'Test über 30 Tage, höchstens 1,50 € am Tag, insgesamt höchstens 40 €.',
@@ -2577,7 +3062,7 @@ class Component extends DCLogic {
         wo: 'Die Artikel bekommen ein eBay-Angebot, Billbee hält die Bestände wie bei den anderen Kanälen aktuell.',
         warum: 'Diese Artikel hast du auf Lager, ' + intDe(opESold.length) + ' davon verkaufen sich im Shop oder bei Amazon. Auf eBay gibt es sie noch nicht.',
         bringt: 'Etwa ' + intDe(opEUnits * 0.1) + ' bis ' + intDe(opEUnits * 0.2) + ' zusätzliche Verkäufe im Monat, ' + range(opELo, opEHi) + ' Gewinn.',
-        einsatz: 'Kein Werbebudget. AdPilot bereitet Titel, Preise und Fotos vor, du gibst sie frei.',
+        einsatz: 'Kein Werbebudget. Marktschreier bereitet Titel, Preise und Fotos vor, du gibst sie frei.',
         checks: [ok('Bestand vorhanden'), ok('verkauft sich bereits woanders'), ok('Gewinn nach eBay-Gebühren positiv')],
         action: 'Angebote vorbereiten', doneTxt: 'Vorbereitet: Die Angebote erscheinen unter „Heute erledigen“ zum Freigeben',
         rechnung: rows([['Artikel ohne eBay-Angebot', intDe(opE.length)], ['Davon mit Verkäufen in den letzten 30 Tagen', intDe(opESold.length)], ['Verkäufe davon im Shop und bei Amazon', intDe(opEUnits) + ' im Monat'], ['Annahme eBay zusätzlich', '10 bis 20 %'], ['Gewinn je eBay-Verkauf nach Gebühren und Versand (Mittelwert)', eur(opEProfit)]]),
@@ -2616,7 +3101,7 @@ class Component extends DCLogic {
     const chNo = [
       { name: 'CGC Bumper Classic, einzeln (3,99 €)', grund: 'Marge zu klein', text: 'Nach Einkauf und Amazon-Gebühren bleiben 0,94 € pro Verkauf. Schon ein Klick kostet ungefähr so viel.', erst: 'stattdessen das 10er-Pack bewerben, dort bleiben rund 9 € übrig.' },
       { name: 'Ultra PRO ONE-TOUCH 35pt', grund: 'Buy Box meist weg', text: 'In 6 von 10 Fällen landet der Kauf bei einem anderen Händler. Deine Werbung würde zum Teil für ihn werben.', erst: 'Buy Box zurückholen, die Preisregel steht oben bei den Chancen ohne Werbebudget.' },
-      { name: 'TCG Holz Stand · Eiche', grund: 'Bestand zu knapp', text: 'Nur noch 9 Stück, Nachschub dauert 3 Wochen. Werbung würde den Artikel nur schneller ausverkaufen.', erst: 'nachbestellen, AdPilot schlägt die Werbung wieder vor, sobald die Ware da ist.' },
+      { name: 'TCG Holz Stand · Eiche', grund: 'Bestand zu knapp', text: 'Nur noch 9 Stück, Nachschub dauert 3 Wochen. Werbung würde den Artikel nur schneller ausverkaufen.', erst: 'nachbestellen, Marktschreier schlägt die Werbung wieder vor, sobald die Ware da ist.' },
       { name: 'Magnetic Card Holder 130pt · Türkis', grund: 'schwache Bewertungen', text: '3,6 Sterne. Werbung bringt Klicks, aber auffällig wenige Käufe, Kunden springen nach den Bewertungen ab.', erst: 'Bewertungen ansehen und das Problem beheben, dann neu testen.' }
     ];
     const setCh = (id, v) => {
@@ -2633,7 +3118,7 @@ class Component extends DCLogic {
       return {
         ...c, free: c.cost === 0, woLabel: c.woLabel || 'Wo die Anzeige erscheint:', typBg: tc[c.grp][0], typFg: tc[c.grp][1],
         isOpen: !d, isDone: !!d, op: d === 'no' ? 0.75 : 1, border: d ? 'var(--line)' : 'var(--line-2)',
-        doneLabel: d === 'go' ? c.doneTxt : 'Zurückgestellt, AdPilot schlägt es in 30 Tagen noch einmal vor',
+        doneLabel: d === 'go' ? c.doneTxt : 'Zurückgestellt, Marktschreier schlägt es in 30 Tagen noch einmal vor',
         doneBg: d === 'go' ? 'var(--accent-tint)' : 'var(--page)', doneColor: d === 'go' ? 'var(--accent-strong)' : 'var(--ink-2)',
         go: () => setCh(c.id, 'go'), skip: () => setCh(c.id, 'no'), undo: () => setCh(c.id, null),
         calcOpen: open, calcExpanded: open ? 'true' : 'false', calcSign: open ? '−' : '+',
@@ -2669,6 +3154,9 @@ class Component extends DCLogic {
     ];
 
     return {
+      isKanaele: s.view === 'kanaele', goKanaele: go('kanaele'), chanCards, covHead: chDefs.map((c) => c.short), covRows, chanIssues,
+      isProdukt: s.view === 'produkt' && !!prodItem, pd, pc, goProdukte: go('artikel'), menuGroups, tileGroups,
+      bulkPub: bulk('auf allen fehlenden Kanälen angelegt'),
       isChancen: s.view === 'chancen', goChancen: go('chancen'), chIcon: opIcon,
       chItems, chFilters, chBudgets, chTests, chNo, chEmpty: chItems.length === 0,
       chRules: ['Jeder Test stoppt automatisch, wenn nach 15 € Werbekosten kein Verkauf kam.', 'Getestet wird nur, solange genug Bestand da ist.', 'Nach 30 Tagen bekommst du ein Ergebnis und entscheidest, ob es weiterläuft.'],
@@ -2703,7 +3191,7 @@ class Component extends DCLogic {
       bulkPause: bulk('Werbung pausieren'), bulkAcos: bulk('Ziel-ACoS neu berechnen'), bulkRule: bulk('Preisregel aktivieren (nur Fremdmarken)'),
       hasArtNote: !!s.artNote, artNote: s.artNote, closeArtNote: () => this.setState({ artNote: '' }),
       hasArtFilter: !!hasArtFilter, resetArt: () => this.setState({ artQuery: '', artCat: 'alle', artBrand: 'alle', artFilter: 'alle', artChannel: 'alle', artPage: 1 }),
-      isArtikel: s.view === 'artikel', goArtikel: goArt('alle'), goArtSearch: goArt('alle'),
+      isArtikel: s.view === 'artikel' || (s.view === 'produkt' && !prodItem), goArtikel: goArt('alle'), goArtSearch: goArt('alle'),
       goArtProdukte: goArt('verlust', 'gewinn'), goArtBestand: goArt('knapp', 'reach'), goArtBuybox: goArt('buybox', 'umsatz'),
       campQuery: s.campQuery, onCampQuery: (e) => this.setState({ campQuery: e.target.value }),
       kwQuery: s.kwQuery, onKwQuery: (e) => this.setState({ kwQuery: e.target.value }),
@@ -2716,7 +3204,7 @@ class Component extends DCLogic {
       hasUnread: unreadCount > 0, unreadCount, markRead: () => this.setState({ notifRead: true }),
       goHinweise: go('hinweise'), bellLabel: unreadCount ? 'Benachrichtigungen, ' + unreadCount + ' neu' : 'Benachrichtigungen',
       sections, tiles, current,
-      isStart: s.view === 'start', isSub: s.view !== 'start' && s.view !== 'kampagne',
+      isStart: s.view === 'start', isSub: s.view !== 'start' && s.view !== 'kampagne' && s.view !== 'produkt',
       isKampagne: s.view === 'kampagne' && !!s.sel, camp, goKampagnen: go('kampagnen'),
       campModes, campClassic: s.campMode === 'klassisch', campSimple: s.campMode === 'einfach', campStatusFilters, campTypeFilters, campRows, tot, campCountText,
       hasChanges: changes.length > 0, save, discard,
